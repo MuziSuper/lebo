@@ -8,10 +8,8 @@ import jakarta.persistence.*;
 
 @PearObject(
         TableName = "product",
-        pluralName = "商品",
-        path = "product",
-        desc = "商品管理",
-        group = "商品"
+        pluralName = "product",
+        path = "product"
 )
 @Entity(name = "product")
 @Table(name = "product")
