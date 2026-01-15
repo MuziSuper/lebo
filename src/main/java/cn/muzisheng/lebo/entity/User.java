@@ -5,9 +5,12 @@ import cn.muzisheng.lebo.model.AccountStatusEnum;
 import cn.muzisheng.pear.annotation.PearObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @PearObject(
         desc = "User Information.",
         path = "/user",
@@ -15,6 +18,7 @@ import java.time.LocalDateTime;
         group = "user"
 )
 @Entity
+@Data
 public class User extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,5 +41,8 @@ public class User extends BaseModel{
     @Column(name = "last_login")
     @TableField(value = "last_login")
     private LocalDateTime last_login;
+    @Transient
+    @TableField(exist = false)
+    private UserPoint point;
 
 }

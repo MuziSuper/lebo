@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 @Entity(name = "user_point")
 @TableName("user_point")
+@Data
 public class UserPoint {
 
     @Id
