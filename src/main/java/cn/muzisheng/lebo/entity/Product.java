@@ -2,17 +2,11 @@ package cn.muzisheng.lebo.entity;
 
 import cn.muzisheng.lebo.handler.ProductStatusTypeHandler;
 import cn.muzisheng.lebo.model.ProductStatusEnum;
-import cn.muzisheng.pear.annotation.PearObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
-@PearObject(
-        TableName = "product",
-        pluralName = "product",
-        path = "product"
-)
 @Entity(name = "product")
 @Table(name = "product")
 public class Product extends BaseModel{

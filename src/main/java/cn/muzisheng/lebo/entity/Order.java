@@ -2,19 +2,13 @@ package cn.muzisheng.lebo.entity;
 
 import cn.muzisheng.lebo.model.OrderOptionEnum;
 import cn.muzisheng.lebo.model.OrderTypeEnum;
-import cn.muzisheng.pear.annotation.PearObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
-@PearObject(
-        TableName = "order",
-        desc = "订单",
-        path = "/order",
-        pluralName = "orders"
-)
+
 public class Order {
     @Id
     private Long id;

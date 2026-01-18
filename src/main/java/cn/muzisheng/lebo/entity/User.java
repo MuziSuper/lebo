@@ -2,7 +2,6 @@ package cn.muzisheng.lebo.entity;
 
 import cn.muzisheng.lebo.handler.AccountStatusTypeHandler;
 import cn.muzisheng.lebo.model.AccountStatusEnum;
-import cn.muzisheng.pear.annotation.PearObject;
 import com.baomidou.mybatisplus.annotation.TableField;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -11,12 +10,6 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
-@PearObject(
-        desc = "User Information.",
-        path = "/user",
-        pluralName = "users",
-        group = "user"
-)
 @Entity
 @Data
 public class User extends BaseModel{
