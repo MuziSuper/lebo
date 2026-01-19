@@ -5,11 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/后端系分文档.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/HttpClientUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端系分文档.md" beforeDir="false" afterPath="$PROJECT_DIR$/后端系分文档.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,10 +32,10 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="customMavenHome" value="/opt/homebrew/Cellar/maven/3.9.11/libexec" />
-        <option name="localRepository" value="/opt/homebrew/Cellar/maven/3.9.11/libexec/repository" />
+        <option name="customMavenHome" value="$PROJECT_DIR$/../../apache-maven-3.6.3" />
+        <option name="localRepository" value="$PROJECT_DIR$/../../apache-maven-3.6.3/repository" />
         <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
-        <option name="userSettingsFile" value="/opt/homebrew/Cellar/maven/3.9.11/libexec/conf/settings.xml" />
+        <option name="userSettingsFile" value="$PROJECT_DIR$/../../apache-maven-3.6.3/conf/settings.xml" />
       </MavenGeneralSettings>
     </option>
   </component>
@@ -47,6 +49,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Maven.Lebo [clean].executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
@@ -61,7 +64,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "project.structure.last.edited": "项目",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "MavenSettings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -107,5 +113,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
