@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/后端系分文档.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +97,7 @@
       <updated>1766933093848</updated>
       <workItem from="1766933094907" duration="13529000" />
       <workItem from="1767022146479" duration="13389000" />
-      <workItem from="1768485841482" duration="10578000" />
+      <workItem from="1768485841482" duration="12258000" />
     </task>
     <servers />
   </component>
