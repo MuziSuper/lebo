@@ -7,7 +7,7 @@
 Lebo商户管理平台小程序，基于微信小程序开发，主要功能有：用户管理、商品管理、订单管理、消息管理、统计管理等功能；
 
 ## 前端概述
-前端基于 Taro 4.x + Vue3 小程序框架开发，使用 webpack 构建，并配合京东官方的 NutUI 组件库以及 Vue-Router 进行路由管理。
+前端基于 Taro 4.x + Vue3 小程序框架开发，使用 webpack 构建，并配合京东官方的 NutUI 组件库。
 主要有 index 首页页面、profile 个人信息页面、shop 商城页面、message 消息页面、statistics 统计页面、goods-detail 商品详情页面、order-detail 订单详情页面
 
 ## 后端概述
