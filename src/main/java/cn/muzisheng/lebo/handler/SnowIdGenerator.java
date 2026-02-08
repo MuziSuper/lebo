@@ -1,6 +1,6 @@
 package cn.muzisheng.lebo.handler;
 
-import cn.muzisheng.pear.SnowIdUtil;
+import cn.muzisheng.lebo.utils.SnowIdUtil;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import org.springframework.stereotype.Component;
 

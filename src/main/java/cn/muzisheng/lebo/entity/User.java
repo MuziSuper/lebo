@@ -1,6 +1,7 @@
 package cn.muzisheng.lebo.entity;
 
 import cn.muzisheng.lebo.handler.AccountStatusTypeHandler;
+import cn.muzisheng.lebo.handler.EncryptionTypeHandler;
 import cn.muzisheng.lebo.model.AccountStatusEnum;
 import com.baomidou.mybatisplus.annotation.TableField;
 import jakarta.persistence.*;
@@ -14,14 +15,16 @@ import java.time.LocalDateTime;
 @Data
 public class User extends BaseModel{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String openId;
+
+    @TableField(typeHandler = EncryptionTypeHandler.class)
+    private String sessionKey;
     @Column(name = "nick_name")
     @TableField(value = "nick_name")
     private String nickName;
-    @Column(unique = true, nullable = false,name = "wx_id")
-    @TableField(value = "wx_id")
-    private String wxId;
+    @Column(name = "union_id")
+    @TableField(value = "union_id")
+    private String unionId;
     private String avatar;
     private Integer gender;
     private String city;

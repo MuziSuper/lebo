@@ -18,20 +18,18 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * HTTP客户端工具类 - 基于Apache HttpClient 4.5.14
  * 专门用于调用微信服务器API
  */
 @Slf4j
-public class HttpClientUtils {
+public class HttpClientUtil {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static PoolingHttpClientConnectionManager connectionManager;
