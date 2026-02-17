@@ -1,5 +1,7 @@
 package cn.muzisheng.lebo.service;
 
+import cn.muzisheng.lebo.entity.User;
+
 /**
  * 用户服务接口
  */
@@ -14,5 +16,7 @@ public interface UserService {
     String login(String code);
 
 
+    void updateLastLogin(String openid);
 
+    User getUserByOpenId(String openid);
 }

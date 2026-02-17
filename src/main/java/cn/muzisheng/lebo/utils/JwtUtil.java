@@ -8,6 +8,7 @@ import cn.muzisheng.lebo.exception.AuthorizationException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SecureDigestAlgorithm;
 import io.jsonwebtoken.security.WeakKeyException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -16,7 +17,7 @@ import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
 
-
+@Log4j2
 @Component
 public class JwtUtil {
 
@@ -157,5 +158,4 @@ public class JwtUtil {
         }
         return claims;
     }
-
 }

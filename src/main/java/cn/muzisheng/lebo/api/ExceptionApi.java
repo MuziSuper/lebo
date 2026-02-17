@@ -41,7 +41,7 @@ public class ExceptionApi {
     }
     @ExceptionHandler(SQLException.class)
     public ResponseEntity<ExceptionResponse> handleException(SQLException e) {
-        ExceptionResponse response = new ExceptionResponse(Constant.NOT_FOUND_EXCEPTION.getCode(), e.getMessage());
-        return new ResponseEntity<>(response, Constant.NOT_FOUND_EXCEPTION.getHttpStatus());
+        ExceptionResponse response = new ExceptionResponse(Constant.SQL_EXCEPTION.getCode(), e.getMessage());
+        return new ResponseEntity<>(response, Constant.SQL_EXCEPTION.getHttpStatus());
     }
 }

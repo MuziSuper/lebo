@@ -19,10 +19,19 @@ public class Constant {
     public static final CodeStatus WX_EXCEPTION=new CodeStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE,WX_EXCEPTION_CODE);
     public static final CodeStatus GENERAL_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR,GENERAL_EXCEPTION_CODE);
     public static final CodeStatus SQL_EXCEPTION=new CodeStatus(HttpStatus.BAD_GATEWAY, SQL_EXCEPTION_CODE);
+
     // token默认配置
     public static final long TOKEN_DEFAULT_EXPIRE_DAY = 7 * 24 * 60 * 60 * 1000L;
     public static final String TOKEN_DEFAULT_SECRET_PREFIX = "Bearer ";
     public static final String TOKEN_DEFAULT_ISSUER = "lebo";
     public static final String TOKEN_DEFAULT_SUBJECT = "authentication";
     public static final String TOKEN_DEFAULT_SALT="LEBOTOKENDEFAULTSALTMUZISHENGSUPERHANDSOMEANDINTELLIGENT";
+
+    // 微信API常量
+    public static final String WX_API_BASE = "https://api.weixin.qq.com";
+    public static final String WX_CODE2SESSION_URL = WX_API_BASE + "/sns/jscode2session";
+    public static final String WX_ACCESS_TOKEN_URL = WX_API_BASE + "/cgi-bin/token";
+    public static final String WX_STABLE_TOKEN_URL = WX_API_BASE + "/cgi-bin/stable_token";
+    public static final String WX_GET_USER_INFO_URL = WX_API_BASE + "/cgi-bin/user/info";
+    public static final String WX_CHECK_SESSION_URL = WX_API_BASE + "/wxa/checksession";
 }
