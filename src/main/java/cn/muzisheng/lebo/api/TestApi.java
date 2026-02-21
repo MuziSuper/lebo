@@ -13,8 +13,8 @@ public class TestApi {
     @GetMapping("user/info")
     public String getUserInfo() {
         User user = new User();
+        user.setOpenId("11111111");
         user.setNickName("muzisheng");
-        user.setWxId("123456789");
         user.setStatus(AccountStatusEnum.ACTIVE);
         user.setGender(1);
         user.setCity("上海");

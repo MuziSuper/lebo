@@ -19,6 +19,8 @@ src/main/resources/test.properties
 *.iml
 *.ipr
 *.log
+*.txt
+*.cer
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

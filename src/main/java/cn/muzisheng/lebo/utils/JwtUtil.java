@@ -94,9 +94,6 @@ public class JwtUtil {
     }
 
     /**
-     * 刷新token（基于openid）
-     **/
-    /**
      * 刷新令牌（基于openid重新生成）
      *
      * @param token 原令牌
@@ -123,9 +120,6 @@ public class JwtUtil {
     }
 
 
-    /**
-     * 删除token前缀
-     **/
     /**
      * 删除令牌前缀
      *

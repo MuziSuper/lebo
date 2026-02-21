@@ -1,6 +1,5 @@
 package cn.muzisheng.lebo.handler;
 
-import cn.muzisheng.lebo.model.AccountStatusEnum;
 import cn.muzisheng.lebo.model.ProductStatusEnum;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;

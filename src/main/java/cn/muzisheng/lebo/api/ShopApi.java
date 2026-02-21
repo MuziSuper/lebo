@@ -1,8 +1,8 @@
 package cn.muzisheng.lebo.api;
 
 import cn.muzisheng.lebo.entity.Product;
+import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.ProductService;
-import cn.muzisheng.pear.model.Result;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

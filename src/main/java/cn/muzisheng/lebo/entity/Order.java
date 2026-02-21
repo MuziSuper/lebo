@@ -5,7 +5,6 @@ import cn.muzisheng.lebo.model.OrderTypeEnum;
 import com.baomidou.mybatisplus.annotation.TableField;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 

@@ -4,9 +4,6 @@ package cn.muzisheng.lebo.config;
 import cn.muzisheng.lebo.constant.Constant;
 import jakarta.annotation.PostConstruct;
 import lombok.Data;
-import lombok.Setter;
-import org.antlr.v4.runtime.Token;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -19,7 +16,7 @@ public class TokenConfig {
     private Long expire=Constant.TOKEN_DEFAULT_EXPIRE_DAY;
     private String issue= Constant.TOKEN_DEFAULT_ISSUER;
     private String subject=Constant.TOKEN_DEFAULT_SUBJECT;
-    private TokenConfig(){}
+    public TokenConfig(){}
     @PostConstruct
     public void init(){
         if(head==null||head.isEmpty()){

@@ -2,8 +2,8 @@ package cn.muzisheng.lebo.service.impl;
 
 import cn.muzisheng.lebo.entity.Product;
 import cn.muzisheng.lebo.mapper.ProductMapper;
+import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.ProductService;
-import cn.muzisheng.pear.model.Result;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

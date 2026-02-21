@@ -4,7 +4,10 @@ import cn.muzisheng.lebo.handler.AccountStatusTypeHandler;
 import cn.muzisheng.lebo.handler.EncryptionTypeHandler;
 import cn.muzisheng.lebo.model.AccountStatusEnum;
 import com.baomidou.mybatisplus.annotation.TableField;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

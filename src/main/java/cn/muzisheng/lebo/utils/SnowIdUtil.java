@@ -43,7 +43,7 @@ public class SnowIdUtil {
     /**
      * 本机自定义ip
      */
-    private static long localIp = 5251;
+    private static final long localIp = 5251;
 
     /**
      * 构造函数初始化机器编码

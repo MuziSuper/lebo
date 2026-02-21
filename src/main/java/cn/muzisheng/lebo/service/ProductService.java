@@ -1,7 +1,7 @@
 package cn.muzisheng.lebo.service;
 
 import cn.muzisheng.lebo.entity.Product;
-import cn.muzisheng.pear.model.Result;
+import cn.muzisheng.lebo.model.Result;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.http.ResponseEntity;
 

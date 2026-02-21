@@ -1,7 +1,6 @@
 package cn.muzisheng.lebo.constant;
 
 import cn.muzisheng.lebo.param.CodeStatus;
-import org.apache.ibatis.jdbc.SQL;
 import org.springframework.http.HttpStatus;
 
 public class Constant {
@@ -29,9 +28,19 @@ public class Constant {
 
     // 微信API常量
     public static final String WX_API_BASE = "https://api.weixin.qq.com";
+    public static final String WX_CHECK_SESSION_URL=WX_API_BASE+"/swa/checksession";
     public static final String WX_CODE2SESSION_URL = WX_API_BASE + "/sns/jscode2session";
     public static final String WX_ACCESS_TOKEN_URL = WX_API_BASE + "/cgi-bin/token";
     public static final String WX_STABLE_TOKEN_URL = WX_API_BASE + "/cgi-bin/stable_token";
     public static final String WX_GET_USER_INFO_URL = WX_API_BASE + "/cgi-bin/user/info";
-    public static final String WX_CHECK_SESSION_URL = WX_API_BASE + "/wxa/checksession";
+
+    /**
+     * 加密算法名称
+     */
+    public static final String ALGORITHM = "AES";
+    /**
+     * 加密模式：ECB模式，填充方式：PKCS5Padding
+     */
+    public static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
+    public static final String KEY = "LEBOISAHARDCODEDKEY12345";
 }

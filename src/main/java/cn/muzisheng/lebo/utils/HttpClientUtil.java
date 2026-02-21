@@ -34,7 +34,6 @@ public class HttpClientUtil {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static PoolingHttpClientConnectionManager connectionManager;
     private static CloseableHttpClient httpClient;
-    private static RequestConfig defaultRequestConfig;
 
     static {
         // 初始化连接池
@@ -59,7 +58,10 @@ public class HttpClientUtil {
         );
 
         // 配置请求参数
-        defaultRequestConfig = RequestConfig.custom()
+        // 从连接池获取连接超时
+        // 响应超时
+        // 连接超时
+        RequestConfig defaultRequestConfig = RequestConfig.custom()
                 .setConnectionRequestTimeout(10000) // 从连接池获取连接超时
                 .setSocketTimeout(30000) // 响应超时
                 .setConnectTimeout(15000) // 连接超时

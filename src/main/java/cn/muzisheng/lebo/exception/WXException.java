@@ -1,5 +1,7 @@
 package cn.muzisheng.lebo.exception;
 
+import cn.muzisheng.lebo.utils.TimedVouchersUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class WXException extends RuntimeException{
+
     public WXException() {
         super();
     }
@@ -17,5 +20,8 @@ public class WXException extends RuntimeException{
     }
     public WXException(String message, Throwable cause) {
         super(message, cause);
+    }
+    public WXException(Throwable cause) {
+        super(cause);
     }
 }

@@ -1,6 +1,5 @@
 package cn.muzisheng.lebo.utils;
 
-import java.util.Random;
 import java.util.UUID;
 
 public class UUIDUtil {

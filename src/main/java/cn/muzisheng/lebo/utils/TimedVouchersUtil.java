@@ -4,12 +4,8 @@ import cn.muzisheng.lebo.service.WXService;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Timed;
-
-import java.sql.Time;
 
 /**
  * 定时票据工具类
@@ -19,7 +15,6 @@ import java.sql.Time;
 @Slf4j
 @Component
 public class TimedVouchersUtil {
-
     @Getter
     private volatile String accessToken;
 

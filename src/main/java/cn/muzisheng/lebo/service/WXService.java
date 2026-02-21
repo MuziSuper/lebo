@@ -6,4 +6,6 @@ public interface WXService {
     WXCodeSession code2Session(String code);
     String getStableAccessToken();
     boolean checkSession();
+
+    WXCodeSession resetSession();
 }
