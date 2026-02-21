@@ -1,7 +1,5 @@
 package cn.muzisheng.lebo.exception;
 
-import cn.muzisheng.lebo.utils.TimedVouchersUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
