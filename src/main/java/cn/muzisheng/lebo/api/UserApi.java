@@ -3,7 +3,6 @@ package cn.muzisheng.lebo.api;
 import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.UserService;
-import cn.muzisheng.lebo.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +22,6 @@ public class UserApi {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
 
     /**
      * 微信小程序登录接口
@@ -47,11 +44,7 @@ public class UserApi {
     public ResponseEntity<Result<Boolean>> unlogin() {
         return userService.logout();
     }
-    /**
-     * 获取当前用户信息
-     *
-     * @return 当前用户信息
-     */
+
 //    @GetMapping("/info")
 //    public Map<String, Object> getCurrentUserInfo() {
 //
