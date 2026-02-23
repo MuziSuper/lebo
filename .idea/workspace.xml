@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="The configuration file was modified">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/DataSourceConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/WXSecretConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/WXServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/WXServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/HttpClientUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/HttpClientUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +22,8 @@
       <list>
         <option value="Exception" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="Dockerfile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -37,7 +41,7 @@
     </option>
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -51,7 +55,11 @@
   "keyToString": {
     "CODEINSIGHT_PRECOMMIT_ANALYSIS": "false",
     "CodeFuse_applyCachedRules.once.366700735": "1",
+    "Docker.Dockerfile build.executor": "Run",
+    "JAR 应用程序.Lebo-1.0-SNAPSHOT.jar.executor": "Run",
     "Maven.Lebo [clean].executor": "Run",
+    "Maven.Lebo [compile].executor": "Run",
+    "Maven.Lebo [package].executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
@@ -83,11 +91,12 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="cn.muzisheng.lebo.config" />
       <recent name="cn.muzisheng.lebo.service.impl" />
       <recent name="cn.muzisheng.lebo.service" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.LeboApplication">
+  <component name="RunManager" selected="JAR 应用程序.Lebo-1.0-SNAPSHOT.jar">
     <configuration name="WechatApiCryptoUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cn.muzisheng.lebo.utils.WechatApiCryptoUtil" />
       <module name="Lebo" />
@@ -100,6 +109,10 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="Lebo-1.0-SNAPSHOT.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/target/Lebo-1.0-SNAPSHOT.jar" />
+      <method v="2" />
     </configuration>
     <configuration name="LeboApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <envs>
@@ -118,8 +131,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Dockerfile build" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="imageTag" value="maven3.9.6-jdk-21-slim_build" />
+          <option name="buildCliOptions" value="--target build" />
+          <option name="buildOnly" value="true" />
+          <option name="sourceFilePath" value="Dockerfile" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JAR 应用程序.Lebo-1.0-SNAPSHOT.jar" />
+        <item itemvalue="Docker.Dockerfile build" />
         <item itemvalue="Spring Boot.LeboApplication" />
         <item itemvalue="应用程序.WechatApiCryptoUtils" />
       </list>
@@ -178,7 +208,63 @@
       <option name="project" value="LOCAL" />
       <updated>1771663519003</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="The configuration file was modified">
+      <option name="closed" value="true" />
+      <created>1771829699812</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1771829699812</updated>
+    </task>
+    <task id="LOCAL-00006" summary="The configuration file was modified">
+      <option name="closed" value="true" />
+      <created>1771830294186</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1771830294186</updated>
+    </task>
+    <task id="LOCAL-00007" summary="The configuration file was modified">
+      <option name="closed" value="true" />
+      <created>1771830560564</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1771830560564</updated>
+    </task>
+    <task id="LOCAL-00008" summary="The configuration file was modified">
+      <option name="closed" value="true" />
+      <created>1771831143184</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1771831143184</updated>
+    </task>
+    <task id="LOCAL-00009" summary="The configuration file was modified">
+      <option name="closed" value="true" />
+      <created>1771831996534</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1771831996534</updated>
+    </task>
+    <task id="LOCAL-00010" summary="The configuration file was modified">
+      <option name="closed" value="true" />
+      <created>1771832720414</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1771832720414</updated>
+    </task>
+    <task id="LOCAL-00011" summary="The configuration file was modified">
+      <option name="closed" value="true" />
+      <created>1771833437671</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1771833437671</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

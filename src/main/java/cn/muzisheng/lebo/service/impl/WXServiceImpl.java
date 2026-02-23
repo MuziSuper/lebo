@@ -44,8 +44,8 @@ public class WXServiceImpl implements WXService {
     public WXServiceImpl(Environment environment, UserService userService, TimedVouchersUtil timedVouchersUtil) {
         this.timedVouchersUtil = timedVouchersUtil;
         this.userService = userService;
-        this.appId = environment.getProperty("app-id", String.class);
-        this.appSecret = environment.getProperty("app-secret", String.class);
+        this.appId = environment.getProperty("APP_ID", String.class);
+        this.appSecret = environment.getProperty("APP_SECRET", String.class);
     }
 
     /**
