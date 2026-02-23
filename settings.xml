@@ -1,50 +1,67 @@
 <settings>
-  <mirrors>
+    <mirrors>
+        <!-- 中央仓库镜像 -->
         <mirror>
-            <id>mirror-all</id>
-            <mirrorOf>*,!alipay_dev</mirrorOf>
-            <name>alipay mirror</name>
-            <url>http://mvn.test.alipay.net/artifactory/content/groups/public/</url>
+            <id>aliyun-maven</id>
+            <mirrorOf>central</mirrorOf>
+            <name>Aliyun Maven Mirror</name>
+            <url>https://maven.aliyun.com/repository/public</url>
         </mirror>
-  </mirrors>
-  <profiles>
-                <profile>
-                        <id>dev</id>
-                        <activation>
-                                <activeByDefault>true</activeByDefault>
-                        </activation>
-                        <repositories>
-                                <repository>
-                                        <id>alipay_test</id>
-                                        <url>http://mvn.test.alipay.net/artifactory/content/groups/public/</url>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </repository>
-                                <repository>
-                                        <id>alipay_dev</id>
-                                        <url>http://mvn.dev.alipay.net/artifactory/content/groups/public/</url>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </repository>
-                        </repositories>
-                        <pluginRepositories>
-                                <pluginRepository>
-                                        <id>alipay_test</id>
-                                        <url>http://mvn.test.alipay.net/artifactory/content/groups/public/</url>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </pluginRepository>
-                                <pluginRepository>
-                                        <id>alipay_dev</id>
-                                        <url>http://mvn.dev.alipay.net/artifactory/content/groups/public/</url>
-                                        <snapshots>
-                                                <enabled>true</enabled>
-                                        </snapshots>
-                                </pluginRepository>
-                        </pluginRepositories>
-                </profile>
-  </profiles>
+
+        <!-- Spring 仓库镜像 -->
+        <mirror>
+            <id>aliyun-spring</id>
+            <mirrorOf>spring-milestones</mirrorOf>
+            <name>Aliyun Spring Mirror</name>
+            <url>https://maven.aliyun.com/repository/spring</url>
+        </mirror>
+
+        <!-- Google 仓库镜像 -->
+        <mirror>
+            <id>aliyun-google</id>
+            <mirrorOf>google</mirrorOf>
+            <name>Aliyun Google Mirror</name>
+            <url>https://maven.aliyun.com/repository/google</url>
+        </mirror>
+    </mirrors>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>alipay_test</id>
+                    <url>http://mvn.test.alipay.net/artifactory/content/groups/public/</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>alipay_dev</id>
+                    <url>http://mvn.dev.alipay.net/artifactory/content/groups/public/</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>alipay_test</id>
+                    <url>http://mvn.test.alipay.net/artifactory/content/groups/public/</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>alipay_dev</id>
+                    <url>http://mvn.dev.alipay.net/artifactory/content/groups/public/</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
 </settings>
