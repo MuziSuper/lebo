@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="The configuration file was modified">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/DataSourceConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/Open-Platform-Certificate.cer" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/asymmetrical-secret-key.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/symmetric-key.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +93,7 @@
       <recent name="cn.muzisheng.lebo.service" />
     </key>
   </component>
-  <component name="RunManager" selected="JAR 应用程序.Lebo-1.0-SNAPSHOT.jar">
+  <component name="RunManager" selected="Spring Boot.LeboApplication">
     <configuration name="WechatApiCryptoUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cn.muzisheng.lebo.utils.WechatApiCryptoUtil" />
       <module name="Lebo" />
@@ -114,8 +113,11 @@
     </configuration>
     <configuration name="LeboApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <envs>
-        <env name="app-id" value="wxdff718cfe7d8707c" />
-        <env name="app-secret" value="83fc07a83919c2f2f51e687c0acbb501" />
+        <env name="APP_ID" value="wxdff718cfe7d8707c" />
+        <env name="APP_SECRET" value="83fc07a83919c2f2f51e687c0acbb501" />
+        <env name="DATASOURCE_PASSWORD" value="200472LxH!" />
+        <env name="DATASOURCE_URL" value="jdbc:mysql://localhost:3306/lebo" />
+        <env name="DATASOURCE_USERNAME" value="root" />
       </envs>
       <module name="Lebo" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="cn.muzisheng.lebo.LeboApplication" />
@@ -144,11 +146,17 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Docker.Dockerfile build" />
+      <item itemvalue="JAR 应用程序.Lebo-1.0-SNAPSHOT.jar" />
+      <item itemvalue="Spring Boot.LeboApplication" />
+      <item itemvalue="应用程序.WechatApiCryptoUtils" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.LeboApplication" />
         <item itemvalue="JAR 应用程序.Lebo-1.0-SNAPSHOT.jar" />
         <item itemvalue="Docker.Dockerfile build" />
-        <item itemvalue="Spring Boot.LeboApplication" />
         <item itemvalue="应用程序.WechatApiCryptoUtils" />
       </list>
     </recent_temporary>
@@ -278,7 +286,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771921243806</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="The configuration file was modified">
+      <option name="closed" value="true" />
+      <created>1771922335149</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1771922335149</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
