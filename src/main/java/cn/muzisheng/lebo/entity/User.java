@@ -4,6 +4,7 @@ import cn.muzisheng.lebo.handler.AccountStatusTypeHandler;
 import cn.muzisheng.lebo.handler.EncryptionTypeHandler;
 import cn.muzisheng.lebo.model.AccountStatusEnum;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 public class User extends BaseModel {
+    @TableId
     @Id
     private String openId;
     /**

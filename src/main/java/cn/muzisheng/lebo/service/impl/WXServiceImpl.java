@@ -4,17 +4,16 @@ import cn.muzisheng.lebo.constant.Constant;
 import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.exception.WXException;
 import cn.muzisheng.lebo.param.WXCodeSession;
-import cn.muzisheng.lebo.service.UserService;
 import cn.muzisheng.lebo.service.WXService;
 import cn.muzisheng.lebo.utils.HttpClientUtil;
-import cn.muzisheng.lebo.utils.TimedVouchersUtil;
-import cn.muzisheng.lebo.utils.UserThreadUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Mac;
@@ -37,13 +36,12 @@ public class WXServiceImpl implements WXService {
     @Getter
     private final String appId;
     @Getter
+    private volatile String accessToken;
+    @Getter
     private final String appSecret;
-    private final UserService userService;
-    private final TimedVouchersUtil timedVouchersUtil;
 
-    public WXServiceImpl(Environment environment, UserService userService, TimedVouchersUtil timedVouchersUtil) {
-        this.timedVouchersUtil = timedVouchersUtil;
-        this.userService = userService;
+
+    public WXServiceImpl(Environment environment) {
         this.appId = environment.getProperty("APP_ID", String.class);
         this.appSecret = environment.getProperty("APP_SECRET", String.class);
     }
@@ -193,15 +191,13 @@ public class WXServiceImpl implements WXService {
      * @return 是否校验成功
      */
     @Override
-    public boolean checkSession() {
-        String openid = UserThreadUtil.getCurrentOpenId();
-        User user = userService.getUserByOpenId(openid);
+    public boolean checkSession(User user) {
         // 使用 session_key 对空字符串进行 HMAC-SHA256 签名
         String signature = hmacSha256(user.getSessionKey(), "");
 
         // 构造请求参数
         Map<String, String> params = new HashMap<>();
-        params.put("openid", openid);
+        params.put("openid", user.getOpenId());
         params.put("signature", signature);
         params.put("sig_method", "hmac_sha256");
 
@@ -220,7 +216,7 @@ public class WXServiceImpl implements WXService {
          * - errmsg：错误信息
          */
         String url = appendParams(Constant.WX_CHECK_SESSION_URL, "access_token",
-                timedVouchersUtil.getAccessToken());
+                getAccessToken());
         String response = HttpClientUtil.get(url, params);
         Map<String, Object> result = null;
         try {
@@ -234,18 +230,18 @@ public class WXServiceImpl implements WXService {
         if (result.containsKey("errcode")) {
             Integer errcode = (Integer) result.get("errcode");
             if (errcode == 0) {
-                log.info("检验登录态成功: openid={}", openid);
+                log.info("检验登录态成功: openid={}", user.getOpenId());
                 return true;
-            } else if (errcode == 41001 || errcode == 40014 || errcode == 40001 || errcode == 42007 || errcode == 42001||errcode == 87009) {
-                timedVouchersUtil.refreshAccessToken();
+            } else if (errcode == 41001 || errcode == 40014 || errcode == 40001 || errcode == 42007 || errcode == 42001 || errcode == 87009) {
+                refreshAccessToken();
                 throw new WXException("access_token 已过期，已刷新请再次请求");
             } else {
                 log.warn("检验登录态失败: errcode={}, errmsg={}, openid={}",
-                        result.get("errcode"), result.get("errmsg"), openid);
+                        result.get("errcode"), result.get("errmsg"), user.getOpenId());
                 throw new WXException("检验登录态失败: " + result.get("errmsg"));
             }
         }
-        log.warn("检验登录态失败: 未返回 errcode, openid={}", openid);
+        log.warn("检验登录态失败: 未返回 errcode, openid={}", user.getOpenId());
         throw new WXException("检验登录态失败: 未返回 errcode");
     }
 
@@ -258,15 +254,13 @@ public class WXServiceImpl implements WXService {
      * @return wxCodeSession 不包含union_id
      */
     @Override
-    public WXCodeSession resetSession() {
-        String openid = UserThreadUtil.getCurrentOpenId();
-        User user = userService.getUserByOpenId(openid);
+    public WXCodeSession resetSession(User user) {
         // 使用 session_key 对空字符串进行 HMAC-SHA256 签名
         String signature = hmacSha256(user.getSessionKey(), "");
 
         // 构造请求参数
         Map<String, String> params = new HashMap<>();
-        params.put("openid", openid);
+        params.put("openid", user.getOpenId());
         params.put("signature", signature);
         params.put("sig_method", "hmac_sha256");
 
@@ -285,7 +279,7 @@ public class WXServiceImpl implements WXService {
          * - errmsg：错误信息
          */
         String url = appendParams(Constant.WX_CHECK_SESSION_URL, "access_token",
-                timedVouchersUtil.getAccessToken());
+                getAccessToken());
         String response = HttpClientUtil.get(url, params);
         Map<String, Object> result = null;
         try {
@@ -310,6 +304,40 @@ public class WXServiceImpl implements WXService {
         log.info("openid={},已获取微信登录凭证", result.get("openid"));
         return WXCodeSession.of(result);
     }
+
+    /**
+     * 初始化方法，启动时立即刷新一次
+     */
+    @PostConstruct
+    public void init() {
+        log.info("TimedVouchersUtil 初始化，开始首次刷新微信 access_token");
+        refreshAccessToken();
+    }
+
+    /**
+     * 定时刷新 access_token
+     * 每小时执行一次
+     * cron 表达式: 0 0 * * * ? (每小时的0分0秒执行)
+     */
+    @Scheduled(cron = "0 0 * * * ?")
+    public void scheduledRefresh() {
+        log.info("定时任务触发，开始刷新微信 access_token");
+        refreshAccessToken();
+    }
+
+    /**
+     * 刷新 access_token
+     */
+    public void refreshAccessToken() {
+        try {
+            accessToken = getStableAccessToken();
+            log.info("微信 access_token 刷新成功");
+        } catch (Exception e) {
+            log.error("刷新微信 access_token 失败", e);
+            // 刷新失败时不更新 token，继续使用旧的 token
+        }
+    }
+
 
     /**
      * HMAC-SHA256 签名计算
