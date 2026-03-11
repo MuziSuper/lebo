@@ -1,10 +1,14 @@
 package cn.muzisheng.lebo.model;
 
-public enum OrderOptionEnum {    ACTIVE(0, "active"),
-    WECHAT(1, "WECHAT"),
-    ALIPAY(2, "ALIPAY"),
-    BANKCARD(3, "BANKCARD");
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import lombok.Getter;
 
+@Getter
+public enum OrderOptionEnum {
+    ACTIVE(0, "OFFLINE"),
+    WECHAT(1, "WECHAT"),
+    ALIPAY(2, "ALIPAY");
+    @EnumValue
     private final Integer code;
     private final String description;
 
@@ -13,21 +17,16 @@ public enum OrderOptionEnum {    ACTIVE(0, "active"),
         this.description = description;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public static OrderOptionEnum fromCode(Integer code) {
         for (OrderOptionEnum status : OrderOptionEnum.values()) {
             if (status.getCode().equals(code)) {
                 return status;
             }
         }
-        throw new IllegalArgumentException("Unknown account status code: " + code);
+        return null;
+    }
+    public static boolean containsCode(Integer code) {
+        return fromCode(code) != null;
     }
 
     @Override

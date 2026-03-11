@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="60 seconds">
+
+    <!-- Spring 属性配置 -->
+    <springProperty scope="context" name="LOG_LEVEL" source="app.log.level" defaultValue="INFO"/>
+    <springProperty scope="context" name="LOG_PATTERN" source="app.log.stdoutPattern"
+                    defaultValue="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %-17black(%thread) %-82green(%logger{70}-%line) %highlight(%msg) %highlight(%ex){red}%n"/>
+    <springProperty scope="context" name="LOG_FILE_PATTERN" source="app.log.filePattern"
+                    defaultValue="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <springProperty scope="context" name="FILE_PATH" source="app.log.filePath" defaultValue="logs"/>
+    <springProperty scope="context" name="MAX_HISTORY" source="app.log.maxHistory" defaultValue="30"/>
+    <springProperty scope="context" name="TOTAL_SIZE_CAP" source="app.log.totalSizeCap" defaultValue="10GB"/>
+
+    <!-- 定义日志路径 -->
+    <property name="INFO_LOG_PATH" value="${FILE_PATH}/info"/>
+    <property name="WARN_LOG_PATH" value="${FILE_PATH}/warn"/>
+    <property name="ERROR_LOG_PATH" value="${FILE_PATH}/error"/>
+    <property name="ALL_LOG_PATH" value="${FILE_PATH}/all"/>
+
+    <!-- 控制台日志 - 修复高亮问题 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8" class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 所有级别日志（用于调试） -->
+    <appender name="FILE-ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${ALL_LOG_PATH}/all.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ALL_LOG_PATH}/all-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <charset>UTF-8</charset>
+            <pattern>${LOG_FILE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- INFO日志 - 修复重复filter问题 -->
+    <appender name="FILE-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${INFO_LOG_PATH}/info.log</file>
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${INFO_LOG_PATH}/info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <charset>UTF-8</charset>
+            <pattern>${LOG_FILE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- WARN日志 -->
+    <appender name="FILE-WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${WARN_LOG_PATH}/warn.log</file>
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${WARN_LOG_PATH}/warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <charset>UTF-8</charset>
+            <pattern>${LOG_FILE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ERROR日志 -->
+    <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${ERROR_LOG_PATH}/error.log</file>
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ERROR_LOG_PATH}/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <charset>UTF-8</charset>
+            <pattern>${LOG_FILE_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 优化异步输出配置 -->
+    <appender name="ASYNC-ALL" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE-ALL"/>
+        <queueSize>1024</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>false</includeCallerData>
+    </appender>
+
+    <appender name="ASYNC-INFO" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE-INFO"/>
+        <queueSize>1024</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>false</includeCallerData>
+    </appender>
+
+    <appender name="ASYNC-WARN" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE-WARN"/>
+        <queueSize>512</queueSize>
+        <discardingThreshold>20</discardingThreshold>
+        <includeCallerData>false</includeCallerData>
+    </appender>
+
+    <appender name="ASYNC-ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE-ERROR"/>
+        <queueSize>256</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+        <includeCallerData>true</includeCallerData> <!-- ERROR日志保留调用者信息 -->
+    </appender>
+
+    <!-- 应用日志配置 - 修复包名 -->
+    <logger name="cn.muzisheng.lebo" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC-INFO"/>
+        <appender-ref ref="ASYNC-WARN"/>
+        <appender-ref ref="ASYNC-ERROR"/>
+    </logger>
+
+    <!-- SQL日志配置（可选） -->
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC-ALL"/>
+    </logger>
+
+    <logger name="org.hibernate.type.descriptor.sql" level="TRACE" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC-ALL"/>
+    </logger>
+
+    <!-- Spring框架日志级别 -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.springframework.security" level="WARN"/>
+
+    <!-- 总日志出口 -->
+    <root level="${LOG_LEVEL}">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ASYNC-ALL"/>
+        <appender-ref ref="ASYNC-INFO"/>
+        <appender-ref ref="ASYNC-WARN"/>
+        <appender-ref ref="ASYNC-ERROR"/>
+    </root>
+
+</configuration>

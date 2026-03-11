@@ -2,7 +2,7 @@ package cn.muzisheng.lebo.utils;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
@@ -35,7 +35,7 @@ import java.util.Map;
  * @author MuziSuper
  * @since 2026-02-19
  */
-@Slf4j
+@Log4j2
 public class WechatApiCryptoUtil {
 
     // ========== 环境变量配置键 ==========

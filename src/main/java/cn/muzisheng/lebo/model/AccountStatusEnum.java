@@ -1,5 +1,7 @@
 package cn.muzisheng.lebo.model;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
+
 /**
  * 账户状态枚举
  * 定义系统中所有可能的账户状态
@@ -30,6 +32,7 @@ public enum AccountStatusEnum {
     /**
      * 状态码 - 用于数据库存储和程序逻辑判断
      */
+    @EnumValue
     private final Integer code;
     /**
      * 状态描述 - 用于显示和日志记录

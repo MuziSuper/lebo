@@ -11,7 +11,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ import java.util.Map;
  * 专注于微信小程序API调用，不包含JWT Token处理
  */
 
-@Slf4j
+@Log4j2
 @Component
 public class WXServiceImpl implements WXService {
 
@@ -44,6 +44,7 @@ public class WXServiceImpl implements WXService {
     public WXServiceImpl(Environment environment) {
         this.appId = environment.getProperty("APP_ID", String.class);
         this.appSecret = environment.getProperty("APP_SECRET", String.class);
+        log.info("appId: {}, appSecret: {}", appId, appSecret);
     }
 
     /**
@@ -55,14 +56,14 @@ public class WXServiceImpl implements WXService {
     public WXCodeSession code2Session(String code) {
         // 1. 构造请求参数
         Map<String, String> params = new HashMap<>();
+        // 固定值，表示使用“授权码模式”换取 session
+        params.put("grant_type", "authorization_code");
         // 小程序唯一标识
         params.put("appid", appId);
         // 小程序的 AppSecret
         params.put("secret", appSecret);
         // 小程序端拿到的 code
         params.put("js_code", code);
-        // 固定值，表示使用“授权码模式”换取 session
-        params.put("grant_type", "authorization_code");
 
         // 2. 发送 GET 请求到微信接口
         /*
@@ -81,8 +82,9 @@ public class WXServiceImpl implements WXService {
          * - errcode：错误码
          * - errmsg：错误信息
          */
-
-        String response = HttpClientUtil.get(appendParams(Constant.WX_CODE2SESSION_URL, params));
+        String url = appendParams(Constant.WX_CODE2SESSION_URL, params);
+        log.info("发送请求到微信接口: {}", url);
+        String response = HttpClientUtil.get(url);
         Map<String, Object> result = null;
         try {
             result = objectMapper.readValue(response, new TypeReference<>() {
@@ -379,7 +381,7 @@ public class WXServiceImpl implements WXService {
 
 
     /**
-     * 向URL追加查询参数
+     * 向URL追加单个查询参数
      *
      * @param url         原始URL
      * @param paramsName  参数名称
@@ -411,16 +413,21 @@ public class WXServiceImpl implements WXService {
     private String appendParams(String url, Map<String, String> params) {
         // 使用StringBuffer进行字符串拼接，效率优于String直接拼接
         StringBuffer sb = new StringBuffer(url);
-        // 遍历参数映射表中的所有键值对
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            // 添加参数分隔符"?"
+        if(params!= null&& !params.isEmpty()) {
             sb.append("?");
-            // 添加参数名
-            sb.append(entry.getKey());
-            // 添加键值分隔符"="
-            sb.append("=");
-            // 添加参数值
-            sb.append(entry.getValue());
+            // 遍历参数映射表中的所有键值对
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                // 添加参数分隔符"?"
+                // 添加参数名
+                sb.append(entry.getKey());
+                // 添加键值分隔符"="
+                sb.append("=");
+                // 添加参数值
+                sb.append(entry.getValue());
+                // 添加参数分隔符"&"
+                sb.append("&");
+            }
+            sb.deleteCharAt(sb.length() - 1);
         }
         // 返回拼接后的完整URL
         return sb.toString();

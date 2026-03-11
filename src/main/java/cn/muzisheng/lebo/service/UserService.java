@@ -1,7 +1,11 @@
 package cn.muzisheng.lebo.service;
 
+import cn.muzisheng.lebo.dto.BossLoginDTO;
+import cn.muzisheng.lebo.dto.LoginDTO;
 import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.model.Result;
+import cn.muzisheng.lebo.vo.LoginVO;
+import cn.muzisheng.lebo.vo.UserUpdateVO;
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -9,13 +13,13 @@ import org.springframework.http.ResponseEntity;
  */
 public interface UserService {
 
-    /**
-     * 微信小程序登录
-     *
-     * @param code 小程序端传来的临时登录凭证
-     * @return 用户的openid
-     */
-    ResponseEntity<Result<User>> login(String code);
+
+    ResponseEntity<Result<Boolean>> login(String code);
+    ResponseEntity<Result<Boolean>> bossLogin(BossLoginDTO bossLoginDTO);
+    ResponseEntity<Result<Boolean>> register(String code, LoginDTO loginDTO);
+    ResponseEntity<Result<Boolean>> update(UserUpdateVO userUpdateVO);
+
+    ResponseEntity<Result<LoginVO>> info();
     ResponseEntity<Result<Boolean>> logout();
     void updateLastLogin(String openid);
 

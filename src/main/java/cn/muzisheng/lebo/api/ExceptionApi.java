@@ -42,4 +42,29 @@ public class ExceptionApi {
         ExceptionResponse response = new ExceptionResponse(Constant.SQL_EXCEPTION.getCode(), e.getMessage());
         return new ResponseEntity<>(response, Constant.SQL_EXCEPTION.getHttpStatus());
     }
+    @ExceptionHandler(StorageException.class)
+    public ResponseEntity<ExceptionResponse> handleException(StorageException e) {
+        ExceptionResponse response = new ExceptionResponse(Constant.STORAGE_EXCEPTION.getCode(), e.getMessage());
+        return new ResponseEntity<>(response, Constant.STORAGE_EXCEPTION.getHttpStatus());
+    }
+    @ExceptionHandler(UserPointException.class)
+    public ResponseEntity<ExceptionResponse> handleException(UserPointException e) {
+        ExceptionResponse response = new ExceptionResponse(Constant.USER_POINT_EXCEPTION.getCode(), e.getMessage());
+        return new ResponseEntity<>(response, Constant.USER_POINT_EXCEPTION.getHttpStatus());
+    }
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<ExceptionResponse> handleException(UserException e) {
+        ExceptionResponse response = new ExceptionResponse(Constant.USER_EXCEPTION.getCode(), e.getMessage());
+        return new ResponseEntity<>(response, Constant.USER_EXCEPTION.getHttpStatus());
+    }
+    @ExceptionHandler(ProductException.class)
+    public ResponseEntity<ExceptionResponse> handleException(ProductException e) {
+        ExceptionResponse response = new ExceptionResponse(Constant.PRODUCT_EXCEPTION.getCode(), e.getMessage());
+        return new ResponseEntity<>(response, Constant.PRODUCT_EXCEPTION.getHttpStatus());
+    }
+    @ExceptionHandler(OrderException.class)
+    public ResponseEntity<ExceptionResponse> handleException(OrderException e) {
+        ExceptionResponse response = new ExceptionResponse(Constant.ORDER_EXCEPTION.getCode(), e.getMessage());
+        return new ResponseEntity<>(response, Constant.ORDER_EXCEPTION.getHttpStatus());
+    }
 }

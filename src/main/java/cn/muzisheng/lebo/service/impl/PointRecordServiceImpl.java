@@ -8,4 +8,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PointRecordServiceImpl extends ServiceImpl<PointRecordMapper, PointRecord> implements PointRecordService {
+    @Override
+    public PointRecord createPointRecord(String openid, Integer defaultPoint) {
+        PointRecord pointRecord = new PointRecord();
+        return null;
+    }
 }

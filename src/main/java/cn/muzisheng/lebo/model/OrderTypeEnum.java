@@ -1,11 +1,13 @@
 package cn.muzisheng.lebo.model;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
+
 public enum OrderTypeEnum {
     NONPAYMENT(1, "NONPAYMENT"),
     PAID(2, "PAID"),
     FAILURE(3, "FAILURE"),
     REFUNDED(4, "REFUNDED");
-
+    @EnumValue
     private final Integer code;
     private final String description;
 
@@ -21,6 +23,11 @@ public enum OrderTypeEnum {
     public String getDescription() {
         return description;
     }
+    /**
+     * 根据code获取枚举
+     * @param code 枚举code
+     * @return 枚举
+     */
 
     public static OrderTypeEnum fromCode(Integer code) {
         for (OrderTypeEnum status : OrderTypeEnum.values()) {
@@ -28,7 +35,17 @@ public enum OrderTypeEnum {
                 return status;
             }
         }
-        throw new IllegalArgumentException("Unknown account status code: " + code);
+        return null;
+    }
+
+    public static boolean contains(Integer code) {
+        if(code==null) return false;
+        for (OrderTypeEnum status : OrderTypeEnum.values()) {
+            if (status.getCode().equals(code)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

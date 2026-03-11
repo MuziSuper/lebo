@@ -1,5 +1,6 @@
 package cn.muzisheng.lebo.service;
 
+import cn.muzisheng.lebo.dto.OrderAddDTO;
 import cn.muzisheng.lebo.entity.Order;
 import cn.muzisheng.lebo.entity.OrderItem;
 import cn.muzisheng.lebo.model.Result;
@@ -10,10 +11,10 @@ import java.util.List;
 public interface OrderService {
     /**
      * 创建订单
-     * @param userId 用户ID
+     * @param orderAddDTO 订单信息
      * @return 订单ID
      */
-    ResponseEntity<Result<Long>> create(Long userId);
+    ResponseEntity<Result<Order>> create(OrderAddDTO orderAddDTO);
     /**
      * 获取订单基础信息
      * @param orderId 订单ID

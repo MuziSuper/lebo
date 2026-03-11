@@ -28,6 +28,9 @@ public class Response<T> implements Serializable {
     public ResponseEntity<Result<T>> value() {
         return new ResponseEntity<>(this.body,this.headers, this.status);
     }
+    public ResponseEntity<T> valueOnlyData(){
+        return new ResponseEntity<>(this.body.getData(),this.headers, this.status);
+    }
     public void putHeader(String key, String value) {
         this.headers.add(key, value);
     }

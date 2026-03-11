@@ -1,10 +1,12 @@
 package cn.muzisheng.lebo.model;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
+
 public enum ProductStatusEnum {
     SELL(0, "SELL"),
     SOLD_OUT(1, "SOLD_OUT"),
    DELETED(2, "DELETE");
-
+    @EnumValue
     private final Integer code;
     private final String description;
 
@@ -20,16 +22,29 @@ public enum ProductStatusEnum {
     public String getDescription() {
         return description;
     }
-
+    /**
+     * 根据code获取枚举
+     * @param code
+     * @return
+     */
     public static ProductStatusEnum fromCode(Integer code) {
         for (ProductStatusEnum status : ProductStatusEnum.values()) {
             if (status.getCode().equals(code)) {
                 return status;
             }
         }
-        throw new IllegalArgumentException("Unknown account status code: " + code);
+        return null;
     }
 
+    /**
+     * 是否存在某code
+     * @param code
+     * @return 存在返回true，不存在返回false
+     */
+    public static boolean contains(Integer code) {
+        if(code==null) return false;
+        return fromCode(code) != null;
+    }
     @Override
     public String toString() {
         return "code: "+code+"\ndescription: "+description+"\n";

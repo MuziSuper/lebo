@@ -4,12 +4,134 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="The configuration file was modified">
+    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="Optimize the code to solve the problem of bean circular dependencies">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/GeneralApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/OrderApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/MybatisPlusConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/StorageConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/BossLoginDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/LoginDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderAddDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderProductItemDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductAddDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductInOutDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductListDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductShowDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/ProductOperateRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/OrderException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/ProductException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/StorageException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/UserException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/UserPointException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/StorageService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/UserUpdateVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/default-avatar.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/gift-active.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/information-active.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/information.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/man.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/none-information.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/none-orders.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/points-active.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/points.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/shop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/woman.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/bluetooth.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/coffee.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/cup.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/mask.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/power_bank.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/shirt.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/shoe.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/snacks.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/slideshow/slideshow_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/slideshow/slideshow_2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/slideshow/slideshow_3.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/DataSourceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/DataSourceConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/WXService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/WXService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/error.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/info.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2025-12-28.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2025-12-29.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2025-12-30.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2025-12-31.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-01.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-02.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-03.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-04.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-05.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-06.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-07.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-08.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-09.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-10.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2025-12-28.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2025-12-29.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2025-12-30.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2025-12-31.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-01.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-02.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-03.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-04.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-05.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-06.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-07.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-08.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-09.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-10.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/warn.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/ExceptionApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/ExceptionApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/ShopApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/ProductApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/TestApi.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/UserApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/UserApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/WebConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/BaseModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/OrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/PointRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/PointRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/UserPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/UserPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/handler/ProductStatusTypeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/handler/ProductStatusTypeHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/interceptor/JwtAuthInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/interceptor/JwtAuthInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/AccountStatusEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/AccountStatusEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/OrderOptionEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/OrderOptionEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/OrderTypeEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/OrderTypeEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/ProductDisplay.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/ProductStatusEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/ProductStatusEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/PointRecordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/PointRecordService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserPointService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserPointService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/PointRecordServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/PointRecordServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserPointServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserPointServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/WXServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/WXServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/TimedVouchersUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/HttpClientUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/HttpClientUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/JwtUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/UUIDUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/RandomUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/WechatApiCryptoUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/WechatApiCryptoUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/LoginVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/LoginVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,9 +156,7 @@
     <option name="generalSettings">
       <MavenGeneralSettings>
         <option name="customMavenHome" value="$PROJECT_DIR$/../../apache-maven-3.6.3" />
-        <option name="localRepository" value="$PROJECT_DIR$/../../apache-maven-3.6.3/repository" />
         <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
-        <option name="userSettingsFile" value="$PROJECT_DIR$/../../apache-maven-3.6.3/conf/settings.xml" />
       </MavenGeneralSettings>
     </option>
   </component>
@@ -71,7 +191,7 @@
     &quot;Spring Boot.LeboApplication.executor&quot;: &quot;Run&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Applications/gitLocal/lebo&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Applications/LocalGit/lebo/src/main/resources/static/icon&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -80,15 +200,28 @@
     &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.StorageException.executor&quot;: &quot;Run&quot;,
     &quot;应用程序.WechatApiCryptoUtils.executor&quot;: &quot;Run&quot;
   }
 }</component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/static/icon" />
+      <recent name="$PROJECT_DIR$/src/main/resources/static/tabbar" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/static/icon" />
+      <recent name="$PROJECT_DIR$/src/main/resources/static/product" />
+      <recent name="$PROJECT_DIR$/src/main/resources/static/slideshow" />
+      <recent name="$PROJECT_DIR$/src/main/resources/static" />
+      <recent name="$PROJECT_DIR$/src/main/resources/static/tabbar" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="cn.muzisheng.lebo.config" />
@@ -97,6 +230,19 @@
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.LeboApplication">
+    <configuration name="StorageException" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cn.muzisheng.lebo.exception.StorageException" />
+      <module name="Lebo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.muzisheng.lebo.exception.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="WechatApiCryptoUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cn.muzisheng.lebo.utils.WechatApiCryptoUtil" />
       <module name="Lebo" />
@@ -155,22 +301,18 @@
       <item itemvalue="Docker.Dockerfile build" />
       <item itemvalue="JAR 应用程序.Lebo-1.0-SNAPSHOT.jar" />
       <item itemvalue="Spring Boot.LeboApplication" />
+      <item itemvalue="应用程序.StorageException" />
       <item itemvalue="应用程序.WechatApiCryptoUtil" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Spring Boot.LeboApplication" />
-        <item itemvalue="JAR 应用程序.Lebo-1.0-SNAPSHOT.jar" />
         <item itemvalue="Docker.Dockerfile build" />
+        <item itemvalue="JAR 应用程序.Lebo-1.0-SNAPSHOT.jar" />
+        <item itemvalue="应用程序.WechatApiCryptoUtil" />
+        <item itemvalue="应用程序.StorageException" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-30f59d01ecdd-26cb7f24e5b0-intellij.indexing.shared.core-IU-253.29346.138" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -185,6 +327,12 @@
       <workItem from="1768485841482" duration="10578000" />
       <workItem from="1769330854242" duration="4711000" />
       <workItem from="1769845923047" duration="18026000" />
+      <workItem from="1772871291200" duration="19458000" />
+      <workItem from="1773022513778" duration="224000" />
+      <workItem from="1773022743378" duration="124000" />
+      <workItem from="1773022872764" duration="28728000" />
+      <workItem from="1773124703120" duration="900000" />
+      <workItem from="1773125632888" duration="19698000" />
     </task>
     <task id="LOCAL-00001" summary="暂存代码">
       <option name="closed" value="true" />
@@ -298,7 +446,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771922335149</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Optimize the code to solve the problem of bean circular dependencies">
+      <option name="closed" value="true" />
+      <created>1772284987011</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1772284987011</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -319,10 +475,39 @@
     <MESSAGE value="暂存代码" />
     <MESSAGE value="There are three methods to configure the wechat service and complete the login and logout of the user interface" />
     <MESSAGE value="The configuration file was modified" />
-    <option name="LAST_COMMIT_MESSAGE" value="The configuration file was modified" />
+    <MESSAGE value="Optimize the code to solve the problem of bean circular dependencies" />
+    <option name="LAST_COMMIT_MESSAGE" value="Optimize the code to solve the problem of bean circular dependencies" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="com.gk646.codestats.settings.Save">
+    <option name="commitTimePoints">
+      <list>
+        <TimePoint>
+          <option name="timestamp" value="1772284987052" />
+          <option name="linesCode" value="3547" />
+          <option name="totalLines" value="7036" />
+          <option name="info" value="Optimize the code to solve the problem of bean cir" />
+        </TimePoint>
+      </list>
+    </option>
+    <option name="genericTimePoints">
+      <list>
+        <TimePoint>
+          <option name="timestamp" value="1772284987052" />
+          <option name="linesCode" value="3547" />
+          <option name="totalLines" value="7036" />
+          <option name="info" value="2026年2月28日" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1772951778148" />
+          <option name="linesCode" value="4050" />
+          <option name="totalLines" value="8260" />
+          <option name="info" value="2026年3月8日" />
+        </TimePoint>
+      </list>
+    </option>
   </component>
 </project>

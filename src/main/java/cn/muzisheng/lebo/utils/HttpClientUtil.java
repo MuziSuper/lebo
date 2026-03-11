@@ -3,7 +3,7 @@ package cn.muzisheng.lebo.utils;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
@@ -28,7 +28,8 @@ import java.util.Map;
  * HTTP客户端工具类 - 基于Apache HttpClient 4.5.14
  * 专门用于调用微信服务器API
  */
-@Slf4j
+
+@Log4j2
 public class HttpClientUtil {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();

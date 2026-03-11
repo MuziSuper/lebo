@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 public class PointRecord {
     @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "user_id")
-    @TableField(value = "user_id")
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+    @Column(name = "open_id")
+    @TableField(value = "open_id")
+    private String openId;
     @Column(name = "order_id")
     @TableField(value = "order_id")
     private String orderId;
