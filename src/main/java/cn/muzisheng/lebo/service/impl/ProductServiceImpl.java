@@ -11,6 +11,7 @@ import cn.muzisheng.lebo.model.ProductStatusEnum;
 import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.param.ProductConsumeParam;
+import cn.muzisheng.lebo.service.CategoryService;
 import cn.muzisheng.lebo.service.ProductService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -29,6 +30,10 @@ import java.util.Optional;
 @Log4j2
 @Service
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService  {
+    private final CategoryService categoryService;
+    public ProductServiceImpl(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @Override
     public ResponseEntity<Result<IPage<ProductShowDTO>>> list(ProductListDTO productListDTO) {
@@ -177,6 +182,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             log.error("删除商品失败，商品不存在，product_id: {}", id);
             throw new ProductException("删除商品失败，商品不存在，product_id: " + id);
         }
+
         if(!this.removeById(id)){
             log.error("删除商品失败, product_id: "+id);
             throw new ProductException("删除商品失败, product_id: "+id);
@@ -226,7 +232,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      * @param productConsumeParam 商品消费信息，包含商品ID和新的商品数量
      * @throws ProductException 商品异常
      */
-    public void consumNotCheck(ProductConsumeParam productConsumeParam) throws ProductException{
+    public void consumeNotCheck(ProductConsumeParam productConsumeParam) throws ProductException{
         String productId=productConsumeParam.getProductId();
         long newNumber =productConsumeParam.getNewNumber();
         UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();

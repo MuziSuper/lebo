@@ -43,74 +43,111 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         this.orderItemService = orderItemService;
     }
 
+    /**
+     * 用户点击确认支付, 服务端订单更新订单支付时间，并进行商品出库
+     * 如果检测订单商品库存不足则状态更新为支付失败，返回报错原因，如果订单确认支付时间超过5分钟则状态更新为支付失败，返回报错原因
+     * 如果订单商品充足则状态更新为已支付，填充支付时间
+     * 返回是否成功
+     * @param orderAddDTO 订单信息
+     * @return 订单ID
+     */
     @Override
     @Transactional(rollbackFor = OrderException.class, isolation = Isolation.REPEATABLE_READ)
-    public ResponseEntity<Result<String>> create(OrderAddDTO orderAddDTO) {
+    public ResponseEntity<Result<String>> submit(OrderAddDTO orderAddDTO) {
         Response<String> response = new Response<>();
-        String openId = UserThreadUtil.getCurrentOpenId();
+        
         // 参数校验
-        if (orderAddDTO == null) {
+        if (orderAddDTO == null || orderAddDTO.getOrderId() == null) {
             log.error("订单信息不能为空");
             throw new OrderException("订单信息不能为空");
         }
-        if (orderAddDTO.getOrderOptionCode() == null) {
-            log.error("订单选项不能为空");
-            throw new OrderException("订单选项不能为空");
+        
+        String orderId = orderAddDTO.getOrderId();
+        
+        // 查询订单
+        Order order = this.getOne(new QueryWrapper<Order>().eq("id", orderId).last("FOR UPDATE"));
+        if (order == null) {
+            log.error("订单不存在, orderId: " + orderId);
+            throw new OrderException("订单不存在");
         }
-        if (!OrderOptionEnum.contains(orderAddDTO.getOrderOptionCode())) {
-            log.error("订单选项不存在");
-            throw new OrderException("订单选项不存在");
+        
+        // 验证订单状态
+        if (order.getPayType() != OrderTypeEnum.NONPAYMENT) {
+            log.error("订单状态异常, orderId: " + orderId);
+            throw new OrderException("订单状态异常");
         }
-        // 创建订单
-       String orderId = RandomUtil.generateId();
-        Order order = Order.builder()
-                .openId(openId)
-                .id(orderId)
-                .payType(OrderTypeEnum.NONPAYMENT)
-                .payOption(OrderOptionEnum.fromCode(orderAddDTO.getOrderOptionCode()))
-                .createTime(LocalDateTime.now())
-                .build();
-        // 订单商品参数判空
+        
+        // 检查订单创建时间是否超过5分钟
+        if (order.getCreateTime() != null && 
+            order.getCreateTime().plusMinutes(5).isBefore(LocalDateTime.now())) {
+            // 更新订单状态为支付失败
+            order.setPayType(OrderTypeEnum.FAILURE);
+            order.setEndTime(LocalDateTime.now());
+            this.updateById(order);
+            log.error("订单超时, orderId: " + orderId);
+            throw new OrderException("订单超时，请重新下单");
+        }
+        
+        // 校验订单商品
         if (orderAddDTO.getOrderProductItemDTOS() == null || orderAddDTO.getOrderProductItemDTOS().isEmpty()) {
             log.error("订单商品不能为空");
             throw new OrderException("订单商品不能为空");
         }
-        // 订单商品参数处理
-        List<ProductInOutDTO> productInOutDTOS = new ArrayList<>();
-        List<OrderItem> orderItemList = new ArrayList<>();
+        
+        // 设置支付方式
+        if (orderAddDTO.getOrderOptionCode() != null) {
+            if (!OrderOptionEnum.contains(orderAddDTO.getOrderOptionCode())) {
+                log.error("订单选项不存在");
+                throw new OrderException("订单选项不存在");
+            }
+            order.setPayOption(OrderOptionEnum.fromCode(orderAddDTO.getOrderOptionCode()));
+        }
+        
+        // 处理商品出库
         long totalAmount = 0;
+        List<OrderItem> orderItemList = new ArrayList<>();
+        
         for (OrderProductItemDTO orderProductItemDTO : orderAddDTO.getOrderProductItemDTOS()) {
-            // 订单商品参数校验
-            if (orderProductItemDTO.getProductId() == null || orderProductItemDTO.getQuantity() == null || orderProductItemDTO.getQuantity() <= 0) {
+            // 商品参数校验
+            if (orderProductItemDTO.getProductId() == null || 
+                orderProductItemDTO.getQuantity() == null || 
+                orderProductItemDTO.getQuantity() <= 0) {
                 log.error("订单商品传参异常");
                 throw new OrderException("订单商品传参异常");
             }
-            // 查询商品是否库存足够，使用for update乐观锁，锁住库存
+            
+            // 查询商品库存（使用悲观锁）
             QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("id", orderProductItemDTO.getProductId());
             Product product = productService.getOne(queryWrapper.last("FOR UPDATE"));
-            // 商品判空
+            
             if (product == null) {
-                log.error("商品不存在");
-                throw new OrderException("商品不存在");
+                log.error("商品不存在, productId: {}", orderProductItemDTO.getProductId());
+                throw new OrderException("商品不存在, productId: " + orderProductItemDTO.getProductId());
             }
+            
             // 商品状态检测
             if (product.getStatus() != ProductStatusEnum.SELL) {
-                log.error("商品状态异常, name: " + product.getName());
-                throw new OrderException("商品状态异常");
+                log.error("商品状态异常, productName: {}", product.getName());
+                throw new OrderException("商品状态异常, productName: " + product.getName());
             }
+            
             // 商品库存检测
-            Long productStorage= Optional.ofNullable(product.getStorage()).orElse(0L);
-            if(orderProductItemDTO.getQuantity()==null){
-                log.error("商品数量不能为空");
-                throw new OrderException("商品数量不能为空");
-            }
+            Long productStorage = Optional.ofNullable(product.getStorage()).orElse(0L);
             long newStorage = productStorage - orderProductItemDTO.getQuantity();
-            if (newStorage<0) {
-                log.error("商品库存不足, name: " + product.getName());
-                throw new OrderException("商品库存不足");
+            
+            if (newStorage < 0) {
+                log.error("商品库存不足, productName: {}" ,product.getName());
+                throw new OrderException("商品库存不足, productName: " + product.getName());
             }
-            // 填充订单商品实体类
+            
+            // 扣减库存
+            productService.consume(ProductInOutDTO.builder()
+                    .productId(product.getId())
+                    .number(newStorage)
+                    .build());
+            
+            // 创建订单商品项
             OrderItem orderItem = OrderItem.builder()
                     .orderId(orderId)
                     .productId(product.getId())
@@ -119,32 +156,62 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                     .quantity(orderProductItemDTO.getQuantity())
                     .totalAmount(product.getSalePrice() * orderProductItemDTO.getQuantity())
                     .build();
-            // 减库存,放入列表中，离开循环后统一处理
-            ProductInOutDTO productInOutDTO = ProductInOutDTO.builder()
-                    .productId(product.getId())
-                    .number(newStorage)
-                    .build();
-            productInOutDTOS.add(productInOutDTO);
+            
+            orderItemService.create(orderItem);
             orderItemList.add(orderItem);
             totalAmount += orderItem.getTotalAmount();
         }
+        
+        // 更新订单信息
         order.setTotalAmount(totalAmount);
-        for(ProductInOutDTO productInOutDTO:productInOutDTOS){
-            productService.consume(productInOutDTO);
+        order.setPayType(OrderTypeEnum.PAID);
+        order.setPayTime(LocalDateTime.now());
+        
+        if (!this.updateById(order)) {
+            log.error("订单更新失败, orderId: " + orderId);
+            throw new OrderException("订单更新失败");
         }
-        for(OrderItem orderItem:orderItemList){
-            orderItemService.create(orderItem);
-        }
+        
+        log.info("订单支付成功, orderId: " + orderId);
+        response.setData(orderId);
+        return response.value();
+    }
+
+    /**
+     * 用户点击支付创建订单，订单状态为未支付，无需确认商品是否足够，前端已经对商品销售进行限制
+     * 只需返回订单ID，即可在确认支付订单页面展示订单的商品信息
+     * @return 订单ID
+     */
+    @Override
+    public ResponseEntity<Result<String>> create() {
+        Response<String> response = new Response<>();
+        String openId = UserThreadUtil.getCurrentOpenId();
+        // 创建订单
+        String orderId = RandomUtil.generateId();
+        Order order = Order.builder()
+                .openId(openId)
+                .id(orderId)
+                .payType(OrderTypeEnum.NONPAYMENT)
+                .createTime(LocalDateTime.now())
+                .build();
         if(!this.save(order)){
             log.error("订单创建失败");
             throw new OrderException("订单创建失败");
         }
         log.info("订单创建成功, orderId: " + orderId);
-        response.setData(openId);
+        response.setData(orderId);
         return response.value();
     }
 
-
+    @Override
+    public ResponseEntity<Result<String>> cancel(OrderAddDTO orderAddDTO) {
+        return null;
+    }
+    /**
+     * 获取订单详细信息
+     * @param orderId 订单ID
+     * @return 订单商品信息
+     */
     @Override
     public ResponseEntity<Result<OrderDetailVO>> detail(Long orderId) {
         Response<OrderDetailVO> response = new Response<>();
@@ -182,47 +249,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    public ResponseEntity<Result<Boolean>> updateOrder(OrderUpdateDTO orderUpdateDTO){
-        Response<Boolean> response = new Response<>();
-        if(orderUpdateDTO==null){
-            log.error("订单参数不能为空");
-            throw new OrderException("订单参数不能为空");
-        }
-        String orderId=orderUpdateDTO.getId();
-        if(orderId==null){
-            log.error("订单ID不能为空");
-            throw new OrderException("订单ID不能为空");
-        }
-        Order order = this.getOne(new QueryWrapper<Order>().eq("id", orderId));
-        if(order==null){
-            log.error("订单不存在");
-            throw new OrderException("订单不存在");
-        }
-        UpdateWrapper<Order> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", orderId);
-        if(orderUpdateDTO.getPayAmount()!=null){
-            updateWrapper.set("pay_amount", orderUpdateDTO.getPayAmount());
-        }
+    public ResponseEntity<Result<List<OrderInfoVO>>> orderBossInfoList() {
+        return null;
+    }
 
-        if(orderUpdateDTO.getPayOption()!=null){
-            updateWrapper.set("pay_option", orderUpdateDTO.getPayOption());
-        }
-        if(orderUpdateDTO.getPayType()!=null){
-            updateWrapper.set("pay_type", orderUpdateDTO.getPayType());
-            if(orderUpdateDTO.getPayType()==2){
-                if(orderUpdateDTO.getPayTime()!=null){
-                    updateWrapper.set("pay_time", orderUpdateDTO.getPayTime());
-                }else{
-                    updateWrapper.set("pay_time", LocalDateTime.now());
-                }
-                if(orderUpdateDTO.getEndTime()!=null)
-            }
-        }
-        if(orderUpdateDTO.getEndTime()!=null){
-            updateWrapper.set("end_time", orderUpdateDTO.getEndTime());
-        }
-
-        updateWrapper.set("pay_type", orderUpdateDTO.getPayType());
-
+    @Override
+    public ResponseEntity<Result<Boolean>> orderOver(String orderId) {
+        return null;
     }
 }

@@ -44,7 +44,7 @@ public class Order {
     @TableField(value = "pay_amount")
     private Long payAmount;
     /**
-     * 支付方式,1: 未支付, 2: 已支付,3: 支付失败, 4: 已退款
+     * 支付方式,1: 未支付, 2: 已支付,3: 支付失败, 4: 已退款，5: 已结束
      */
     @Column(name = "pay_type")
     @TableField(value = "pay_type")

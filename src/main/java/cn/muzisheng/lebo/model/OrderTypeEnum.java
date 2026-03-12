@@ -6,7 +6,8 @@ public enum OrderTypeEnum {
     NONPAYMENT(1, "NONPAYMENT"),
     PAID(2, "PAID"),
     FAILURE(3, "FAILURE"),
-    REFUNDED(4, "REFUNDED");
+    REFUNDED(4, "REFUNDED"),
+    OVER(5, "OVER");
     @EnumValue
     private final Integer code;
     private final String description;

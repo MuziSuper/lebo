@@ -1,5 +1,6 @@
 package cn.muzisheng.lebo.api;
 
+import cn.muzisheng.lebo.dto.InOutProductRecordSelectDTO;
 import cn.muzisheng.lebo.entity.InOutProductRecord;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.InOutProductRecordService;

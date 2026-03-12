@@ -1,6 +1,8 @@
 package cn.muzisheng.lebo.api;
 
 import cn.muzisheng.lebo.dto.OrderAddDTO;
+import cn.muzisheng.lebo.dto.OrderBossListDTO;
+import cn.muzisheng.lebo.dto.OrderListDTO;
 import cn.muzisheng.lebo.dto.OrderUpdateDTO;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.OrderService;
@@ -31,7 +33,7 @@ public class OrderApi {
     /**
      * 用户点击确认支付, 服务端订单更新订单支付时间，并进行商品出库
      * 如果检测订单商品库存不足则状态更新为支付失败，返回报错原因，如果订单确认支付时间超过5分钟则状态更新为支付失败，返回报错原因
-     * 如果订单商品充足则状态更新为已支付，填充支付时间以及订单最终时间以及最终支付价格
+     * 如果订单商品充足则状态更新为已支付，填充支付时间
      * 返回是否成功
      * @param orderAddDTO 订单信息
      * @return 订单ID
@@ -63,8 +65,17 @@ public class OrderApi {
      * @return 订单详情
      */
     @PostMapping("/bossOrderInfolist")
-    public ResponseEntity<Result<OrderInfoVO>> bossOrderInfoList(OrderBossListDTO orderBossListDTO) {
-        return orderService.bossOrderInfoList();
+    public ResponseEntity<Result<List<OrderInfoVO>>> bossOrderInfoList(OrderBossListDTO orderBossListDTO) {
+        return orderService.orderBossInfoList();
+    }
+    /**
+     * 商家确认订单结束，修改订单状态为已结束，完善订单结束时间以及最终支付价格，返回是否成功
+     * @param orderId 订单Id
+     * @return 订单ID
+     */
+    @PostMapping("/over")
+    public ResponseEntity<Result<Boolean>> orderOver(@RequestParam String orderId) {
+        return orderService.orderOver(orderId);
     }
 
     /**
