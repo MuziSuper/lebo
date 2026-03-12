@@ -10,12 +10,8 @@ public class OrderAddDTO {
     /**
      * 支付方式，0: 线下收款, 1: 微信，2: 支付宝
      */
-    private Integer OrderTypeCode;
+    private Integer orderOptionCode;
 
-    /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
 //    /**
 //     * 是否会员优惠
 //     */

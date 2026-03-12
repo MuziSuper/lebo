@@ -7,5 +7,8 @@ import lombok.Data;
 @Builder
 public class ProductInOutDTO {
     private String productId;
+    /**
+     * 增减的商品数量
+     */
     private Long number;
 }

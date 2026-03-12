@@ -103,7 +103,6 @@ public class FileStorageServiceImpl implements StorageService {
 
     // 生成唯一文件名的方法
     private String generateFileName(MultipartFile file) {
-        String openId = UserThreadUtil.getCurrentOpenId();
 
         String originalFilename = file.getOriginalFilename();
         String extension = "";
@@ -118,7 +117,6 @@ public class FileStorageServiceImpl implements StorageService {
 
         // 使用StringBuilder提高性能
         return new StringBuilder()
-                .append(openId).append("_")
                 .append(System.currentTimeMillis()).append("_")
                 .append(RandomUtil.generateId())
                 .append(extension)

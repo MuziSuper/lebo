@@ -93,7 +93,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             log.info("用户名不存在");
             throw new UserException("用户名不存在");
         }
-        String usePassword = Optional.of(user).map(User::getSessionKey).orElse(null);
+        String usePassword = Optional.of(user).map(User::getPassword).orElse(null);
         if(usePassword==null){
             log.info("用户密码为空,异常登录");
             throw new UserException("用户密码为空,异常登录");

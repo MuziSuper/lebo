@@ -10,6 +10,7 @@ import cn.muzisheng.lebo.mapper.ProductMapper;
 import cn.muzisheng.lebo.model.ProductStatusEnum;
 import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
+import cn.muzisheng.lebo.param.ProductConsumeParam;
 import cn.muzisheng.lebo.service.ProductService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -114,42 +115,46 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             }
             updateWrapper.set("status", productAddDTO.getStatus());
         }
-        if(productAddDTO.getName()!=null) {
+        if(productAddDTO.getName()!=null&&!productAddDTO.getName().trim().isEmpty()) {
             updateWrapper.set("name", productAddDTO.getName());
         }
-        if(productAddDTO.getDescription()!=null) {
+        if(productAddDTO.getDescription()!=null&&!productAddDTO.getDescription().trim().isEmpty()) {
             updateWrapper.set("description", productAddDTO.getDescription());
         }
-        if(productAddDTO.getImage()!=null) {
+        if(productAddDTO.getImage()!=null&&!productAddDTO.getImage().trim().isEmpty()) {
             updateWrapper.set("image", productAddDTO.getImage());
         }
-        if(productAddDTO.getTags()!=null) {
+        if(productAddDTO.getTags()!=null&&!productAddDTO.getTags().trim().isEmpty()) {
             updateWrapper.set("tags", productAddDTO.getTags());
         }
-        if(productAddDTO.getUnit()!=null) {
+        if(productAddDTO.getUnit()!=null&&!productAddDTO.getUnit().trim().isEmpty()) {
             updateWrapper.set("unit", productAddDTO.getUnit());
         }
-        if(productAddDTO.getCategoryId()!=null) {
+        if(productAddDTO.getCategoryId()!=null&&productAddDTO.getCategoryId()>0) {
             updateWrapper.set("category_id", productAddDTO.getCategoryId());
         }
-        if(productAddDTO.getSalePrice()!=null) {
+        if(productAddDTO.getSalePrice()!=null&&productAddDTO.getSalePrice()>0) {
             updateWrapper.set("sale_price", productAddDTO.getSalePrice());
         }
-        if(productAddDTO.getVipPrice()!=null) {
+        if(productAddDTO.getVipPrice()!=null&&productAddDTO.getVipPrice()>0) {
             updateWrapper.set("vip_price", productAddDTO.getVipPrice());
         }
-        if(productAddDTO.getStorage()!=null) {
+        if(productAddDTO.getStorage()!=null&&productAddDTO.getStorage()>0) {
             updateWrapper.set("storage", productAddDTO.getStorage());
         }
-        if(productAddDTO.getCostPrice()!=null) {
+        if(productAddDTO.getCostPrice()!=null&&productAddDTO.getCostPrice()>0) {
             updateWrapper.set("cost_price", productAddDTO.getCostPrice());
         }
-        if(productAddDTO.getPoint()!=null) {
+        if(productAddDTO.getPoint()!=null&&productAddDTO.getPoint()>0) {
             updateWrapper.set("point", productAddDTO.getPoint());
         }
         if(productAddDTO.isPointConvert()!=null) {
             updateWrapper.set("is_point_convert", productAddDTO.isPointConvert());
         }
+        if (productAddDTO.getImage()!=null&&!productAddDTO.getImage().trim().isEmpty()){
+            updateWrapper.set("image", productAddDTO.getImage());
+        }
+
     }
     /**
      * 商品出库入库
@@ -157,6 +162,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      * @return 操作结果
      */
     @Override
+    @Transactional(rollbackFor = ProductException.class,isolation = Isolation.REPEATABLE_READ)
     public ResponseEntity<Result<Boolean>> inOut(ProductInOutDTO productInOutDTO){
         Response<Boolean> response = new Response<>();
         consume(productInOutDTO);
@@ -180,10 +186,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
     /**
      * 订单创建后的商品消费
-     * @param productInOutDTO 商品消费信息
+     * @param productInOutDTO 商品消费信息, 包含商品ID和增减数量
      * @throws ProductException 商品异常
      */
-    @Transactional(rollbackFor = ProductException.class,isolation = Isolation.REPEATABLE_READ)
     public void consume(ProductInOutDTO productInOutDTO) throws ProductException{
 
         String productId=Optional.ofNullable(productInOutDTO).map(ProductInOutDTO::getProductId).orElse( null);
@@ -191,8 +196,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             log.error("商品ID不能为空");
             throw new ProductException("商品ID不能为空");
         }
-        long number=Optional.of(productInOutDTO).map(ProductInOutDTO::getNumber).orElse(0L);
-        if (number == 0) {
+        long inOutnumber =Optional.of(productInOutDTO).map(ProductInOutDTO::getNumber).orElse(0L);
+        if (inOutnumber == 0) {
             log.error("商品数量无增减");
             throw new ProductException("商品数量无增减");
         }
@@ -203,17 +208,45 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             throw new ProductException("商品不存在, product_id: " + productInOutDTO.getProductId());
         }
         long currentStorage = Optional.ofNullable(product.getStorage()).orElse(0L);
-        long newNumber=currentStorage+number;
+        long newNumber=currentStorage+ inOutnumber;
         if (newNumber < 0) {
-            log.error("商品数量不足, product_id: {}, number: {}", productId, number);
-            throw new ProductException("商品数量不足, product_id: " + productId + ", number: " + number);
+            log.error("商品数量不足, product_id: {}, inOutnumber: {}", productId, inOutnumber);
+            throw new ProductException("商品数量不足, product_id: " + productId + ", inOutnumber: " + inOutnumber);
         }
         UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id", productId);
         updateWrapper.set("storage", newNumber);
         if (!this.update(updateWrapper)) {
-            log.error("商品入库出库失败, product_id: {}, number: {}", productId, number);
-            throw new ProductException("商品入库出库失败, product_id: " + productId + ", number: " + number);
+            log.error("商品入库出库失败, product_id: {}", productId);
+            throw new ProductException("商品入库出库失败, product_id: " + productId);
         }
+    }
+    /**
+     * 订单创建后的商品消费,该方法在订单创建后的商品消费方法中调用，使用事务机制，并且传入的productConsumeParam参数已经确认可以消费
+     * @param productConsumeParam 商品消费信息，包含商品ID和新的商品数量
+     * @throws ProductException 商品异常
+     */
+    public void consumNotCheck(ProductConsumeParam productConsumeParam) throws ProductException{
+        String productId=productConsumeParam.getProductId();
+        long newNumber =productConsumeParam.getNewNumber();
+        UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", productId);
+        updateWrapper.set("storage", newNumber);
+        if (!this.update(updateWrapper)) {
+            log.error("商品入库出库失败, product_id: {}, newNumber: {}", productId, newNumber);
+            throw new ProductException("商品入库出库失败, product_id: " + productId + ",newNumber: " + newNumber);
+        }
+    }
+    /**
+     * 根据类目ID查看是否存在商品
+     * @param categoryId 类目id
+     * @return 商品详情
+     */
+    public boolean existByCategoryId(Long categoryId){
+        if (categoryId == null) {
+            log.error("类目ID不能为空");
+            throw new ProductException("类目ID不能为空");
+        }
+        return this.count(new QueryWrapper<Product>().eq("category_id", categoryId))>0;
     }
 }

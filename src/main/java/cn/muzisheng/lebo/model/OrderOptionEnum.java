@@ -25,7 +25,7 @@ public enum OrderOptionEnum {
         }
         return null;
     }
-    public static boolean containsCode(Integer code) {
+    public static boolean contains(Integer code) {
         return fromCode(code) != null;
     }
 

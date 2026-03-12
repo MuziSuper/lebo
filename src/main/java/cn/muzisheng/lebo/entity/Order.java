@@ -3,6 +3,7 @@ package cn.muzisheng.lebo.entity;
 import cn.muzisheng.lebo.model.OrderOptionEnum;
 import cn.muzisheng.lebo.model.OrderTypeEnum;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
  */
 @Builder
 @Data
+@TableName("`order`")
 public class Order {
     @Id
     private String id;
@@ -42,7 +44,7 @@ public class Order {
     @TableField(value = "pay_amount")
     private Long payAmount;
     /**
-     * 支付方式
+     * 支付方式,1: 未支付, 2: 已支付,3: 支付失败, 4: 已退款
      */
     @Column(name = "pay_type")
     @TableField(value = "pay_type")

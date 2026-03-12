@@ -15,6 +15,7 @@ public class Constant {
     public static final int USER_EXCEPTION_CODE = 503;
     public static final int PRODUCT_EXCEPTION_CODE = 504;
     public static final int ORDER_EXCEPTION_CODE = 505;
+    public static final int CATEGORY_POINT_EXCEPTION_CODE = 506;
     public static final int STORAGE_EXCEPTION_CODE = 511;
 
     public static final CodeStatus ILLEGAL_EXCEPTION=new CodeStatus(HttpStatus.BAD_REQUEST,ILLEGAL_EXCEPTION_CODE);
@@ -28,6 +29,7 @@ public class Constant {
     public static final CodeStatus USER_EXCEPTION=new CodeStatus(HttpStatus.SERVICE_UNAVAILABLE, USER_EXCEPTION_CODE);
     public static final CodeStatus PRODUCT_EXCEPTION=new CodeStatus(HttpStatus.GATEWAY_TIMEOUT, PRODUCT_EXCEPTION_CODE);
     public static final CodeStatus ORDER_EXCEPTION=new CodeStatus(HttpStatus.HTTP_VERSION_NOT_SUPPORTED, ORDER_EXCEPTION_CODE);
+    public static final CodeStatus CATEGORY_POINT_EXCEPTION=new CodeStatus(HttpStatus.PROXY_AUTHENTICATION_REQUIRED, CATEGORY_POINT_EXCEPTION_CODE);
 
     // token默认配置
     public static final long TOKEN_DEFAULT_EXPIRE_DAY = 7 * 24 * 60 * 60 * 1000L;

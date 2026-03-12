@@ -51,5 +51,11 @@ public interface ProductService extends IService<Product> {
      */
     ResponseEntity<Result<Boolean>> delete(Long id);
 
+    /**
+     * 根据类目ID查看是否存在商品
+     * @param categoryId 类目id
+     * @return 商品详情
+     */
+    boolean existByCategoryId(Long categoryId);
 
 }

@@ -3,9 +3,9 @@ package cn.muzisheng.lebo.model;
 import com.baomidou.mybatisplus.annotation.EnumValue;
 
 public enum ProductStatusEnum {
-    SELL(0, "SELL"),
-    SOLD_OUT(1, "SOLD_OUT"),
-   DELETED(2, "DELETE");
+    SELL(1, "SELL"),
+    SOLD_OUT(2, "SOLD_OUT"),
+   DELETED(3, "DELETE");
     @EnumValue
     private final Integer code;
     private final String description;

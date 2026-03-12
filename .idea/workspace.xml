@@ -4,64 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="Optimize the code to solve the problem of bean circular dependencies">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/GeneralApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/OrderApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/MybatisPlusConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/StorageConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/BossLoginDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/LoginDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderAddDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderProductItemDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductAddDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductInOutDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductListDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductShowDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/ProductOperateRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/OrderException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/ProductException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/StorageException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/UserException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/UserPointException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/StorageService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/UserUpdateVO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logback-spring.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/LV9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/background.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/default-avatar.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/gift-active.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/information-active.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/information.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/man.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/none-information.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/none-orders.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/points-active.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/points.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/shop.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/woman.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/bluetooth.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/coffee.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/cup.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/mask.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/power_bank.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/shirt.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/shoe.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/product/snacks.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/slideshow/slideshow_1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/slideshow/slideshow_2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/slideshow/slideshow_3.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="feat(storage): 添加文件存储服务和相关异常处理&#10;&#10;- 在AccountStatusEnum中添加MyBatis Plus枚举值注解支持&#10;- 添加文件存储配置属性和存储服务实现&#10;- 实现文件上传、下载、删除等功能&#10;- 添加StorageException及相关异常处理器&#10;- 添加通用API接口支持文件操作&#10;- 配置应用名称和逻辑删除参数&#10;- 修改Category实体ID类型为Long并移除描述字段&#10;- 添加BossLoginDTO数据传输对象&#10;- 移除BaseModel基类并优化常量定义&#10;- 更新HTTP客户端日志注解为Log4j2&#10;- 清理日志文件内容">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/CategoryApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InOutProductRecordApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/InOutProductRecordSelectDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderListDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderSubmitDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderUpdateDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/InOutProductRecord.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/historyOperation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/CategoryException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/param/ProductConsumeParam.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InOutProductRecordService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InOutProductRecordServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderDetailVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderInfoVO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderItemVO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/error.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/error.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/log/info.log" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/log/log-day/info-2025-12-28.log" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/log/log-day/info-2025-12-29.log" beforeDir="false" />
@@ -92,45 +52,26 @@
       <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-09.log" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-10.log" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/log/warn.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/ExceptionApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/ExceptionApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/ShopApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/ProductApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/TestApi.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/UserApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/UserApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/OrderApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/OrderApi.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/WebConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/BaseModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderAddDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderAddDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderProductItemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderProductItemDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductInOutDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductInOutDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Category.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/OrderItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/PointRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/PointRecord.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/UserPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/UserPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/handler/ProductStatusTypeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/handler/ProductStatusTypeHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/interceptor/JwtAuthInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/interceptor/JwtAuthInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/AccountStatusEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/AccountStatusEnum.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/OrderOptionEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/OrderOptionEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/OrderTypeEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/OrderTypeEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/ProductDisplay.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/ProductStatusEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/ProductStatusEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/CategoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderItemService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/PointRecordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/PointRecordService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserPointService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserPointService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/CategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/CategoryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderItemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderItemServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/PointRecordServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/PointRecordServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserPointServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserPointServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/WXServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/WXServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/HttpClientUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/HttpClientUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/JwtUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/JwtUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/UUIDUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/RandomUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/WechatApiCryptoUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/WechatApiCryptoUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/LoginVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/LoginVO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
     </list>
@@ -171,41 +112,46 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;CODEINSIGHT_PRECOMMIT_ANALYSIS&quot;: &quot;false&quot;,
-    &quot;CodeFuse_applyCachedRules.once.366700735&quot;: &quot;1&quot;,
-    &quot;Docker.Dockerfile build.executor&quot;: &quot;Run&quot;,
-    &quot;JAR 应用程序.Lebo-1.0-SNAPSHOT.jar.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Lebo [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Lebo [compile].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Lebo [package].executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;Spring Boot.LeboApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Applications/LocalGit/lebo/src/main/resources/static/icon&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
-    &quot;应用程序.StorageException.executor&quot;: &quot;Run&quot;,
-    &quot;应用程序.WechatApiCryptoUtils.executor&quot;: &quot;Run&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "CODEINSIGHT_PRECOMMIT_ANALYSIS": "false",
+    "CodeFuse_applyCachedRules.once.366700735": "1",
+    "Docker.Dockerfile build.executor": "Run",
+    "JAR 应用程序.Lebo-1.0-SNAPSHOT.jar.executor": "Run",
+    "Maven.Lebo [clean].executor": "Run",
+    "Maven.Lebo [compile].executor": "Run",
+    "Maven.Lebo [package].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.LeboApplication.executor": "Debug",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Applications/LocalGit/lebo/src/main/resources/static/icon",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "项目",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true",
+    "应用程序.StorageException.executor": "Run",
+    "应用程序.WechatApiCryptoUtils.executor": "Run"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
-}</component>
+}]]></component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -333,6 +279,7 @@
       <workItem from="1773022872764" duration="28728000" />
       <workItem from="1773124703120" duration="900000" />
       <workItem from="1773125632888" duration="19698000" />
+      <workItem from="1773204093221" duration="32996000" />
     </task>
     <task id="LOCAL-00001" summary="暂存代码">
       <option name="closed" value="true" />
@@ -454,7 +401,23 @@
       <option name="project" value="LOCAL" />
       <updated>1772284987011</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="feat(storage): 添加文件存储服务和相关异常处理&#10;&#10;- 在AccountStatusEnum中添加MyBatis Plus枚举值注解支持&#10;- 添加文件存储配置属性和存储服务实现&#10;- 实现文件上传、下载、删除等功能&#10;- 添加StorageException及相关异常处理器&#10;- 添加通用API接口支持文件操作&#10;- 配置应用名称和逻辑删除参数&#10;- 修改Category实体ID类型为Long并移除描述字段&#10;- 添加BossLoginDTO数据传输对象&#10;- 移除BaseModel基类并优化常量定义&#10;- 更新HTTP客户端日志注解为Log4j2&#10;- 清理日志文件内容">
+      <option name="closed" value="true" />
+      <created>1773204268517</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1773204268517</updated>
+    </task>
+    <task id="LOCAL-00017" summary="feat(storage): 添加文件存储服务和相关异常处理&#10;&#10;- 在AccountStatusEnum中添加MyBatis Plus枚举值注解支持&#10;- 添加文件存储配置属性和存储服务实现&#10;- 实现文件上传、下载、删除等功能&#10;- 添加StorageException及相关异常处理器&#10;- 添加通用API接口支持文件操作&#10;- 配置应用名称和逻辑删除参数&#10;- 修改Category实体ID类型为Long并移除描述字段&#10;- 添加BossLoginDTO数据传输对象&#10;- 移除BaseModel基类并优化常量定义&#10;- 更新HTTP客户端日志注解为Log4j2&#10;- 清理日志文件内容">
+      <option name="closed" value="true" />
+      <created>1773204519800</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1773204519800</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -476,7 +439,8 @@
     <MESSAGE value="There are three methods to configure the wechat service and complete the login and logout of the user interface" />
     <MESSAGE value="The configuration file was modified" />
     <MESSAGE value="Optimize the code to solve the problem of bean circular dependencies" />
-    <option name="LAST_COMMIT_MESSAGE" value="Optimize the code to solve the problem of bean circular dependencies" />
+    <MESSAGE value="feat(storage): 添加文件存储服务和相关异常处理&#10;&#10;- 在AccountStatusEnum中添加MyBatis Plus枚举值注解支持&#10;- 添加文件存储配置属性和存储服务实现&#10;- 实现文件上传、下载、删除等功能&#10;- 添加StorageException及相关异常处理器&#10;- 添加通用API接口支持文件操作&#10;- 配置应用名称和逻辑删除参数&#10;- 修改Category实体ID类型为Long并移除描述字段&#10;- 添加BossLoginDTO数据传输对象&#10;- 移除BaseModel基类并优化常量定义&#10;- 更新HTTP客户端日志注解为Log4j2&#10;- 清理日志文件内容" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(storage): 添加文件存储服务和相关异常处理&#10;&#10;- 在AccountStatusEnum中添加MyBatis Plus枚举值注解支持&#10;- 添加文件存储配置属性和存储服务实现&#10;- 实现文件上传、下载、删除等功能&#10;- 添加StorageException及相关异常处理器&#10;- 添加通用API接口支持文件操作&#10;- 配置应用名称和逻辑删除参数&#10;- 修改Category实体ID类型为Long并移除描述字段&#10;- 添加BossLoginDTO数据传输对象&#10;- 移除BaseModel基类并优化常量定义&#10;- 更新HTTP客户端日志注解为Log4j2&#10;- 清理日志文件内容" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
