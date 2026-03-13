@@ -15,6 +15,7 @@ import cn.muzisheng.lebo.param.ProductConsumeParam;
 import cn.muzisheng.lebo.service.CategoryService;
 import cn.muzisheng.lebo.service.InOutProductRecordService;
 import cn.muzisheng.lebo.service.ProductService;
+import cn.muzisheng.lebo.service.UserPointService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -34,11 +35,11 @@ import java.util.Optional;
 @Log4j2
 @Service
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService  {
-    private final CategoryService categoryService;
+    private final UserPointService userPointService;
     private final InOutProductRecordService inOutProductRecordService;
     
-    public ProductServiceImpl(CategoryService categoryService, InOutProductRecordService inOutProductRecordService) {
-        this.categoryService = categoryService;
+    public ProductServiceImpl(UserPointService userPointService, InOutProductRecordService inOutProductRecordService) {
+            this.userPointService = userPointService;
         this.inOutProductRecordService = inOutProductRecordService;
     }
 

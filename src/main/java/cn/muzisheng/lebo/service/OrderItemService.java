@@ -27,4 +27,11 @@ public interface OrderItemService {
      * @return 订单商品列表
      */
     List<OrderItem> list(Long orderId);
+
+    /**
+     * 根据订单ID获取订单商品列表
+     * @param orderId 订单 ID
+     * @return 订单商品列表
+     */
+    List<OrderItem> listByOrderId(String orderId);
 }

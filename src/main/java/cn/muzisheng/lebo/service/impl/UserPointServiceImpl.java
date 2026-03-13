@@ -16,7 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Log4j2
 @Service
 public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint> implements UserPointService {
-
+    /**
+     * 创建用户积分钱包
+     * @param openid 用户openid
+     * @param defaultPoint 默认积分
+     * @return 创建的用户积分钱包
+     * @throws UserPointException 当用户积分钱包创建失败时抛出
+     */
     @Override
     @Transactional
     public UserPoint create(String openid, Long defaultPoint) throws UserPointException {
@@ -32,7 +38,12 @@ public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint
         queryWrapper.eq("open_id", openid);
         return this.getOne(queryWrapper);
     }
-
+    /**
+     * 创建用户积分钱包,默认为空
+     * @param openid 用户openid
+     * @return 创建的用户积分钱包
+     * @throws UserPointException 当用户积分钱包创建失败时抛出
+     */
     @Override
     @Transactional
     public UserPoint create(String openid) {
@@ -48,21 +59,44 @@ public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint
         queryWrapper.eq("open_id", openid);
         return this.getOne(queryWrapper);
     }
-
+    /**
+     * 获取用户积分钱包当前积分
+     * @param openid 用户openid
+     * @return 当前积分
+     * @throws UserPointException 当用户积分钱包不存在时抛出
+     */
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Long getCurrentPoint(String openid) throws UserPointException {
         UserPoint userPoint = getOne(new QueryWrapper<UserPoint>().eq("open_id", openid));
+        if (userPoint == null) {
+            log.error("openid={}, 获取用户积分记录失败", openid);
+            throw new UserPointException("获取用户积分记录失败");
+        }
         return userPoint.getCurrentPoint();
     }
-
-    @Transactional
+    /**
+     * 获取用户积分钱包累计总积分
+     * @param openid 用户openid
+     * @return 历史总积分
+     * @throws UserPointException 当用户积分钱包不存在时抛出
+     */
+    @Transactional(readOnly = true)
     @Override
     public Long getAccumulatedPoint(String openid) throws UserPointException {
         UserPoint userPoint = getOne(new QueryWrapper<UserPoint>().eq("open_id", openid));
+        if (userPoint == null) {
+            log.error("openid={}, 获取用户积分记录失败", openid);
+            throw new UserPointException("获取用户积分记录失败");
+        }
         return userPoint.getAccumulatedPoint();
     }
-
+    /**
+     * 获取用户积分钱包积分记录
+     * @param openid 用户openid
+     * @return 积分记录
+     * @throws UserPointException 当用户积分钱包不存在时抛出
+     */
     @Override
     public UserPoint getPointRecord(String openid) throws UserPointException {
         QueryWrapper<UserPoint> queryWrapper = new QueryWrapper<>();
@@ -74,7 +108,12 @@ public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint
         }
         return userPoint;
     }
-
+    /**
+     * 修改用户积分钱包积分
+     * @param openid 用户openid
+     * @param point 修改的积分，可为正负，正积分则计入累加总积分
+     * @return 修改后的钱包
+     */
     @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = UserPointException.class)
     @Override
     public UserPoint updatePoint(String openid, @NonNull Long point) throws UserPointException {
@@ -108,9 +147,23 @@ public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint
         }
         return newUserPoint;
     }
-
+    /**
+     * 销毁钱包，假删除
+     * @param openid 用户openid
+     * @return 是否成功销毁
+     */
     @Override
+    @Transactional
     public Boolean destroy(String openid) throws UserPointException {
-        return this.remove(new QueryWrapper<UserPoint>().eq("open_id", openid));
+        // 使用逻辑删除而非物理删除
+        UpdateWrapper<UserPoint> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("open_id", openid);
+        updateWrapper.set("is_deleted", 1);
+        boolean result = this.update(updateWrapper);
+        if (!result) {
+            log.error("openid={}, 销毁用户积分钱包失败", openid);
+            throw new UserPointException("销毁用户积分钱包失败");
+        }
+        return true;
     }
 }

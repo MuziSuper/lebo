@@ -48,4 +48,18 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
         }
         return orderItems;
     }
+
+    @Override
+    public List<OrderItem> listByOrderId(String orderId) {
+        if(orderId == null || orderId.trim().isEmpty()){
+            log.error("订单ID不能为空");
+            throw new OrderException("订单ID不能为空");
+        }
+        List<OrderItem> orderItems =  list(new QueryWrapper<OrderItem>().eq("order_id", orderId));
+        if(orderItems == null|| orderItems.isEmpty()){
+            log.error("订单项列表为空, orderId:{}",orderId);
+            throw new OrderException("订单项列表为空, orderId: "+orderId);
+        }
+        return orderItems;
+    }
 }

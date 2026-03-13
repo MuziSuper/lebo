@@ -13,6 +13,7 @@ import cn.muzisheng.lebo.model.*;
 import cn.muzisheng.lebo.service.OrderItemService;
 import cn.muzisheng.lebo.service.OrderService;
 import cn.muzisheng.lebo.service.ProductService;
+import cn.muzisheng.lebo.service.UserPointService;
 import cn.muzisheng.lebo.utils.RandomUtil;
 import cn.muzisheng.lebo.utils.UserThreadUtil;
 import cn.muzisheng.lebo.vo.OrderDetailVO;
@@ -32,10 +33,11 @@ import java.util.*;
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
     private final ProductService productService;
-
+    private final UserPointService userPointService;
     private final OrderItemService orderItemService;
-    public OrderServiceImpl(ProductService productService, OrderItemService orderItemService) {
+    public OrderServiceImpl(ProductService productService, UserPointService userPointService, OrderItemService orderItemService) {
         this.productService = productService;
+        this.userPointService = userPointService;
         this.orderItemService = orderItemService;
     }
 
@@ -383,6 +385,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @return 订单ID
      */
     @Override
+    @Transactional(rollbackFor = OrderException.class, isolation = Isolation.REPEATABLE_READ)
     public ResponseEntity<Result<Boolean>> orderOver(String orderId) {
         Response<Boolean> response = new Response<>();
         
@@ -393,7 +396,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         
         // 查询订单
-        Order order = this.getOne(new QueryWrapper<Order>().eq("id", orderId));
+        Order order = this.getOne(new QueryWrapper<Order>().eq("id", orderId).last("FOR UPDATE"));
         if (order == null) {
             log.error("订单不存在, orderId: {}", orderId);
             throw new OrderException("订单不存在");
@@ -405,6 +408,28 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new OrderException("订单状态异常，只有已支付的订单才能结束");
         }
         
+        // 获取订单项列表，计算订单总积分
+        List<OrderItem> orderItems = orderItemService.listByOrderId(orderId);
+        long totalPoint = 0L;
+        
+        // 收集所有商品ID
+        List<String> productIds = orderItems.stream()
+                .map(OrderItem::getProductId)
+                .toList();
+        
+        // 批量查询商品信息获取积分
+        List<Product> products = productService.listByIds(productIds);
+        Map<String, Product> productMap = products.stream()
+                .collect(java.util.stream.Collectors.toMap(Product::getId, p -> p));
+        
+        // 计算总积分 = Σ(商品积分 × 数量)
+        for (OrderItem orderItem : orderItems) {
+            Product product = productMap.get(orderItem.getProductId());
+            if (product != null && product.getPoint() != null) {
+                totalPoint += product.getPoint() * orderItem.getQuantity();
+            }
+        }
+        
         // 更新订单状态为已结束
         order.setPayType(OrderTypeEnum.OVER);
         order.setEndTime(LocalDateTime.now());
@@ -414,7 +439,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new OrderException("订单结束失败");
         }
         
-        log.info("订单结束成功, orderId: {}", orderId);
+        // 将订单总积分计入用户积分钱包
+        if (totalPoint > 0) {
+            try {
+                userPointService.updatePoint(order.getOpenId(), totalPoint);
+                log.info("订单积分已计入用户钱包, orderId: {}, openId: {}, totalPoint: {}", orderId, order.getOpenId(), totalPoint);
+            } catch (Exception e) {
+                log.error("订单积分计入用户钱包失败, orderId: {}, openId: {}, totalPoint: {}, error: {}", orderId, order.getOpenId(), totalPoint, e.getMessage());
+                throw new OrderException("订单积分计入用户钱包失败");
+            }
+        }
+        
+        log.info("订单结束成功, orderId: {}, totalPoint: {}", orderId, totalPoint);
         response.setData(true);
         return response.value();
     }
