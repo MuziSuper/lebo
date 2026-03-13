@@ -4,24 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="feat(订单): 新增订单结束状态和商家确认功能&#10;&#10;- 添加订单状态&quot;已结束&quot;(OVER)枚举值&#10;- 实现商家确认订单结束接口&#10;- 优化订单支付逻辑和异常处理&#10;&#10;feat(分类): 使用专用分类异常替换通用异常&#10;&#10;- 将GeneralException替换为CategoryException&#10;- 添加分类下商品存在检查&#10;- 优化分类列表排序为按名称排序&#10;&#10;refactor(商品): 重构商品服务依赖关系&#10;&#10;- 引入CategoryService依赖&#10;- 重命名consumNotCheck为consumeNotCheck">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/mapper/InOutProductRecordMapper.java" afterDir="false" />
+    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="feat(订单): 实现订单取消和列表查询功能&#10;&#10;- 添加订单取消接口，支持超时检查&#10;- 实现用户和商家订单列表筛选查询&#10;- 优化订单支付和取消的事务处理&#10;&#10;feat(商品): 完善商品出入库记录功能&#10;&#10;- 实现单条和批量出入库记录&#10;- 添加库存变更记录和校验逻辑&#10;- 支持多种条件筛选查询记录&#10;&#10;refactor(分类): 优化分类服务事务处理&#10;&#10;- 添加事务注解确保数据一致性&#10;- 增强分类名称唯一性校验&#10;- 完善异常处理和日志记录">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InOutProductRecordApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InOutProductRecordApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/OrderApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/OrderApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderAddDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderAddDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderBossListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderBossListDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderProductItemDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/ProductOperateRecord.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InOutProductRecordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InOutProductRecordService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderItemService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/CategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/CategoryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InOutProductRecordServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InOutProductRecordServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderItemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderItemServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -374,7 +358,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773309972830</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="feat(订单): 实现订单取消和列表查询功能&#10;&#10;- 添加订单取消接口，支持超时检查&#10;- 实现用户和商家订单列表筛选查询&#10;- 优化订单支付和取消的事务处理&#10;&#10;feat(商品): 完善商品出入库记录功能&#10;&#10;- 实现单条和批量出入库记录&#10;- 添加库存变更记录和校验逻辑&#10;- 支持多种条件筛选查询记录&#10;&#10;refactor(分类): 优化分类服务事务处理&#10;&#10;- 添加事务注解确保数据一致性&#10;- 增强分类名称唯一性校验&#10;- 完善异常处理和日志记录">
+      <option name="closed" value="true" />
+      <created>1773386509686</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1773386509686</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -398,7 +390,8 @@
     <MESSAGE value="Optimize the code to solve the problem of bean circular dependencies" />
     <MESSAGE value="feat(storage): 添加文件存储服务和相关异常处理&#10;&#10;- 在AccountStatusEnum中添加MyBatis Plus枚举值注解支持&#10;- 添加文件存储配置属性和存储服务实现&#10;- 实现文件上传、下载、删除等功能&#10;- 添加StorageException及相关异常处理器&#10;- 添加通用API接口支持文件操作&#10;- 配置应用名称和逻辑删除参数&#10;- 修改Category实体ID类型为Long并移除描述字段&#10;- 添加BossLoginDTO数据传输对象&#10;- 移除BaseModel基类并优化常量定义&#10;- 更新HTTP客户端日志注解为Log4j2&#10;- 清理日志文件内容" />
     <MESSAGE value="feat(订单): 新增订单结束状态和商家确认功能&#10;&#10;- 添加订单状态&quot;已结束&quot;(OVER)枚举值&#10;- 实现商家确认订单结束接口&#10;- 优化订单支付逻辑和异常处理&#10;&#10;feat(分类): 使用专用分类异常替换通用异常&#10;&#10;- 将GeneralException替换为CategoryException&#10;- 添加分类下商品存在检查&#10;- 优化分类列表排序为按名称排序&#10;&#10;refactor(商品): 重构商品服务依赖关系&#10;&#10;- 引入CategoryService依赖&#10;- 重命名consumNotCheck为consumeNotCheck" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(订单): 新增订单结束状态和商家确认功能&#10;&#10;- 添加订单状态&quot;已结束&quot;(OVER)枚举值&#10;- 实现商家确认订单结束接口&#10;- 优化订单支付逻辑和异常处理&#10;&#10;feat(分类): 使用专用分类异常替换通用异常&#10;&#10;- 将GeneralException替换为CategoryException&#10;- 添加分类下商品存在检查&#10;- 优化分类列表排序为按名称排序&#10;&#10;refactor(商品): 重构商品服务依赖关系&#10;&#10;- 引入CategoryService依赖&#10;- 重命名consumNotCheck为consumeNotCheck" />
+    <MESSAGE value="feat(订单): 实现订单取消和列表查询功能&#10;&#10;- 添加订单取消接口，支持超时检查&#10;- 实现用户和商家订单列表筛选查询&#10;- 优化订单支付和取消的事务处理&#10;&#10;feat(商品): 完善商品出入库记录功能&#10;&#10;- 实现单条和批量出入库记录&#10;- 添加库存变更记录和校验逻辑&#10;- 支持多种条件筛选查询记录&#10;&#10;refactor(分类): 优化分类服务事务处理&#10;&#10;- 添加事务注解确保数据一致性&#10;- 增强分类名称唯一性校验&#10;- 完善异常处理和日志记录" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(订单): 实现订单取消和列表查询功能&#10;&#10;- 添加订单取消接口，支持超时检查&#10;- 实现用户和商家订单列表筛选查询&#10;- 优化订单支付和取消的事务处理&#10;&#10;feat(商品): 完善商品出入库记录功能&#10;&#10;- 实现单条和批量出入库记录&#10;- 添加库存变更记录和校验逻辑&#10;- 支持多种条件筛选查询记录&#10;&#10;refactor(分类): 优化分类服务事务处理&#10;&#10;- 添加事务注解确保数据一致性&#10;- 增强分类名称唯一性校验&#10;- 完善异常处理和日志记录" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
