@@ -44,29 +44,31 @@ public class OrderApi {
     }
     /**
      * 用户在订单确认支付页面点击了取消，则修改订单状态为支付失败，完善订单结束时间以及最终支付价格，返回是否成功
-     * @param orderAddDTO 订单信息
+     * @param orderId 订单ID
      * @return 订单ID
      */
     @PostMapping("/cancel")
-    public ResponseEntity<Result<String>> cancel(@RequestBody OrderAddDTO orderAddDTO) {
-        return orderService.cancel(orderAddDTO);
+    public ResponseEntity<Result<Boolean>> cancel(@RequestParam Long orderId) {
+        return orderService.cancel(orderId);
     }
     /**
      * 用户获取订单列表，筛选条件为订单状态
+     * @param orderListDTO 订单列表
      * @return 订单详情
      */
     @PostMapping("/orderInfolist")
     public ResponseEntity<Result<List<OrderInfoVO>>> orderInfoList(OrderListDTO orderListDTO) {
-        return orderService.orderInfoList();
+        return orderService.orderInfoList(orderListDTO);
     }
 
     /**
      * 商家获取订单列表，筛选条件为订单状态,订单创建时间区间，订单结束时间区间，订单支付方式，订单ID
+     * @param orderBossListDTO 订单列表
      * @return 订单详情
      */
     @PostMapping("/bossOrderInfolist")
     public ResponseEntity<Result<List<OrderInfoVO>>> bossOrderInfoList(OrderBossListDTO orderBossListDTO) {
-        return orderService.orderBossInfoList();
+        return orderService.orderBossInfoList(orderBossListDTO);
     }
     /**
      * 商家确认订单结束，修改订单状态为已结束，完善订单结束时间以及最终支付价格，返回是否成功

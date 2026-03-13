@@ -5,10 +5,13 @@ import cn.muzisheng.lebo.dto.ProductInOutDTO;
 import cn.muzisheng.lebo.dto.ProductListDTO;
 import cn.muzisheng.lebo.dto.ProductShowDTO;
 import cn.muzisheng.lebo.entity.Product;
+import cn.muzisheng.lebo.exception.ProductException;
 import cn.muzisheng.lebo.model.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 public interface ProductService extends IService<Product> {
     /**
@@ -27,23 +30,32 @@ public interface ProductService extends IService<Product> {
 
     /**
      * 修改商品
-     * @param productAddDTO 待修改的商品信息
+     * @param productAddDTO 待修改的商品基础信息
      * @return 修改结果
      */
     ResponseEntity<Result<Boolean>> update(ProductAddDTO productAddDTO);
     /**
-     * 商品出库入库
+     * 商品出库入库,内部检测库存与判空等信息，主要用于商户操作单商品的出库入库
      * @param productInOutDTO 商品出库入库信息
      * @return 操作结果
+     * @throws ProductException 商品异常
      */
     ResponseEntity<Result<Boolean>> inOut(ProductInOutDTO productInOutDTO);
 
-    /**
-     * 订单创建后的商品消费
-     * @param productInOutDTO 商品消费信息
-     */
-    void consume(ProductInOutDTO productInOutDTO);
 
+    /**
+     * 商品批量出库入库,内部检测库存与判空等信息，主要用于客户支付订单候商品的批量出库
+     * @param productInOutDTOList 商品出库入库信息列表
+     * @throws ProductException 商品异常
+     */
+    List<Product> inOutBatch(List<ProductInOutDTO> productInOutDTOList);
+
+//    /**
+//     * 获取商品详情
+//     * @param id 商品id
+//     * @return 商品详情
+//     */
+//    ResponseEntity<Result<ProductShowDTO>> show(Long id);
     /**
      * 删除商品
      * @param id 商品id

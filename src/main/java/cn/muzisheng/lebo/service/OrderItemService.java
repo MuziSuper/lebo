@@ -13,6 +13,14 @@ public interface OrderItemService {
      * @throws OrderException 订单异常
      */
     boolean create(OrderItem orderItem) throws OrderException;
+
+    /**
+     * 批量创建订单项
+     * @param orderItems 订单商品列表
+     * @throws OrderException 订单异常
+     */
+    void createBatch(List<OrderItem> orderItems) throws OrderException;
+
     /**
      * 获取订单商品列表
      * @param orderId 订单 ID

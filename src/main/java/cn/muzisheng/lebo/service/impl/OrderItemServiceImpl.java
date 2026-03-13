@@ -24,6 +24,18 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
     }
 
     @Override
+    public void createBatch(List<OrderItem> orderItems) throws OrderException {
+        if (orderItems == null || orderItems.isEmpty()) {
+            log.error("订单项列表不能为空");
+            throw new OrderException("订单项列表不能为空");
+        }
+        if (!saveBatch(orderItems)) {
+            log.error("订单项批量创建失败");
+            throw new OrderException("订单项批量创建失败");
+        }
+    }
+
+    @Override
     public List<OrderItem> list(Long orderId) {
         if(orderId == null){
             log.error("订单ID不能为空");

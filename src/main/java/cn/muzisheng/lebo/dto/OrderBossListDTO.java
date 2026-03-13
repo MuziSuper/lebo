@@ -1,5 +1,8 @@
 package cn.muzisheng.lebo.dto;
 
+import lombok.Data;
+
+@Data
 public class OrderBossListDTO {
     /**
      * 订单号
@@ -14,13 +17,11 @@ public class OrderBossListDTO {
      */
     private String orderOptionCode;
     /**
-     * 订单创建时间
+     * 订单创建时间区间，格式: startTime,endTime
      */
     private String orderCreateTime;
     /**
-     * 订单结束时间
+     * 订单结束时间区间，格式: startTime,endTime
      */
     private String orderEndTime;
-
-
 }

@@ -49,6 +49,27 @@ CREATE TABLE `order_item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单商品关联表';
 
 -- ----------------------------
+-- Table structure for in_out_product_record
+-- ----------------------------
+DROP TABLE IF EXISTS `in_out_product_record`;
+CREATE TABLE `in_out_product_record` (
+    `id` varchar(255) NOT NULL COMMENT '记录ID(UUID)',
+    `product_name` varchar(255) DEFAULT '' COMMENT '商品名称',
+    `product_id` varchar(255) NOT NULL DEFAULT '' COMMENT '商品ID',
+    `description` varchar(500) DEFAULT '' COMMENT '出入库描述(可为空)',
+    `number` bigint NOT NULL DEFAULT '0' COMMENT '商品出入库数量(正数)',
+    `remain_number` bigint NOT NULL DEFAULT '0' COMMENT '商品出入库后剩余数量',
+    `time` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '商品出入库时间',
+    `type` tinyint NOT NULL COMMENT '商品出入库类型: 1-入库, 2-出库',
+    `operator_id` varchar(255) DEFAULT '' COMMENT '商品出入库操作人ID',
+    PRIMARY KEY (`id`),
+    KEY `idx_product_id` (`product_id`),
+    KEY `idx_type` (`type`),
+    KEY `idx_time` (`time`),
+    KEY `idx_product_time` (`product_id`, `time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品出入库记录表';
+
+-- ----------------------------
 -- Table structure for point_record
 -- ----------------------------
 DROP TABLE IF EXISTS `point_record`;
@@ -146,6 +167,7 @@ CREATE TABLE `user_point` (
                               UNIQUE KEY `uk_open_id` (`open_id`),
                               KEY `idx_current_point` (`current_point`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户积分账户表';
+
 
 -- ----------------------------
 -- Table structure for order

@@ -16,12 +16,8 @@ public class OrderAddDTO {
      */
     private Integer orderOptionCode;
 
-//    /**
-//     * 是否会员优惠
-//     */
-//    private Boolean memberDiscount;
     /**
      * 购买商品列表
      */
-    private List<OrderProductItemDTO> orderProductItemDTOS;
+    private List<ProductInOutDTO> productInOutDTOList;
 }

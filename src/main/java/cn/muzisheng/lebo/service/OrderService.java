@@ -1,6 +1,8 @@
 package cn.muzisheng.lebo.service;
 
 import cn.muzisheng.lebo.dto.OrderAddDTO;
+import cn.muzisheng.lebo.dto.OrderBossListDTO;
+import cn.muzisheng.lebo.dto.OrderListDTO;
 import cn.muzisheng.lebo.dto.OrderUpdateDTO;
 import cn.muzisheng.lebo.entity.OrderItem;
 import cn.muzisheng.lebo.model.Result;
@@ -28,10 +30,10 @@ public interface OrderService {
     ResponseEntity<Result<String>> submit(OrderAddDTO orderAddDTO);
     /**
      * 用户在订单确认支付页面点击了取消，则修改订单状态为支付失败，完善订单结束时间以及最终支付价格，返回是否成功
-     * @param orderAddDTO 订单信息
-     * @return 订单ID
+     * @param orderId 订单ID
+     * @return 是否取消成功
      */
-    ResponseEntity<Result<String>> cancel(OrderAddDTO orderAddDTO);
+    ResponseEntity<Result<Boolean>> cancel(Long orderId);
     /**
      * 获取订单详细信息
      * @param orderId 订单ID
@@ -40,14 +42,16 @@ public interface OrderService {
     ResponseEntity<Result<OrderDetailVO>> detail(Long orderId);
     /**
      * 用户获取订单列表，筛选条件为订单状态
+     * @param orderListDTO 订单列表
      * @return 订单详情
      */
-    ResponseEntity<Result<List<OrderInfoVO>>> orderInfoList();
+    ResponseEntity<Result<List<OrderInfoVO>>> orderInfoList(OrderListDTO orderListDTO);
     /**
      * 商家获取订单列表，筛选条件为订单状态,订单创建时间区间，订单结束时间区间，订单支付方式，订单ID
+     * @param orderBossListDTO 订单列表
      * @return 订单详情
      */
-    ResponseEntity<Result<List<OrderInfoVO>>> orderBossInfoList();
+    ResponseEntity<Result<List<OrderInfoVO>>> orderBossInfoList(OrderBossListDTO orderBossListDTO);
     /**
      * 商家确认订单结束，修改订单状态为已结束，完善订单结束时间以及最终支付价格，返回是否成功
      * @param orderId 订单Id

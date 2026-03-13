@@ -4,76 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="feat(storage): 添加文件存储服务和相关异常处理&#10;&#10;- 在AccountStatusEnum中添加MyBatis Plus枚举值注解支持&#10;- 添加文件存储配置属性和存储服务实现&#10;- 实现文件上传、下载、删除等功能&#10;- 添加StorageException及相关异常处理器&#10;- 添加通用API接口支持文件操作&#10;- 配置应用名称和逻辑删除参数&#10;- 修改Category实体ID类型为Long并移除描述字段&#10;- 添加BossLoginDTO数据传输对象&#10;- 移除BaseModel基类并优化常量定义&#10;- 更新HTTP客户端日志注解为Log4j2&#10;- 清理日志文件内容">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/CategoryApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InOutProductRecordApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/InOutProductRecordSelectDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderListDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderSubmitDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderUpdateDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/InOutProductRecord.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/historyOperation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/exception/CategoryException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/param/ProductConsumeParam.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InOutProductRecordService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InOutProductRecordServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderDetailVO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderInfoVO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderItemVO.java" afterDir="false" />
+    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="feat(订单): 新增订单结束状态和商家确认功能&#10;&#10;- 添加订单状态&quot;已结束&quot;(OVER)枚举值&#10;- 实现商家确认订单结束接口&#10;- 优化订单支付逻辑和异常处理&#10;&#10;feat(分类): 使用专用分类异常替换通用异常&#10;&#10;- 将GeneralException替换为CategoryException&#10;- 添加分类下商品存在检查&#10;- 优化分类列表排序为按名称排序&#10;&#10;refactor(商品): 重构商品服务依赖关系&#10;&#10;- 引入CategoryService依赖&#10;- 重命名consumNotCheck为consumeNotCheck">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/mapper/InOutProductRecordMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/error.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/info.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2025-12-28.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2025-12-29.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2025-12-30.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2025-12-31.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-01.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-02.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-03.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-04.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-05.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-06.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-07.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-08.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-09.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/log-day/info-2026-01-10.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2025-12-28.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2025-12-29.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2025-12-30.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2025-12-31.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-01.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-02.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-03.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-04.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-05.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-06.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-07.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-08.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-09.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn-day/warn-2026-01-10.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/log/warn.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InOutProductRecordApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InOutProductRecordApi.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/OrderApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/OrderApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/WebConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderAddDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderAddDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderProductItemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderProductItemDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductInOutDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/ProductInOutDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/OrderOptionEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/OrderOptionEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/ProductStatusEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/model/ProductStatusEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/CategoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderBossListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderBossListDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderProductItemDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/ProductOperateRecord.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InOutProductRecordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InOutProductRecordService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderItemService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/ProductService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/CategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/CategoryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InOutProductRecordServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InOutProductRecordServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderItemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderItemServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +78,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.LeboApplication.executor": "Debug",
+    "Spring Boot.LeboApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Applications/LocalGit/lebo/src/main/resources/static/icon",
@@ -226,6 +175,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="Dockerfile build" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
       <deployment type="dockerfile">
         <settings>
@@ -234,12 +189,6 @@
           <option name="buildOnly" value="true" />
           <option name="sourceFilePath" value="Dockerfile" />
         </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
-      <deployment type="dockerfile">
-        <settings />
       </deployment>
       <method v="2" />
     </configuration>
@@ -417,7 +366,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773204519800</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="feat(订单): 新增订单结束状态和商家确认功能&#10;&#10;- 添加订单状态&quot;已结束&quot;(OVER)枚举值&#10;- 实现商家确认订单结束接口&#10;- 优化订单支付逻辑和异常处理&#10;&#10;feat(分类): 使用专用分类异常替换通用异常&#10;&#10;- 将GeneralException替换为CategoryException&#10;- 添加分类下商品存在检查&#10;- 优化分类列表排序为按名称排序&#10;&#10;refactor(商品): 重构商品服务依赖关系&#10;&#10;- 引入CategoryService依赖&#10;- 重命名consumNotCheck为consumeNotCheck">
+      <option name="closed" value="true" />
+      <created>1773309972830</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1773309972830</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -440,7 +397,8 @@
     <MESSAGE value="The configuration file was modified" />
     <MESSAGE value="Optimize the code to solve the problem of bean circular dependencies" />
     <MESSAGE value="feat(storage): 添加文件存储服务和相关异常处理&#10;&#10;- 在AccountStatusEnum中添加MyBatis Plus枚举值注解支持&#10;- 添加文件存储配置属性和存储服务实现&#10;- 实现文件上传、下载、删除等功能&#10;- 添加StorageException及相关异常处理器&#10;- 添加通用API接口支持文件操作&#10;- 配置应用名称和逻辑删除参数&#10;- 修改Category实体ID类型为Long并移除描述字段&#10;- 添加BossLoginDTO数据传输对象&#10;- 移除BaseModel基类并优化常量定义&#10;- 更新HTTP客户端日志注解为Log4j2&#10;- 清理日志文件内容" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(storage): 添加文件存储服务和相关异常处理&#10;&#10;- 在AccountStatusEnum中添加MyBatis Plus枚举值注解支持&#10;- 添加文件存储配置属性和存储服务实现&#10;- 实现文件上传、下载、删除等功能&#10;- 添加StorageException及相关异常处理器&#10;- 添加通用API接口支持文件操作&#10;- 配置应用名称和逻辑删除参数&#10;- 修改Category实体ID类型为Long并移除描述字段&#10;- 添加BossLoginDTO数据传输对象&#10;- 移除BaseModel基类并优化常量定义&#10;- 更新HTTP客户端日志注解为Log4j2&#10;- 清理日志文件内容" />
+    <MESSAGE value="feat(订单): 新增订单结束状态和商家确认功能&#10;&#10;- 添加订单状态&quot;已结束&quot;(OVER)枚举值&#10;- 实现商家确认订单结束接口&#10;- 优化订单支付逻辑和异常处理&#10;&#10;feat(分类): 使用专用分类异常替换通用异常&#10;&#10;- 将GeneralException替换为CategoryException&#10;- 添加分类下商品存在检查&#10;- 优化分类列表排序为按名称排序&#10;&#10;refactor(商品): 重构商品服务依赖关系&#10;&#10;- 引入CategoryService依赖&#10;- 重命名consumNotCheck为consumeNotCheck" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(订单): 新增订单结束状态和商家确认功能&#10;&#10;- 添加订单状态&quot;已结束&quot;(OVER)枚举值&#10;- 实现商家确认订单结束接口&#10;- 优化订单支付逻辑和异常处理&#10;&#10;feat(分类): 使用专用分类异常替换通用异常&#10;&#10;- 将GeneralException替换为CategoryException&#10;- 添加分类下商品存在检查&#10;- 优化分类列表排序为按名称排序&#10;&#10;refactor(商品): 重构商品服务依赖关系&#10;&#10;- 引入CategoryService依赖&#10;- 重命名consumNotCheck为consumeNotCheck" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

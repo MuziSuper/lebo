@@ -24,7 +24,7 @@ public class InOutProductRecordApi {
      * @return 商品入库记录列表
      */
     @RequestMapping("/getInOutRecordList")
-    public ResponseEntity<Result<List<InOutProductRecord>>> getInOutRecordList(InOutProductRecordSelectDTO InOutProductRecordSelectDTO) {
+    public ResponseEntity<List<InOutProductRecord>> getInOutRecordList(InOutProductRecordSelectDTO InOutProductRecordSelectDTO) {
         return inOutProductRecordService.getInOutRecordList(InOutProductRecordSelectDTO);
     }
 
