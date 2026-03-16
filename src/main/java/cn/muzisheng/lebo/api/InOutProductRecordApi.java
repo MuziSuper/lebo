@@ -4,6 +4,7 @@ import cn.muzisheng.lebo.dto.InOutProductRecordSelectDTO;
 import cn.muzisheng.lebo.entity.InOutProductRecord;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.InOutProductRecordService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +25,7 @@ public class InOutProductRecordApi {
      * @return 商品入库记录列表
      */
     @RequestMapping("/getInOutRecordList")
-    public ResponseEntity<List<InOutProductRecord>> getInOutRecordList(InOutProductRecordSelectDTO InOutProductRecordSelectDTO) {
+    public ResponseEntity<Result<IPage<InOutProductRecord>>> getInOutRecordList(InOutProductRecordSelectDTO InOutProductRecordSelectDTO) {
         return inOutProductRecordService.getInOutRecordList(InOutProductRecordSelectDTO);
     }
 

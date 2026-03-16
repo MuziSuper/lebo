@@ -8,6 +8,7 @@ import cn.muzisheng.lebo.mapper.CategoryMapper;
 import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.CategoryService;
+import cn.muzisheng.lebo.service.HistoryOperationService;
 import cn.muzisheng.lebo.service.ProductService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,12 +27,17 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * 商品服务
      */
     private final ProductService productService;
+    /**
+     * 历史操作服务
+     */
+    private final HistoryOperationService historyOperationService;
 
     /**
-     * 构造函数注入商品服务
+     * 构造函数注入商品服务和历史操作服务
      */
-    public CategoryServiceImpl(ProductService productService) {
+    public CategoryServiceImpl(ProductService productService, HistoryOperationService historyOperationService) {
         this.productService = productService;
+        this.historyOperationService = historyOperationService;
     }
     /**
      * 创建商品类目
@@ -67,6 +73,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             log.error("创建分类失败，categoryName: {}", categoryName);
             throw new CategoryException("创建分类失败");
         }
+        // 记录历史操作：商品分类添加 (type=6)
+        historyOperationService.addHistoryOperation(6, "添加分类：" + trimCategoryName);
         log.info("创建分类成功，categoryName: {}", categoryName);
         Response<Boolean> response = new Response<>();
         response.setData(true);
@@ -121,6 +129,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             throw new CategoryException("更新分类失败, categoryName: " + category.getName());
         }
 
+        // 记录历史操作：商品分类修改 (type=7)
+        historyOperationService.addHistoryOperation(7, "修改分类：" + category.getName().trim());
+
         log.info("更新分类成功，categoryId: {}, newName: {}", category.getId(), category.getName());
         Response<Boolean> result = new Response<>();
         result.setData(true);
@@ -159,6 +170,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             log.error("删除分类失败，categoryId: {}", categoryId);
             throw new CategoryException("删除分类失败");
         }
+
+        // 记录历史操作：商品分类删除 (type=8)
+        historyOperationService.addHistoryOperation(8, "删除分类：" + existingCategory.getName());
 
         log.warn("删除分类成功，categoryId: {}", categoryId);
         Response<Boolean> result = new Response<>();

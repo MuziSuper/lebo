@@ -13,6 +13,7 @@ import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.param.ProductConsumeParam;
 import cn.muzisheng.lebo.service.CategoryService;
+import cn.muzisheng.lebo.service.HistoryOperationService;
 import cn.muzisheng.lebo.service.InOutProductRecordService;
 import cn.muzisheng.lebo.service.ProductService;
 import cn.muzisheng.lebo.service.UserPointService;
@@ -35,12 +36,12 @@ import java.util.Optional;
 @Log4j2
 @Service
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService  {
-    private final UserPointService userPointService;
     private final InOutProductRecordService inOutProductRecordService;
+    private final HistoryOperationService historyOperationService;
     
-    public ProductServiceImpl(UserPointService userPointService, InOutProductRecordService inOutProductRecordService) {
-            this.userPointService = userPointService;
+    public ProductServiceImpl(InOutProductRecordService inOutProductRecordService, HistoryOperationService historyOperationService) {
         this.inOutProductRecordService = inOutProductRecordService;
+        this.historyOperationService = historyOperationService;
     }
 
     @Override
@@ -88,6 +89,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             log.error("添加商品失败, product_name: "+product.getName());
             throw new ProductException("添加商品失败, product_name: "+product.getName());
         }
+        // 记录历史操作：商品添加 (type=0)
+        historyOperationService.addHistoryOperation(0, "添加商品：" + product.getName());
         response.setData(true);
         return response.value();
     }
@@ -101,6 +104,14 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             log.error("更新商品失败, product_id: "+productAddDTO.getId());
             throw new ProductException("更新商品失败, product_id: "+productAddDTO.getId());
         }
+        // 记录历史操作：商品修改 (type=1)
+        String productName = Optional.ofNullable(productAddDTO.getName())
+                .filter(name -> !name.trim().isEmpty())
+                .orElseGet(() -> {
+                    Product product = this.getById(productAddDTO.getId());
+                    return product != null ? product.getName() : productAddDTO.getId();
+                });
+        historyOperationService.addHistoryOperation(1, "修改商品：" + productName);
         response.setData(true);
         return response.value();
     }
@@ -384,6 +395,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             log.error("删除商品失败, product_id: "+id);
             throw new ProductException("删除商品失败, product_id: "+id);
         }
+        // 记录历史操作：商品删除 (type=2)
+        historyOperationService.addHistoryOperation(2, "删除商品：" + existProduct.getName());
         response.setData(true);
         return response.value();
     }

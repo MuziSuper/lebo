@@ -4,29 +4,48 @@ import cn.muzisheng.lebo.dto.InOutProductRecordSelectDTO;
 import cn.muzisheng.lebo.entity.InOutProductRecord;
 import cn.muzisheng.lebo.exception.ProductException;
 import cn.muzisheng.lebo.mapper.InOutProductRecordMapper;
+import cn.muzisheng.lebo.model.Response;
+import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.InOutProductRecordService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @Service
 public class InOutProductRecordServiceImpl extends ServiceImpl<InOutProductRecordMapper, InOutProductRecord> implements InOutProductRecordService {
     /**
-     * 获取所有商品入库记录列表，筛选条件有时间区间，商品名称，出入库类型, 商品ID
+     * 获取所有商品出入库记录列表（分页），筛选条件有时间区间，商品名称，出入库类型, 商品ID
      * @param InOutProductRecordSelectDTO 筛选条件
-     * @return 商品入库记录列表
+     * @return 商品出入库记录分页列表
      */
     @Override
-    public ResponseEntity<List<InOutProductRecord>> getInOutRecordList(InOutProductRecordSelectDTO InOutProductRecordSelectDTO) {
+    public ResponseEntity<Result<IPage<InOutProductRecord>>> getInOutRecordList(InOutProductRecordSelectDTO InOutProductRecordSelectDTO) {
+        Response<IPage<InOutProductRecord>> response = new Response<>();
+        
+        // 设置默认分页参数
+        int pageNum = 1;
+        int pageSizeNum = 10;
+        
         // 构建查询条件
         QueryWrapper<InOutProductRecord> queryWrapper = new QueryWrapper<>();
         
         if (InOutProductRecordSelectDTO != null) {
+            // 获取分页参数
+            if (InOutProductRecordSelectDTO.getPageNum() != null) {
+                pageNum = InOutProductRecordSelectDTO.getPageNum();
+            }
+            if (InOutProductRecordSelectDTO.getPageSize() != null) {
+                pageSizeNum = InOutProductRecordSelectDTO.getPageSize();
+            }
+            
             // 商品ID筛选
             if (InOutProductRecordSelectDTO.getId() != null && !InOutProductRecordSelectDTO.getId().trim().isEmpty()) {
                 queryWrapper.eq("product_id", InOutProductRecordSelectDTO.getId());
@@ -63,9 +82,12 @@ public class InOutProductRecordServiceImpl extends ServiceImpl<InOutProductRecor
         // 按时间倒序排列
         queryWrapper.orderByDesc("time");
         
-        List<InOutProductRecord> recordList = this.list(queryWrapper);
+        // 分页查询
+        Page<InOutProductRecord> pageParam = new Page<>(pageNum, pageSizeNum);
+        IPage<InOutProductRecord> resultPage = this.page(pageParam, queryWrapper);
         
-        return ResponseEntity.ok(recordList);
+        response.setData(resultPage);
+        return response.value();
     }
     /**
      * 创建商品出入库记录（单条）

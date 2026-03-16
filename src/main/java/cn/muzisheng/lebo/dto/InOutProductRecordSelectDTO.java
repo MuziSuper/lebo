@@ -32,5 +32,13 @@ public class InOutProductRecordSelectDTO {
      * 出入库时间区间，结束时间
      */
     private LocalDateTime endTime;
+    /**
+     * 页码
+     */
+    private Integer pageNum;
+    /**
+     * 每页数量
+     */
+    private Integer pageSize;
 
 }

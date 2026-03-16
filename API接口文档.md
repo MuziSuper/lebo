@@ -30,6 +30,8 @@
   - [获取商品类目列表](#获取商品类目列表)
 - [商品出入库记录接口](#商品出入库记录接口)
   - [获取出入库记录列表](#获取出入库记录列表)
+- [历史操作记录接口](#历史操作记录接口)
+  - [获取历史操作记录列表](#获取历史操作记录列表)
 - [文件管理接口](#文件管理接口)
   - [上传文件](#上传文件)
   - [下载/查看文件](#下载查看文件)
@@ -776,7 +778,7 @@
 
 ### 获取出入库记录列表
 
-获取所有商品出入库记录列表，支持多种筛选条件。
+获取所有商品出入库记录列表（分页），支持多种筛选条件。
 
 - **URL**: `/inOutProductRecord/getInOutRecordList`
 - **Method**: `POST`/`GET`
@@ -786,25 +788,124 @@
 
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
-| startTime | String | 否 | 开始时间 |
-| endTime | String | 否 | 结束时间 |
-| productName | String | 否 | 商品名称 |
-| type | Integer | 否 | 出入库类型 |
-| productId | String | 否 | 商品ID |
+| id | String | 否 | 商品ID |
+| productName | String | 否 | 商品名称（模糊查询） |
+| type | Integer | 否 | 出入库类型：1-入库，2-出库 |
+| startTime | String | 否 | 开始时间（LocalDateTime格式） |
+| endTime | String | 否 | 结束时间（LocalDateTime格式） |
+| pageNum | Integer | 否 | 页码（默认1） |
+| pageSize | Integer | 否 | 每页数量（默认10） |
+
+**出入库类型说明**:
+
+| 类型码 | 说明 |
+|--------|------|
+| 1 | 入库 |
+| 2 | 出库 |
 
 **响应示例**:
 
 ```json
-[
-  {
-    "id": "记录ID",
-    "productId": "商品ID",
-    "productName": "商品名称",
-    "number": 100,
-    "type": 1,
-    "createTime": "2024-01-01T12:00:00"
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "records": [
+      {
+        "id": "记录ID",
+        "productId": "商品ID",
+        "productName": "商品名称",
+        "number": 100,
+        "remainNumber": 1000,
+        "type": 1,
+        "time": "2024-01-01T12:00:00"
+      }
+    ],
+    "total": 100,
+    "size": 10,
+    "current": 1,
+    "pages": 10
   }
-]
+}
+```
+
+---
+
+## 历史操作记录接口
+
+**基础路径**: `/historyOperation`
+
+### 获取历史操作记录列表
+
+获取商户操作历史记录列表（分页），支持多种筛选条件。
+
+**操作类型说明**:
+
+| 类型码 | 说明 |
+|--------|------|
+| 0 | 商品添加 |
+| 1 | 商品修改 |
+| 2 | 商品删除 |
+| 3 | 手动备份数据 |
+| 4 | 自动备份数据 |
+| 5 | 后台系统登录 |
+| 6 | 商品分类添加 |
+| 7 | 商品分类修改 |
+| 8 | 商品分类删除 |
+
+- **URL**: `/historyOperation/getHistoryOperationList`
+- **Method**: `POST`
+- **认证**: 需要认证（Authorization token）
+
+**请求体**:
+
+```json
+{
+  "type": 0,
+  "pageNum": 1,
+  "pageSize": 10,
+  "startTime": "2024-01-01 00:00:00",
+  "endTime": "2024-12-31 23:59:59",
+  "content": "操作内容关键词",
+  "userName": "操作人名称"
+}
+```
+
+**请求参数说明**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| type | Integer | 否 | 操作类型（见上表） |
+| pageNum | Integer | 否 | 页码（默认1） |
+| pageSize | Integer | 否 | 每页数量（默认10） |
+| startTime | String | 否 | 开始时间（格式：yyyy-MM-dd HH:mm:ss） |
+| endTime | String | 否 | 结束时间（格式：yyyy-MM-dd HH:mm:ss） |
+| content | String | 否 | 操作内容（模糊查询） |
+| userName | String | 否 | 操作人名称（模糊查询） |
+
+**响应示例**:
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "records": [
+      {
+        "id": 1,
+        "content": "添加商品：测试商品A",
+        "type": 0,
+        "operatorId": "openid_xxx",
+        "operatorName": "商户管理员",
+        "time": "2024-01-01T12:00:00"
+      }
+    ],
+    "total": 50,
+    "size": 10,
+    "current": 1,
+    "pages": 5
+  }
+}
 ```
 
 ---
@@ -905,4 +1006,4 @@
 
 ---
 
-*文档最后更新时间: 2026-03-13*
+*文档最后更新时间: 2026-03-16*
