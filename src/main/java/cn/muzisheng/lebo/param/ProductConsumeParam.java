@@ -1,6 +1,5 @@
 package cn.muzisheng.lebo.param;
 
-import cn.muzisheng.lebo.entity.Product;
 import lombok.Builder;
 import lombok.Data;
 

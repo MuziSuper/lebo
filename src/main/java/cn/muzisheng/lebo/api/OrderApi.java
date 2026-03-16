@@ -3,7 +3,6 @@ package cn.muzisheng.lebo.api;
 import cn.muzisheng.lebo.dto.OrderAddDTO;
 import cn.muzisheng.lebo.dto.OrderBossListDTO;
 import cn.muzisheng.lebo.dto.OrderListDTO;
-import cn.muzisheng.lebo.dto.OrderUpdateDTO;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.OrderService;
 import cn.muzisheng.lebo.vo.OrderDetailVO;

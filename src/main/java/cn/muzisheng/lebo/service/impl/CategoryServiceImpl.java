@@ -1,9 +1,7 @@
 package cn.muzisheng.lebo.service.impl;
 
 import cn.muzisheng.lebo.entity.Category;
-import cn.muzisheng.lebo.entity.Product;
 import cn.muzisheng.lebo.exception.CategoryException;
-import cn.muzisheng.lebo.exception.GeneralException;
 import cn.muzisheng.lebo.mapper.CategoryMapper;
 import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
@@ -14,6 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -35,6 +34,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     /**
      * 构造函数注入商品服务和历史操作服务
      */
+    @Lazy
     public CategoryServiceImpl(ProductService productService, HistoryOperationService historyOperationService) {
         this.productService = productService;
         this.historyOperationService = historyOperationService;

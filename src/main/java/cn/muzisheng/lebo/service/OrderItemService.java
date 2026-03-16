@@ -2,10 +2,11 @@ package cn.muzisheng.lebo.service;
 
 import cn.muzisheng.lebo.entity.OrderItem;
 import cn.muzisheng.lebo.exception.OrderException;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
-public interface OrderItemService {
+public interface OrderItemService extends IService<OrderItem> {
     /**
      * 创建
      * @param orderItem 订单商品信息

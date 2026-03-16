@@ -47,7 +47,8 @@ public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMap
             5, "后台系统登录",
             6, "商品分类添加",
             7, "商品分类修改",
-            8, "商品分类删除"
+            8, "商品分类删除",
+            9, "导入备份数据"
     );
 
     public HistoryOperationServiceImpl(UserService userService) {

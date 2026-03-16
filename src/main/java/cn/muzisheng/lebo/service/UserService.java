@@ -6,13 +6,13 @@ import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.vo.LoginVO;
 import cn.muzisheng.lebo.vo.UserUpdateVO;
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.http.ResponseEntity;
 
 /**
  * 用户服务接口
  */
-public interface UserService {
-
+public interface UserService extends IService<User> {
 
     ResponseEntity<Result<Boolean>> login(String code);
     ResponseEntity<Result<Boolean>> bossLogin(BossLoginDTO bossLoginDTO);

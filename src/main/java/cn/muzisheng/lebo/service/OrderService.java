@@ -3,16 +3,16 @@ package cn.muzisheng.lebo.service;
 import cn.muzisheng.lebo.dto.OrderAddDTO;
 import cn.muzisheng.lebo.dto.OrderBossListDTO;
 import cn.muzisheng.lebo.dto.OrderListDTO;
-import cn.muzisheng.lebo.dto.OrderUpdateDTO;
-import cn.muzisheng.lebo.entity.OrderItem;
+import cn.muzisheng.lebo.entity.Order;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.vo.OrderDetailVO;
 import cn.muzisheng.lebo.vo.OrderInfoVO;
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface OrderService {
+public interface OrderService extends IService<Order> {
     /**
      * 用户点击支付创建订单，订单状态为未支付，无需确认商品是否足够，前端已经对商品销售进行限制
      * 只需返回订单ID，即可在确认支付订单页面展示订单的商品信息

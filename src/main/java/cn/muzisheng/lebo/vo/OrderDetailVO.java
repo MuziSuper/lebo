@@ -2,7 +2,6 @@ package cn.muzisheng.lebo.vo;
 
 import cn.muzisheng.lebo.entity.Order;
 import cn.muzisheng.lebo.entity.OrderItem;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

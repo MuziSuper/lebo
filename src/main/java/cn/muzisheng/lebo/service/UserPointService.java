@@ -2,8 +2,9 @@ package cn.muzisheng.lebo.service;
 
 import cn.muzisheng.lebo.entity.UserPoint;
 import cn.muzisheng.lebo.exception.UserPointException;
+import com.baomidou.mybatisplus.extension.service.IService;
 
-public interface UserPointService {
+public interface UserPointService extends IService<UserPoint> {
     /**
      * 创建用户积分钱包
      * @param openid 用户openid

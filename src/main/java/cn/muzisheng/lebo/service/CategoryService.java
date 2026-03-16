@@ -1,12 +1,13 @@
 package cn.muzisheng.lebo.service;
 
 import cn.muzisheng.lebo.entity.Category;
-import org.springframework.http.ResponseEntity;
 import cn.muzisheng.lebo.model.Result;
+import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface CategoryService {
+public interface CategoryService extends IService<Category> {
     /**
      * 创建商品类目
      * @param categoryName 商品类目名称

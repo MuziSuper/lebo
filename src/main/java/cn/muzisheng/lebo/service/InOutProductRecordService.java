@@ -4,11 +4,12 @@ import cn.muzisheng.lebo.dto.InOutProductRecordSelectDTO;
 import cn.muzisheng.lebo.entity.InOutProductRecord;
 import cn.muzisheng.lebo.model.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface InOutProductRecordService {
+public interface InOutProductRecordService extends IService<InOutProductRecord> {
     /**
      * 获取所有商品出入库记录列表（分页），筛选条件有时间区间，商品名称，出入库类型, 商品ID
      * @param InOutProductRecordSelectDTO 筛选条件

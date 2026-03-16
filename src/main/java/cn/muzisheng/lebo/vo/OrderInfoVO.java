@@ -1,8 +1,6 @@
 package cn.muzisheng.lebo.vo;
 
 import cn.muzisheng.lebo.entity.Order;
-import cn.muzisheng.lebo.model.OrderOptionEnum;
-import cn.muzisheng.lebo.model.OrderTypeEnum;
 import lombok.Builder;
 import lombok.Data;
 

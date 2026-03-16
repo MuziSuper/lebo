@@ -2,7 +2,10 @@ package cn.muzisheng.lebo.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 订单关联单项商品

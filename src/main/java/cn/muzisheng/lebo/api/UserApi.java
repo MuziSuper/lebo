@@ -1,8 +1,8 @@
 
 package cn.muzisheng.lebo.api;
 
-import cn.muzisheng.lebo.dto.LoginDTO;
 import cn.muzisheng.lebo.dto.BossLoginDTO;
+import cn.muzisheng.lebo.dto.LoginDTO;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.UserService;
 import cn.muzisheng.lebo.vo.LoginVO;
@@ -27,9 +27,7 @@ public class UserApi {
 
     /**
      * 微信小程序登录接口
-     *
      * 通过微信登录 code 换取用户 openid、session_key和unionid, 并更新数据库中该用户的登录信息
-     *
      * @param jscode 微信登录凭证（由小程序端调用 wx.login() 获取）
      * @return 是否登录成功
      */
@@ -50,9 +48,7 @@ public class UserApi {
     }
     /**
      * 微信小程序注册接口
-     *
      * 通过微信登录 code 换取用户 openid、session_key和unionid，并携带LoginDTO更新数据库中该用户的登录信息
-     *
      * @param jscode 微信登录凭证（由小程序端调用 wx.login() 获取）
      * @param loginDTO 用户额外信息（如邀请码等）
      * @return 是否注册成功
@@ -74,7 +70,6 @@ public class UserApi {
 
     /**
      * 获取当前登录用户信息
-     *
      * 用户首次登录后，客户端会保存 token，在 token 有效期内再次进入小程序时，
      * 可调用此接口自动获取用户信息，无需重复登录
      *

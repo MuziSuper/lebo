@@ -35,6 +35,9 @@
 - [文件管理接口](#文件管理接口)
   - [上传文件](#上传文件)
   - [下载/查看文件](#下载查看文件)
+- [数据备份接口](#数据备份接口)
+  - [导出备份数据](#导出备份数据)
+  - [导入备份数据](#导入备份数据)
 
 ---
 
@@ -973,6 +976,100 @@
 **示例**:
 - 查看文件: `GET /files/abc.png?pictureCategory=icon`
 - 下载文件: `GET /files/download/abc.png?pictureCategory=icon`
+
+---
+
+## 数据备份接口
+
+**基础路径**: `/backup`
+
+### 导出备份数据
+
+导出全量业务数据，包括商品、类目、订单、订单项、用户、用户积分、出入库记录、积分记录。数据将以 JSON 格式压缩为 ZIP 文件下载。
+
+**业务逻辑**:
+1. 查询所有业务数据表
+2. 序列化为格式化的 JSON
+3. 压缩为 ZIP 文件
+4. 记录历史操作（type=3，手动备份数据）
+
+- **URL**: `/backup/export`
+- **Method**: `GET`
+- **认证**: 需要认证（Authorization token）
+
+**响应**:
+- Content-Type: `application/zip`
+- 文件名格式: `backup_yyyyMMdd_HHmmss.zip`
+
+**备份数据结构**:
+
+```json
+{
+  "products": [...],
+  "categories": [...],
+  "orders": [...],
+  "orderItems": [...],
+  "users": [...],
+  "userPoints": [...],
+  "inOutProductRecords": [...],
+  "pointRecords": [...]
+}
+```
+
+**响应示例**:
+
+成功时直接返回 ZIP 文件流，浏览器自动下载。
+
+---
+
+### 导入备份数据
+
+上传 ZIP 备份文件，将数据覆盖写入数据库。
+
+**业务逻辑**:
+1. 校验上传文件格式
+2. 解压 ZIP 提取 JSON
+3. 反序列化验证数据格式
+4. 在事务中执行：
+   - 清空现有数据表
+   - 批量插入备份数据
+5. 记录历史操作（type=9，导入备份数据）
+
+**安全性保障**:
+- 导入前先验证备份数据格式
+- 整个导入过程在事务中执行
+- 如果导入失败，事务自动回滚，原有数据不受影响
+
+- **URL**: `/backup/import`
+- **Method**: `POST`
+- **认证**: 需要认证（Authorization token）
+- **Content-Type**: `multipart/form-data`
+
+**请求参数**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| file | File | 是 | ZIP 格式的备份文件 |
+
+**响应示例**:
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": true
+}
+```
+
+**错误响应示例**:
+
+```json
+{
+  "code": 400,
+  "message": "请上传ZIP格式的备份文件",
+  "data": null
+}
+```
 
 ---
 

@@ -6,7 +6,6 @@ import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.StorageService;
 import cn.muzisheng.lebo.utils.RandomUtil;
-import cn.muzisheng.lebo.utils.UserThreadUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
