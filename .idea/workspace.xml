@@ -4,19 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="feat(订单): 实现订单积分结算功能&#10;&#10;- 新增订单结束时的积分计算和分配逻辑&#10;- 添加订单项查询接口支持字符串订单ID&#10;- 优化积分记录实体字段和注释&#10;&#10;refactor(积分): 重构用户积分服务&#10;&#10;- 完善积分钱包创建和更新逻辑&#10;- 增加积分变动记录和校验&#10;- 使用逻辑删除替代物理删除&#10;&#10;docs: 更新系统设计文档&#10;&#10;- 优化数据库表结构说明&#10;- 补充核心模块设计细节&#10;- 完善枚举定义和接口说明">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/mapper/HistoryOperationMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/HistoryOperationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/HistoryOperationServiceImpl.java" afterDir="false" />
+    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="feat: 新增历史操作记录功能&#10;&#10;- 实现商品和分类操作的历史记录&#10;- 添加分页查询历史操作接口&#10;- 修改出入库记录为分页查询">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/BackupApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/BackupDataDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/PointRecordAddDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/PointRecordListDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/BackupService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/BackupServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/PointRecordListVO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API接口文档.md" beforeDir="false" afterPath="$PROJECT_DIR$/API接口文档.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InOutProductRecordApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InOutProductRecordApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/InOutProductRecordSelectDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/InOutProductRecordSelectDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/historyOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/HistoryOperation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/OrderApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/OrderApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/UserApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/UserApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderAddDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderAddDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/OrderItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/mapper/CategoryMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/mapper/CategoryMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/param/ProductConsumeParam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/param/ProductConsumeParam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/CategoryService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InOutProductRecordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InOutProductRecordService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/CategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/CategoryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderItemService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/PointRecordService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/PointRecordService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserPointService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserPointService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/HistoryOperationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/HistoryOperationServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InOutProductRecordServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InOutProductRecordServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderDetailVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderDetailVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderInfoVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderInfoVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderItemVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderItemVO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/后端系分文档.md" beforeDir="false" afterPath="$PROJECT_DIR$/后端系分文档.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,46 +78,46 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "CODEINSIGHT_PRECOMMIT_ANALYSIS": "false",
-    "CodeFuse_applyCachedRules.once.366700735": "1",
-    "Docker.Dockerfile build.executor": "Run",
-    "JAR 应用程序.Lebo-1.0-SNAPSHOT.jar.executor": "Run",
-    "Maven.Lebo [clean].executor": "Run",
-    "Maven.Lebo [compile].executor": "Run",
-    "Maven.Lebo [package].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.LeboApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Applications/LocalGit/lebo/src/main/resources/static/icon",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "项目",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true",
-    "应用程序.StorageException.executor": "Run",
-    "应用程序.WechatApiCryptoUtils.executor": "Run"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;CODEINSIGHT_PRECOMMIT_ANALYSIS&quot;: &quot;false&quot;,
+    &quot;CodeFuse_applyCachedRules.once.366700735&quot;: &quot;1&quot;,
+    &quot;Docker.Dockerfile build.executor&quot;: &quot;Run&quot;,
+    &quot;JAR 应用程序.Lebo-1.0-SNAPSHOT.jar.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Lebo [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Lebo [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Lebo [package].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.LeboApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Applications/LocalGit/lebo/src/main/resources/static/icon&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.StorageException.executor&quot;: &quot;Run&quot;,
+    &quot;应用程序.WechatApiCryptoUtils.executor&quot;: &quot;Run&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -393,7 +415,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773394542341</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="feat: 新增历史操作记录功能&#10;&#10;- 实现商品和分类操作的历史记录&#10;- 添加分页查询历史操作接口&#10;- 修改出入库记录为分页查询">
+      <option name="closed" value="true" />
+      <created>1773632560724</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1773632560724</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -420,7 +450,8 @@
     <MESSAGE value="feat(订单): 实现订单取消和列表查询功能&#10;&#10;- 添加订单取消接口，支持超时检查&#10;- 实现用户和商家订单列表筛选查询&#10;- 优化订单支付和取消的事务处理&#10;&#10;feat(商品): 完善商品出入库记录功能&#10;&#10;- 实现单条和批量出入库记录&#10;- 添加库存变更记录和校验逻辑&#10;- 支持多种条件筛选查询记录&#10;&#10;refactor(分类): 优化分类服务事务处理&#10;&#10;- 添加事务注解确保数据一致性&#10;- 增强分类名称唯一性校验&#10;- 完善异常处理和日志记录" />
     <MESSAGE value="refactor(db): 优化数据库表结构和约束&#10;&#10;- 将category表的idx_name索引改为唯一索引uk_name&#10;- 调整表字段注释和格式统一&#10;- 添加product表的库存非负约束&#10;- 修改图片路径从/images/到/icon/和/avatar/" />
     <MESSAGE value="feat(订单): 实现订单积分结算功能&#10;&#10;- 新增订单结束时的积分计算和分配逻辑&#10;- 添加订单项查询接口支持字符串订单ID&#10;- 优化积分记录实体字段和注释&#10;&#10;refactor(积分): 重构用户积分服务&#10;&#10;- 完善积分钱包创建和更新逻辑&#10;- 增加积分变动记录和校验&#10;- 使用逻辑删除替代物理删除&#10;&#10;docs: 更新系统设计文档&#10;&#10;- 优化数据库表结构说明&#10;- 补充核心模块设计细节&#10;- 完善枚举定义和接口说明" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(订单): 实现订单积分结算功能&#10;&#10;- 新增订单结束时的积分计算和分配逻辑&#10;- 添加订单项查询接口支持字符串订单ID&#10;- 优化积分记录实体字段和注释&#10;&#10;refactor(积分): 重构用户积分服务&#10;&#10;- 完善积分钱包创建和更新逻辑&#10;- 增加积分变动记录和校验&#10;- 使用逻辑删除替代物理删除&#10;&#10;docs: 更新系统设计文档&#10;&#10;- 优化数据库表结构说明&#10;- 补充核心模块设计细节&#10;- 完善枚举定义和接口说明" />
+    <MESSAGE value="feat: 新增历史操作记录功能&#10;&#10;- 实现商品和分类操作的历史记录&#10;- 添加分页查询历史操作接口&#10;- 修改出入库记录为分页查询" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 新增历史操作记录功能&#10;&#10;- 实现商品和分类操作的历史记录&#10;- 添加分页查询历史操作接口&#10;- 修改出入库记录为分页查询" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
