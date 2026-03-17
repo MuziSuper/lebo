@@ -1,15 +1,15 @@
 package cn.muzisheng.lebo.api;
 
+import cn.muzisheng.lebo.dto.CategoryListDTO;
 import cn.muzisheng.lebo.entity.Category;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.CategoryService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/category")
@@ -47,11 +47,12 @@ public class CategoryApi {
     }
     /**
      * 获取商品类目列表
+     * @param categoryListDTO 商品类目列表查询条件
      * @return 商品类目列表
      */
     @RequestMapping("/list")
-    public ResponseEntity<Result<List<Category>>> list() {
-        return categoryService.categoryList();
+    public ResponseEntity<Result<IPage<Category>>> list(CategoryListDTO categoryListDTO) {
+        return categoryService.categoryList(categoryListDTO);
     }
 
 

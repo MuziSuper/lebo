@@ -1,11 +1,11 @@
 package cn.muzisheng.lebo.service;
 
+import cn.muzisheng.lebo.dto.CategoryListDTO;
 import cn.muzisheng.lebo.entity.Category;
 import cn.muzisheng.lebo.model.Result;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 public interface CategoryService extends IService<Category> {
     /**
@@ -31,7 +31,8 @@ public interface CategoryService extends IService<Category> {
 
     /**
      * 获取商品类目列表
+     * @param categoryListDTO 商品类目列表查询条件
      * @return 商品类目列表
      */
-    ResponseEntity<Result<List<Category>>> categoryList();
+    ResponseEntity<Result<IPage<Category>>> categoryList(CategoryListDTO categoryListDTO);
 }

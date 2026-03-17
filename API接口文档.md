@@ -750,13 +750,33 @@
 
 ### 获取商品类目列表
 
-获取所有商品类目列表。
+获取商品类目列表，支持分类名称模糊查询。当传入分页参数（pageNum 和 pageSize）时返回分页数据，不传分页参数时返回全部数据。
 
 - **URL**: `/category/list`
-- **Method**: `POST`/`GET`
+- **Method**: `POST`
 - **认证**: 需要认证（Authorization token）
 
-**请求参数**: 无
+**请求体** (可选):
+
+```json
+{
+  "pageNum": 1,
+  "pageSize": 10,
+  "name": "分类名称"
+}
+```
+
+**请求参数说明**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| pageNum | Integer | 否 | 页码（需与 pageSize 同时传入才生效） |
+| pageSize | Integer | 否 | 每页数量（需与 pageNum 同时传入才生效） |
+| name | String | 否 | 分类名称（模糊查询） |
+
+**分页机制说明**:
+- 当 `pageNum` 和 `pageSize` **都**传入且大于 0 时，返回分页数据
+- 当 `pageNum` 或 `pageSize` 任一不传或小于等于 0 时，返回全部数据（仍为分页格式）
 
 **响应示例**:
 
@@ -764,12 +784,18 @@
 {
   "code": 200,
   "message": "success",
-  "data": [
-    {
-      "id": 1,
-      "name": "类目名称"
-    }
-  ]
+  "data": {
+    "records": [
+      {
+        "id": 1,
+        "name": "类目名称"
+      }
+    ],
+    "total": 100,
+    "size": 10,
+    "current": 1,
+    "pages": 10
+  }
 }
 ```
 

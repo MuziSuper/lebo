@@ -1,5 +1,6 @@
 package cn.muzisheng.lebo.service.impl;
 
+import cn.muzisheng.lebo.dto.CategoryListDTO;
 import cn.muzisheng.lebo.entity.Category;
 import cn.muzisheng.lebo.exception.CategoryException;
 import cn.muzisheng.lebo.mapper.CategoryMapper;
@@ -9,6 +10,7 @@ import cn.muzisheng.lebo.service.CategoryService;
 import cn.muzisheng.lebo.service.HistoryOperationService;
 import cn.muzisheng.lebo.service.ProductService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
@@ -181,17 +183,50 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
-    public ResponseEntity<Result<List<Category>>> categoryList() {
-        // 创建查询条件：按分类名称升序排序
+    public ResponseEntity<Result<IPage<Category>>> categoryList(CategoryListDTO categoryListDTO) {
+        // 构建查询条件
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        
+        // 名称模糊查询
+        if (categoryListDTO != null && StringUtils.hasText(categoryListDTO.getName())) {
+            queryWrapper.like(Category::getName, categoryListDTO.getName().trim());
+        }
+        
+        // 按分类名称升序排序
         queryWrapper.orderByAsc(Category::getName);
 
-        // 查询所有分类
-        List<Category> categories = this.list(queryWrapper);
+        // 判断是否需要分页：当且仅当 pageNum 和 pageSize 都不为空时才分页
+        boolean needPaging = categoryListDTO != null 
+                && categoryListDTO.getPageNum() != null && categoryListDTO.getPageNum() > 0
+                && categoryListDTO.getPageSize() != null && categoryListDTO.getPageSize() > 0;
 
-        log.info("获取分类列表成功，size: {}", categories.size());
-        Response<List<Category>> result = new Response<>();
-        result.setData(categories);
-        return result.value();
+        if (needPaging) {
+            // 分页查询
+            int pageNum = categoryListDTO.getPageNum();
+            int pageSize = categoryListDTO.getPageSize();
+            com.baomidou.mybatisplus.extension.plugins.pagination.Page<Category> pageParam = 
+                    new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(pageNum, pageSize);
+            IPage<Category> resultPage = this.page(pageParam, queryWrapper);
+
+            log.info("获取分类列表成功（分页），pageNum: {}, pageSize: {}, total: {}", 
+                    pageNum, pageSize, resultPage.getTotal());
+            Response<IPage<Category>> result = new Response<>();
+            result.setData(resultPage);
+            return result.value();
+        } else {
+            // 查询所有数据，返回分页格式
+            List<Category> categories = this.list(queryWrapper);
+            
+            // 创建一个分页对象，包含所有数据
+            com.baomidou.mybatisplus.extension.plugins.pagination.Page<Category> allDataPage = 
+                    new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(1, categories.size());
+            allDataPage.setRecords(categories);
+            allDataPage.setTotal(categories.size());
+
+            log.info("获取分类列表成功（全部），total: {}", categories.size());
+            Response<IPage<Category>> result = new Response<>();
+            result.setData(allDataPage);
+            return result.value();
+        }
     }
 }
