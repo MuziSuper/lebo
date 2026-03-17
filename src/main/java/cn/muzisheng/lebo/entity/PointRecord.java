@@ -22,7 +22,6 @@ public class PointRecord {
     @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @TableField("id")
     private String id;
     
     /**

@@ -34,7 +34,7 @@ public class ProductApi {
      * @param productListDTO 查询参数（页码、每页数量、关键词、类目 ID、状态等）
      * @return 分页商品列表数据
      */
-    @GetMapping("/list")
+    @PostMapping("/list")
     public ResponseEntity<Result<IPage<ProductShowDTO>>> getProductList(@RequestBody(required = false) ProductListDTO productListDTO) {
         return productService.list(productListDTO);
     }

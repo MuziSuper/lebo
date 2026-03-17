@@ -75,7 +75,7 @@ public class OrderApi {
      * @return 订单ID
      */
     @PostMapping("/over")
-    public ResponseEntity<Result<Boolean>> orderOver(@RequestParam String orderId) {
+    public ResponseEntity<Result<Boolean>> orderOver(@RequestParam("orderId") String orderId) {
         return orderService.orderOver(orderId);
     }
 

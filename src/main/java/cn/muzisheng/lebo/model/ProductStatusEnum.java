@@ -1,11 +1,13 @@
 package cn.muzisheng.lebo.model;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import lombok.Getter;
 
+@Getter
 public enum ProductStatusEnum {
-    SELL(1, "SELL"),
-    SOLD_OUT(2, "SOLD_OUT"),
-   DELETED(3, "DELETE");
+    SELL(0, "SELL"),
+    SOLD_OUT(1, "SOLD_OUT"),
+   DELETED(2, "DELETE");
     @EnumValue
     private final Integer code;
     private final String description;
@@ -15,13 +17,6 @@ public enum ProductStatusEnum {
         this.description = description;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
     /**
      * 根据code获取枚举
      * @param code

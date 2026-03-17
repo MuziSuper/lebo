@@ -241,6 +241,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setOpenId(wxCodeSession.getOpenId());
         // 设置微信开放平台统一标识（跨应用）
         user.setUnionId(wxCodeSession.getUnionId());
+        // 设置微信会话密钥（用于后续与微信服务器交互）
+        user.setSessionKey(wxCodeSession.getSessionKey());
         // 记录当前时间为最后登录时间
         user.setLastLogin(LocalDateTime.now());
         // 初始状态设为"未激活"
@@ -262,7 +264,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         user.setStatus(AccountStatusEnum.ACTIVE);
         // 更新用户状态到数据库
-        if (!this.save(user)) {
+        if (!this.updateById(user)) {
             log.error("openid={}, 更新用户状态失败", wxCodeSession.getOpenId());
             throw new UserException("更新用户状态失败");
         }

@@ -473,7 +473,7 @@
 获取商品列表（分页），支持关键词、类目、状态等筛选条件。
 
 - **URL**: `/product/list`
-- **Method**: `GET`
+- **Method**: `POST`
 - **认证**: 需要认证（Authorization token）
 
 **请求体** (可选):

@@ -35,8 +35,8 @@ CREATE TABLE `category` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-    `open_id` varchar(255) NOT NULL COMMENT '微信openid',
-    `session_key` varchar(255) NOT NULL COMMENT '微信会话密钥',
+    `open_id` varchar(255) NOT NULL COMMENT '微信 openid',
+    `session_key` varchar(255) DEFAULT NULL COMMENT '微信会话密钥',
     `nick_name` varchar(255) NOT NULL COMMENT '用户昵称',
     `union_id` varchar(255) DEFAULT NULL COMMENT '微信unionid',
     `password` varchar(255) DEFAULT NULL COMMENT '登录密码',
@@ -158,10 +158,10 @@ DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
     `id` varchar(255) NOT NULL COMMENT '订单ID',
     `open_id` varchar(255) NOT NULL DEFAULT '' COMMENT '用户openid',
-    `total_amount` bigint NOT NULL COMMENT '订单总金额（单位：元）',
-    `pay_amount` bigint DEFAULT NULL COMMENT '实际支付金额（单位：元）',
-    `pay_type` tinyint NOT NULL COMMENT '支付方式 0:未知 1:微信 2:支付宝 3:积分',
-    `pay_option` tinyint NOT NULL COMMENT '支付状态 0:待支付 1:已支付 2:支付失败',
+    `total_amount` bigint NOT NULL DEFAULT '0' COMMENT '订单总金额（单位：元）',
+    `pay_amount` bigint NOT NULL DEFAULT '0' COMMENT '实际支付金额（单位：元）',
+    `pay_type` tinyint NOT NULL DEFAULT '0' COMMENT '支付方式 0:未知 1:微信 2:支付宝 3:积分',
+    `pay_option` tinyint NOT NULL DEFAULT '0' COMMENT '支付状态 0:待支付 1:已支付 2:支付失败',
     `pay_time` datetime(6) DEFAULT NULL COMMENT '支付时间',
     `create_time` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '订单创建时间',
     `end_time` datetime(6) DEFAULT NULL COMMENT '订单结束时间',
