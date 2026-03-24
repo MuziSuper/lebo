@@ -62,4 +62,9 @@ public class BackupDataDTO implements Serializable {
      * 所有积分记录
      */
     private List<PointRecord> pointRecords;
+    
+    /**
+     * 所有用户签到记录
+     */
+    private List<UserSignIn> userSignIns;
 }

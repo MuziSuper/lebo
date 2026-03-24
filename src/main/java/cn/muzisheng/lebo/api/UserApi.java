@@ -3,10 +3,13 @@ package cn.muzisheng.lebo.api;
 
 import cn.muzisheng.lebo.dto.BossLoginDTO;
 import cn.muzisheng.lebo.dto.LoginDTO;
+import cn.muzisheng.lebo.dto.UserListDTO;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.UserService;
 import cn.muzisheng.lebo.vo.LoginVO;
+import cn.muzisheng.lebo.vo.UserListVO;
 import cn.muzisheng.lebo.vo.UserUpdateVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +35,7 @@ public class UserApi {
      * @return 是否登录成功
      */
     @PostMapping("/login")
-    public ResponseEntity<Result<Boolean>> login(@RequestParam(name = "jscode") String jscode) {
+    public ResponseEntity<Result<Boolean>> login(@RequestParam String jscode) {
         return userService.login(jscode);
     }
 
@@ -90,5 +93,17 @@ public class UserApi {
     @PostMapping("/logout")
     public ResponseEntity<Result<Boolean>> logout() {
         return userService.logout();
+    }
+
+    /**
+     * 用户列表接口
+     * 支持按昵称模糊查询、手机号尾号四位查询、状态查询、性别查询
+     *
+     * @param userListDTO 查询条件
+     * @return 分页用户列表
+     */
+    @PostMapping("/list")
+    public ResponseEntity<Result<IPage<UserListVO>>> list(@RequestBody UserListDTO userListDTO) {
+        return userService.list(userListDTO);
     }
 }

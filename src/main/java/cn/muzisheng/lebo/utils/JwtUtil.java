@@ -72,7 +72,7 @@ public class JwtUtil {
      */
     public String generateToken(String openid) {
         // 生成UUID作为JWT ID
-        String uuid = RandomUtil.generateId();
+        String uuid = IdUtil.generateId();
         // 计算过期时间
         Date expireDate = Date.from(Instant.now().plusSeconds(JWT_EXPIRE));
         // 构建JWT

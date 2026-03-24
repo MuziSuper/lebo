@@ -26,6 +26,12 @@ public class Order {
     @TableField(value = "open_id")
     private String openId;
     /**
+     * 房间号
+     */
+    @Column(name = "home_number")
+    @TableField(value = "home_number")
+    private String homeNumber;
+    /**
      * 订单金额
      */
     @Column(name = "total_amount")
@@ -44,13 +50,13 @@ public class Order {
     @TableField(value = "pay_amount")
     private Long payAmount;
     /**
-     * 支付方式,1: 未支付, 2: 已支付,3: 支付失败, 4: 已退款，5: 已结束
+     * 支付状态,1: 未支付, 2: 已支付,3: 支付失败, 4: 已退款，5: 已结束
      */
     @Column(name = "pay_type")
     @TableField(value = "pay_type")
     private OrderTypeEnum payType;
     /**
-     * 支付状态
+     * 支付方式
      */
     @Column(name = "pay_option")
     @TableField(value = "pay_option")

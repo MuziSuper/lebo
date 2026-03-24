@@ -42,7 +42,7 @@ public class CategoryApi {
      * @return 是否删除成功
      */
     @RequestMapping("/delete")
-    public ResponseEntity<Result<Boolean>> delete(@RequestParam Long categoryId) {
+    public ResponseEntity<Result<Boolean>> delete(@RequestParam("id") Long categoryId) {
         return categoryService.delete(categoryId);
     }
     /**

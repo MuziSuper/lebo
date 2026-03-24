@@ -4,6 +4,7 @@ import cn.muzisheng.lebo.entity.UserPoint;
 import cn.muzisheng.lebo.exception.UserPointException;
 import cn.muzisheng.lebo.mapper.UserPointMapper;
 import cn.muzisheng.lebo.service.UserPointService;
+import cn.muzisheng.lebo.utils.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -12,6 +13,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Log4j2
 @Service
@@ -27,6 +30,7 @@ public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint
     @Transactional
     public UserPoint create(String openid, Long defaultPoint) throws UserPointException {
         UserPoint userPoint = new UserPoint();
+        userPoint.setId(IdUtil.generateUserPointId());
         userPoint.setOpenId(openid);
         userPoint.setAccumulatedPoint(defaultPoint);
         userPoint.setCurrentPoint(defaultPoint);
@@ -165,5 +169,20 @@ public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint
             throw new UserPointException("销毁用户积分钱包失败");
         }
         return true;
+    }
+    
+    /**
+     * 根据openid列表批量查询用户积分钱包
+     * @param openIds openid列表
+     * @return 用户积分钱包列表
+     */
+    @Override
+    public List<UserPoint> listByOpenIds(List<String> openIds) {
+        if (openIds == null || openIds.isEmpty()) {
+            return List.of();
+        }
+        QueryWrapper<UserPoint> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("open_id", openIds);
+        return this.list(queryWrapper);
     }
 }

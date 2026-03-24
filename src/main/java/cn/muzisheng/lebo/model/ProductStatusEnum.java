@@ -19,8 +19,8 @@ public enum ProductStatusEnum {
 
     /**
      * 根据code获取枚举
-     * @param code
-     * @return
+     * @param code 枚举code
+     * @return 枚举
      */
     public static ProductStatusEnum fromCode(Integer code) {
         for (ProductStatusEnum status : ProductStatusEnum.values()) {
@@ -33,7 +33,7 @@ public enum ProductStatusEnum {
 
     /**
      * 是否存在某code
-     * @param code
+     * @param code 枚举code
      * @return 存在返回true，不存在返回false
      */
     public static boolean contains(Integer code) {

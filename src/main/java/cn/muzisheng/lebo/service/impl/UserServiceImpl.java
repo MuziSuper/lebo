@@ -2,6 +2,7 @@ package cn.muzisheng.lebo.service.impl;
 
 import cn.muzisheng.lebo.dto.BossLoginDTO;
 import cn.muzisheng.lebo.dto.LoginDTO;
+import cn.muzisheng.lebo.dto.UserListDTO;
 import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.entity.UserPoint;
 import cn.muzisheng.lebo.exception.GeneralException;
@@ -17,16 +18,23 @@ import cn.muzisheng.lebo.service.WXService;
 import cn.muzisheng.lebo.utils.JwtUtil;
 import cn.muzisheng.lebo.utils.UserThreadUtil;
 import cn.muzisheng.lebo.vo.LoginVO;
+import cn.muzisheng.lebo.vo.UserListVO;
 import cn.muzisheng.lebo.vo.UserUpdateVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 用户服务实现
@@ -294,6 +302,66 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public User getUserByOpenId(String openid) {
         //   直接调用父类的getById方法，将openid作为主键进行查询
         return this.getById(openid);
+    }
+
+    @Override
+    public ResponseEntity<Result<IPage<UserListVO>>> list(UserListDTO userListDTO) {
+        Response<IPage<UserListVO>> response = new Response<>();
+        
+        // 构建分页参数
+        int pageNum = userListDTO.getPageNum() != null ? userListDTO.getPageNum() : 1;
+        int pageSize = userListDTO.getPageSize() != null ? userListDTO.getPageSize() : 10;
+        Page<User> page = new Page<>(pageNum, pageSize);
+        
+        // 构建查询条件
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        
+        // 昵称模糊查询
+        if (StringUtils.hasText(userListDTO.getNickName())) {
+            queryWrapper.like("nick_name", userListDTO.getNickName());
+        }
+        
+        // 手机号尾号四位查询
+        if (StringUtils.hasText(userListDTO.getPhoneSuffix())) {
+            queryWrapper.likeRight("phone", userListDTO.getPhoneSuffix());
+        }
+        
+        // 状态查询
+        if (userListDTO.getStatus() != null) {
+            queryWrapper.eq("status", userListDTO.getStatus());
+        }
+        
+        // 性别查询
+        if (userListDTO.getGender() != null) {
+            queryWrapper.eq("gender", userListDTO.getGender());
+        }
+        
+        // 按创建时间倒序
+        queryWrapper.orderByDesc("gmt_created");
+        
+        // 执行分页查询
+        IPage<User> userPage = this.page(page, queryWrapper);
+        List<User> users = userPage.getRecords();
+        
+        // 批量查询用户积分，避免N+1问题
+        List<String> openIds = users.stream()
+                .map(User::getOpenId)
+                .collect(Collectors.toList());
+        
+        Map<String, UserPoint> userPointMap = Map.of();
+        if (!openIds.isEmpty()) {
+            List<UserPoint> userPoints = userPointService.listByOpenIds(openIds);
+            userPointMap = userPoints.stream()
+                    .collect(Collectors.toMap(UserPoint::getOpenId, up -> up, (a, b) -> a));
+        }
+        
+        // 转换为VO
+        final Map<String, UserPoint> finalUserPointMap = userPointMap;
+        IPage<UserListVO> voPage = userPage.convert(user -> 
+                UserListVO.of(user, finalUserPointMap.get(user.getOpenId())));
+        
+        response.setData(voPage);
+        return response.value();
     }
 }
 

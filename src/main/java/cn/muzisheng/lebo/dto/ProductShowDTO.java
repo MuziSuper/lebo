@@ -21,7 +21,7 @@ public class ProductShowDTO {
          */
         private String description;
         /**
-         * 商品图片地址
+         * 商品图片名
          */
         private String image;
         /**
@@ -45,10 +45,6 @@ public class ProductShowDTO {
          */
         private Integer salePrice;
         /**
-         * 商品会员价格
-         */
-        private Integer vipPrice;
-        /**
          * 商品库存
          */
         private Long storage;
@@ -61,6 +57,10 @@ public class ProductShowDTO {
          * 是否可积分兑换
          */
         private Boolean isPointConvert;
+        /**
+         * 兑换积分
+         */
+        private Long creditsExchange;
         /**
          * 将Product转为ProductShowDTO
          * @param product
@@ -80,6 +80,7 @@ public class ProductShowDTO {
                         .storage(product.getStorage())
                         .point(product.getPoint())
                         .isPointConvert(product.getIsPointConvert())
+                        .creditsExchange(product.getCreditsExchange())
                         .build();
         }
 }

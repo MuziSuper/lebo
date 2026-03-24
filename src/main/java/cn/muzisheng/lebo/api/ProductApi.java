@@ -7,6 +7,7 @@ import cn.muzisheng.lebo.dto.ProductListDTO;
 import cn.muzisheng.lebo.dto.ProductShowDTO;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.ProductService;
+import cn.muzisheng.lebo.vo.InoutProductDashBoardVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -74,7 +75,16 @@ public class ProductApi {
      * @return 删除结果（true/false）
      */
     @PostMapping("/delete")
-    public ResponseEntity<Result<Boolean>> deleteProduct(@RequestParam("id") Long id) {
+    public ResponseEntity<Result<Boolean>> deleteProduct(@RequestParam("id") String id) {
         return productService.delete(id);
+    }
+    /**
+     * 商户出入库大盘接口，获取昨日零点到今日零点的出入库数据量和当前库存总数量和金额
+     * @return 入出库数据量和当前库存总数量和金额
+     */
+    @GetMapping("/dashboard")
+    @ResponseBody
+    public ResponseEntity<Result<InoutProductDashBoardVO>> getInoutDashboard() {
+        return productService.getInoutDashboard();
     }
 }

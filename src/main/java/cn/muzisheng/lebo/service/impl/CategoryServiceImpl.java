@@ -159,8 +159,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
         // 检查分类下是否有商品（业务规则：有商品不能删除）
         if (productService.existByCategoryId(categoryId)) {
-            log.error("删除分类失败，分类下存在商品，无法删除，categoryId: {}", categoryId);
-            throw new CategoryException("删除分类失败，分类下存在商品，无法删除：" + categoryId);
+            log.error("删除分类失败，分类下存在商品，categoryId: {}", categoryId);
+            throw new CategoryException("删除分类失败，分类下存在商品");
         }
 
         // 删除分类

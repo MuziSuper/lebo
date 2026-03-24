@@ -3,7 +3,10 @@ package cn.muzisheng.lebo.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -21,7 +24,6 @@ public class PointRecord {
      */
     @Column(name = "id")
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     
     /**

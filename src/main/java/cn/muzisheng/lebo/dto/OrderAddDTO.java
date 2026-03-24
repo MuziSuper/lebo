@@ -11,6 +11,10 @@ public class OrderAddDTO {
      */
     private String orderId;
     /**
+     * 房间号
+     */
+    private String homeNumber;
+    /**
      * 支付方式，0: 线下收款, 1: 微信，2: 支付宝
      */
     private Integer orderOptionCode;

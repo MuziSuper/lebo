@@ -14,6 +14,10 @@ public class OrderInfoVO {
      */
     private String id;
     /**
+     * 房间号
+     */
+    private String homeNumber;
+    /**
      * 订单金额
      */
     private Long totalAmount;
@@ -44,6 +48,7 @@ public class OrderInfoVO {
     public static OrderInfoVO fromOrder(Order order) {
         return OrderInfoVO.builder()
                 .id(order.getId())
+                .homeNumber(order.getHomeNumber())
                 .totalAmount(order.getTotalAmount())
                 .payAmount(order.getPayAmount())
                 .payType(order.getPayType().getCode())

@@ -4,7 +4,7 @@ HELP.md
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 src/main/resources/test.properties
-/log/
+/log
 /logs
 ### STS ###
 .apt_generated

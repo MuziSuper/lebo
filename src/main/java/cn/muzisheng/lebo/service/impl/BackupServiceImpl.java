@@ -46,6 +46,7 @@ public class BackupServiceImpl implements BackupService {
     private final InOutProductRecordService inOutProductRecordService;
     private final PointRecordService pointRecordService;
     private final HistoryOperationService historyOperationService;
+    private final UserSignInService userSignInService;
     private final ObjectMapper objectMapper;
     
     // 批量插入每批次数量
@@ -59,7 +60,8 @@ public class BackupServiceImpl implements BackupService {
                              UserPointService userPointService,
                              InOutProductRecordService inOutProductRecordService,
                              PointRecordService pointRecordService,
-                             HistoryOperationService historyOperationService) {
+                             HistoryOperationService historyOperationService,
+                             UserSignInService userSignInService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.orderService = orderService;
@@ -69,6 +71,7 @@ public class BackupServiceImpl implements BackupService {
         this.inOutProductRecordService = inOutProductRecordService;
         this.pointRecordService = pointRecordService;
         this.historyOperationService = historyOperationService;
+        this.userSignInService = userSignInService;
         this.objectMapper = new ObjectMapper();
         // 注册Java 8时间模块，支持LocalDateTime序列化
         this.objectMapper.registerModule(new JavaTimeModule());
@@ -101,7 +104,10 @@ public class BackupServiceImpl implements BackupService {
         // 8. 全量查询所有积分记录
         List<PointRecord> pointRecords = pointRecordService.list(new LambdaQueryWrapper<>());
         
-        // 9. 组装备份数据DTO
+        // 9. 全量查询所有用户签到记录
+        List<UserSignIn> userSignIns = userSignInService.list(new LambdaQueryWrapper<>());
+        
+        // 10. 组装备份数据DTO
         BackupDataDTO backupData = BackupDataDTO.builder()
                 .products(products)
                 .categories(categories)
@@ -111,6 +117,7 @@ public class BackupServiceImpl implements BackupService {
                 .userPoints(userPoints)
                 .inOutProductRecords(inOutProductRecords)
                 .pointRecords(pointRecords)
+                .userSignIns(userSignIns)
                 .build();
         
         // 10. 序列化为JSON字符串
@@ -166,7 +173,7 @@ public class BackupServiceImpl implements BackupService {
             throw new GeneralException("备份数据为空");
         }
         
-        log.info("开始导入备份数据，商品:{} 类目:{} 订单:{} 订单项:{} 用户:{} 用户积分:{} 出入库记录:{} 积分记录:{}",
+        log.info("开始导入备份数据，商品:{} 类目:{} 订单:{} 订单项:{} 用户:{} 用户积分:{} 出入库记录:{} 积分记录:{} 签到记录:{}",
                 backupData.getProducts() != null ? backupData.getProducts().size() : 0,
                 backupData.getCategories() != null ? backupData.getCategories().size() : 0,
                 backupData.getOrders() != null ? backupData.getOrders().size() : 0,
@@ -174,7 +181,8 @@ public class BackupServiceImpl implements BackupService {
                 backupData.getUsers() != null ? backupData.getUsers().size() : 0,
                 backupData.getUserPoints() != null ? backupData.getUserPoints().size() : 0,
                 backupData.getInOutProductRecords() != null ? backupData.getInOutProductRecords().size() : 0,
-                backupData.getPointRecords() != null ? backupData.getPointRecords().size() : 0);
+                backupData.getPointRecords() != null ? backupData.getPointRecords().size() : 0,
+                backupData.getUserSignIns() != null ? backupData.getUserSignIns().size() : 0);
         
         // 5. 清空并覆盖写入各表数据
         productService.remove(new LambdaQueryWrapper<>());
@@ -185,8 +193,9 @@ public class BackupServiceImpl implements BackupService {
         userPointService.remove(new LambdaQueryWrapper<>());
         inOutProductRecordService.remove(new LambdaQueryWrapper<>());
         pointRecordService.remove(new LambdaQueryWrapper<>());
+        userSignInService.remove(new LambdaQueryWrapper<>());
         
-        // 批量插入备份数据（按依赖顺序：类目 -> 商品 -> 用户 -> 用户积分 -> 订单 -> 订单项 -> 出入库记录 -> 积分记录）
+        // 批量插入备份数据（按依赖顺序：类目 -> 商品 -> 用户 -> 用户积分 -> 订单 -> 订单项 -> 出入库记录 -> 积分记录 -> 签到记录）
         // 批量插入类目
         if (backupData.getCategories() != null && !backupData.getCategories().isEmpty()) {
             categoryService.saveBatch(backupData.getCategories(), BATCH_SIZE);
@@ -218,6 +227,10 @@ public class BackupServiceImpl implements BackupService {
         // 批量插入积分记录
         if (backupData.getPointRecords() != null && !backupData.getPointRecords().isEmpty()) {
             pointRecordService.saveBatch(backupData.getPointRecords(), BATCH_SIZE);
+        }
+        // 批量插入签到记录
+        if (backupData.getUserSignIns() != null && !backupData.getUserSignIns().isEmpty()) {
+            userSignInService.saveBatch(backupData.getUserSignIns(), BATCH_SIZE);
         }
         
         // 6. 记录导入备份历史操作

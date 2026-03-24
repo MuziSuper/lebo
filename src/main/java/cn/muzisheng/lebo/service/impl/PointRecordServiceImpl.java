@@ -7,6 +7,7 @@ import cn.muzisheng.lebo.mapper.PointRecordMapper;
 import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.PointRecordService;
+import cn.muzisheng.lebo.utils.IdUtil;
 import cn.muzisheng.lebo.utils.UserThreadUtil;
 import cn.muzisheng.lebo.vo.PointRecordListVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -60,6 +61,7 @@ public class PointRecordServiceImpl extends ServiceImpl<PointRecordMapper, Point
 
         // 构建积分记录实体
         PointRecord pointRecord = new PointRecord();
+        pointRecord.setId(IdUtil.generatePointRecordId());
         pointRecord.setOpenId(openId);
         pointRecord.setOrderId(pointRecordAddDTO.getOrderId());
         pointRecord.setDescription(pointRecordAddDTO.getDescription());

@@ -15,11 +15,6 @@ public class PointRecordListVO {
     private String id;
 
     /**
-     * 用户openid
-     */
-    private String openId;
-
-    /**
      * 关联订单ID
      */
     private String orderId;

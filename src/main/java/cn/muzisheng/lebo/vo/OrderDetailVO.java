@@ -16,6 +16,10 @@ public class OrderDetailVO {
      */
     private String id;
     /**
+     * 房间号
+     */
+    private String homeNumber;
+    /**
      * 订单金额
      */
     private Long totalAmount;
@@ -50,6 +54,7 @@ public class OrderDetailVO {
     public static OrderDetailVO fromOrder(Order order, List<OrderItem> orderItems) {
         OrderDetailVO orderDetailVO = new OrderDetailVO();
         orderDetailVO.setId(order.getId());
+        orderDetailVO.setHomeNumber(order.getHomeNumber());
         orderDetailVO.setTotalAmount(order.getTotalAmount());
         orderDetailVO.setPayAmount(order.getPayAmount());
         orderDetailVO.setPayType(order.getPayType().getCode());

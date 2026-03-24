@@ -9,6 +9,7 @@ import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.HistoryOperationService;
 import cn.muzisheng.lebo.service.UserService;
+import cn.muzisheng.lebo.utils.IdUtil;
 import cn.muzisheng.lebo.utils.UserThreadUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -42,13 +43,13 @@ public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMap
             0, "商品添加",
             1, "商品修改",
             2, "商品删除",
-            3, "手动备份数据",
-            4, "自动备份数据",
-            5, "后台系统登录",
-            6, "商品分类添加",
-            7, "商品分类修改",
-            8, "商品分类删除",
-            9, "导入备份数据"
+            3, "手动备份",
+            4, "自动备份",
+            5, "系统登录",
+            6, "类目添加",
+            7, "类目修改",
+            8, "类目删除",
+            9, "导入备份"
     );
 
     public HistoryOperationServiceImpl(UserService userService) {
@@ -76,6 +77,7 @@ public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMap
 
         // 构建历史操作记录
         HistoryOperation historyOperation = HistoryOperation.builder()
+                .id(IdUtil.generateHistoryOperationId())
                 .type(type)
                 .content(content)
                 .operatorId(operatorId)

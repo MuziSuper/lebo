@@ -3,6 +3,7 @@ package cn.muzisheng.lebo.dto;
 import cn.muzisheng.lebo.entity.Product;
 import cn.muzisheng.lebo.exception.ProductException;
 import cn.muzisheng.lebo.model.ProductStatusEnum;
+import cn.muzisheng.lebo.utils.IdUtil;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 
@@ -65,8 +66,15 @@ public class ProductAddDTO {
      * 是否可积分兑换
      */
     private Boolean isPointConvert;
+    /**
+     * 兑换积分
+     */
+    private Long creditsExchange;
     public Product toProduct() {
-        if (!ProductStatusEnum.contains(status)) {
+        if (id==null){
+            id = IdUtil.generateProductId();
+        }
+        if (status!=null&&!ProductStatusEnum.contains(status)) {
             log.error("商品状态不存在, status: {}", status);
             throw new ProductException("商品状态不存在, status: " + status);
         }
@@ -85,6 +93,7 @@ public class ProductAddDTO {
                 .costPrice(costPrice)
                 .point(point)
                 .isPointConvert(isPointConvert)
+                .creditsExchange(creditsExchange)
                 .build();
     }
 

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @RestController
 public class GeneralApi {
 
@@ -119,4 +120,5 @@ public class GeneralApi {
         return storageService.store(file, pictureCategory);
     }
 
+    
 }

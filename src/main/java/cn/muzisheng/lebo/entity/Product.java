@@ -4,7 +4,10 @@ import cn.muzisheng.lebo.handler.ProductStatusTypeHandler;
 import cn.muzisheng.lebo.model.ProductStatusEnum;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,8 +22,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
+    /**
+     * 商品ID,手动生成,格式：PRO_yyyyMMddHHmmss + 4位序列号
+     * 示例：PRO_202506021103020001
+     * 线程安全，每秒最多生成9999个商品ID
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     /**
      * 商品名称
@@ -90,6 +97,12 @@ public class Product {
     @Column(name = "`is_point_convert`")
     @TableField(value = "is_point_convert")
     private Boolean isPointConvert;
+    /**
+     * 兑换一单位积分
+     */
+    @Column(name = "`credits_exchange`")
+    @TableField(value = "credits_exchange")
+    private Long creditsExchange;
     @Column(name = "gmt_created")
     @TableField(value = "gmt_created",fill = FieldFill.INSERT)
     private LocalDateTime gmtCreated;

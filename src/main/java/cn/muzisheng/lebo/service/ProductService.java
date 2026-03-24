@@ -7,6 +7,7 @@ import cn.muzisheng.lebo.dto.ProductShowDTO;
 import cn.muzisheng.lebo.entity.Product;
 import cn.muzisheng.lebo.exception.ProductException;
 import cn.muzisheng.lebo.model.Result;
+import cn.muzisheng.lebo.vo.InoutProductDashBoardVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +62,7 @@ public interface ProductService extends IService<Product> {
      * @param id 商品id
      * @return 删除结果
      */
-    ResponseEntity<Result<Boolean>> delete(Long id);
+    ResponseEntity<Result<Boolean>> delete(String id);
 
     /**
      * 根据类目ID查看是否存在商品
@@ -69,5 +70,9 @@ public interface ProductService extends IService<Product> {
      * @return 商品详情
      */
     boolean existByCategoryId(Long categoryId);
-
+    /**
+     * 商户出入库大盘接口，获取昨日零点到今日零点的出入库数据量和当前库存总数量和金额
+     * @return 入出库数据量和当前库存总数量和金额
+     */
+    ResponseEntity<Result<InoutProductDashBoardVO>> getInoutDashboard();
 }

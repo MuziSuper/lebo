@@ -1,9 +1,9 @@
 package cn.muzisheng.lebo.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;
@@ -17,11 +17,11 @@ import java.time.LocalDateTime;
 @Builder
 public class HistoryOperation {
     /**
-     * 记录ID,递增
+     * 记录ID，格式：HIS_yyyyMMddHHmmss + 4位序列号
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @TableId(type = IdType.INPUT)
+    private String id;
     /**
      * 操作内容
      */
@@ -55,4 +55,3 @@ public class HistoryOperation {
 
 
 }
-

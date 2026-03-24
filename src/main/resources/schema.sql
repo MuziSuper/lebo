@@ -22,13 +22,13 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
-    `id` bigint NOT NULL AUTO_INCREMENT COMMENT '分类ID',
+    `id` bigint NOT NULL AUTO_INCREMENT COMMENT '分类 ID',
     `name` varchar(255) NOT NULL DEFAULT '' COMMENT '分类名称',
     `gmt_created` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
     `gmt_modified` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品分类表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品分类表' AUTO_INCREMENT=1;
 
 -- ----------------------------
 -- Table structure for user
@@ -116,6 +116,7 @@ CREATE TABLE `product` (
     `cost_price` int NOT NULL DEFAULT '0' COMMENT '成本价格（单位：元）',
     `point` int NOT NULL DEFAULT '0' COMMENT '购买商品获得积分',
     `is_point_convert` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否支持积分兑换 0:否 1:是',
+    `credits_exchange` bigint DEFAULT NULL COMMENT '兑换所需积分',
     `gmt_created` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
     `gmt_modified` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
     `is_deleted` bit(1) NOT NULL DEFAULT b'0' COMMENT '逻辑删除 0:未删除 1:已删除',
@@ -134,7 +135,7 @@ CREATE TABLE `product` (
 -- ----------------------------
 DROP TABLE IF EXISTS `in_out_product_record`;
 CREATE TABLE `in_out_product_record` (
-    `id` varchar(255) NOT NULL COMMENT '记录ID(UUID)',
+    `id` varchar(255) NOT NULL COMMENT '记录ID，格式：INOUT_yyyyMMddHHmmss + 4位序列号',
     `product_name` varchar(255) DEFAULT '' COMMENT '商品名称',
     `product_id` varchar(255) NOT NULL DEFAULT '' COMMENT '商品ID',
     `description` varchar(500) DEFAULT '' COMMENT '出入库描述',
@@ -158,6 +159,7 @@ DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
     `id` varchar(255) NOT NULL COMMENT '订单ID',
     `open_id` varchar(255) NOT NULL DEFAULT '' COMMENT '用户openid',
+    `home_number` varchar(255) DEFAULT NULL COMMENT '房间号',
     `total_amount` bigint NOT NULL DEFAULT '0' COMMENT '订单总金额（单位：元）',
     `pay_amount` bigint NOT NULL DEFAULT '0' COMMENT '实际支付金额（单位：元）',
     `pay_type` tinyint NOT NULL DEFAULT '0' COMMENT '支付方式 0:未知 1:微信 2:支付宝 3:积分',
@@ -180,9 +182,9 @@ CREATE TABLE `order` (
 -- ----------------------------
 DROP TABLE IF EXISTS `order_item`;
 CREATE TABLE `order_item` (
-    `id` varchar(255) NOT NULL COMMENT '订单项ID',
-    `order_id` varchar(255) NOT NULL DEFAULT '' COMMENT '订单ID',
-    `product_id` varchar(255) NOT NULL DEFAULT '' COMMENT '商品ID',
+    `id` varchar(255) NOT NULL COMMENT '订单项 ID',
+    `order_id` varchar(255) NOT NULL DEFAULT '' COMMENT '订单 ID',
+    `product_id` varchar(255) NOT NULL DEFAULT '' COMMENT '商品 ID',
     `product_name` varchar(255) NOT NULL DEFAULT '' COMMENT '商品名称',
     `one_price` int NOT NULL DEFAULT '0' COMMENT '单价（单位：元）',
     `quantity` bigint NOT NULL DEFAULT '0' COMMENT '购买数量',
@@ -192,6 +194,39 @@ CREATE TABLE `order_item` (
     KEY `idx_order_id` (`order_id`),
     KEY `idx_product_id` (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单商品关联表';
+
+-- ----------------------------
+-- Table structure for history_operation
+-- ----------------------------
+DROP TABLE IF EXISTS `history_operation`;
+CREATE TABLE `history_operation` (
+    `id` varchar(255) NOT NULL COMMENT '操作记录ID，格式：HIS_yyyyMMddHHmmss + 4位序列号',
+    `content` varchar(500) NOT NULL DEFAULT '' COMMENT '操作内容',
+    `type` tinyint NOT NULL COMMENT '操作类型 0:商品添加 1:商品修改 2:商品删除 3:手动备份 4:自动备份 5:后台登录 6:分类添加 7:分类修改 8:分类删除',
+    `operator_id` varchar(255) DEFAULT '' COMMENT '操作人 ID',
+    `operator_name` varchar(255) DEFAULT '' COMMENT '操作人名称',
+    `time` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '操作时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_type` (`type`),
+    KEY `idx_time` (`time`),
+    KEY `idx_operator_id` (`operator_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='历史操作记录表';
+
+-- ----------------------------
+-- Table structure for user_sign_in
+-- ----------------------------
+DROP TABLE IF EXISTS `user_sign_in`;
+CREATE TABLE `user_sign_in` (
+    `id` varchar(255) NOT NULL COMMENT '签到记录ID',
+    `open_id` varchar(255) NOT NULL COMMENT '用户openid',
+    `last_sign_date` date DEFAULT NULL COMMENT '最近一次签到日期',
+    `continuous_days` int NOT NULL DEFAULT '1' COMMENT '连续签到天数',
+    `gmt_created` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
+    `gmt_modified` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_open_id` (`open_id`),
+    KEY `idx_last_sign_date` (`last_sign_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户签到记录表';
 
 SET FOREIGN_KEY_CHECKS = 1;
 

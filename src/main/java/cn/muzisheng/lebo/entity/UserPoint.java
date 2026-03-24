@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 public class UserPoint {
     /**
-     * 主键
+     * 主键,UUID格式
      */
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

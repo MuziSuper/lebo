@@ -67,4 +67,9 @@ public class ExceptionApi {
         ExceptionResponse response = new ExceptionResponse(Constant.ORDER_EXCEPTION.getCode(), e.getMessage());
         return new ResponseEntity<>(response, Constant.ORDER_EXCEPTION.getHttpStatus());
     }
+    @ExceptionHandler(CategoryException.class)
+    public ResponseEntity<ExceptionResponse> handleException(CategoryException e) {
+        ExceptionResponse response = new ExceptionResponse(Constant.CATEGORY_EXCEPTION.getCode(), e.getMessage());
+        return new ResponseEntity<>(response, Constant.CATEGORY_EXCEPTION.getHttpStatus());
+    }
 }

@@ -15,6 +15,8 @@ import cn.muzisheng.lebo.param.ProductConsumeParam;
 import cn.muzisheng.lebo.service.HistoryOperationService;
 import cn.muzisheng.lebo.service.InOutProductRecordService;
 import cn.muzisheng.lebo.service.ProductService;
+import cn.muzisheng.lebo.utils.IdUtil;
+import cn.muzisheng.lebo.vo.InoutProductDashBoardVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +47,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     public ResponseEntity<Result<IPage<ProductShowDTO>>> list(ProductListDTO productListDTO) {
-        int pageNum = Optional.ofNullable(productListDTO).map(ProductListDTO::getPageNum).orElse(1);
-        int pageSize = Optional.ofNullable(productListDTO).map(ProductListDTO::getPageSize).orElse(10);
+        Integer pageNum = Optional.ofNullable(productListDTO).map(ProductListDTO::getPageNum).orElse(null);
+        Integer pageSize = Optional.ofNullable(productListDTO).map(ProductListDTO::getPageSize).orElse(null);
         String keyword = Optional.ofNullable(productListDTO).map(ProductListDTO::getKeyword).orElse(null);
         Long categoryId = Optional.ofNullable(productListDTO).map(ProductListDTO::getCategoryId).orElse(null);
         Integer statusCode = Optional.ofNullable(productListDTO).map(ProductListDTO::getStatus).orElse(null);
@@ -64,21 +67,34 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                 throw new ProductException("商品状态不存在, status: " + statusCode);
             }
         }
-        Page<Product> page = new Page<>(pageNum, pageSize);
-        Page<Product> productPage = this.page(page, queryWrapper);
-        // 将 Product 转换为 ProductShowDTO
-        List<ProductShowDTO> dtoList = productPage.getRecords().stream()
-                .map(ProductShowDTO::fromProduct)
-                .toList();
-        IPage<ProductShowDTO> dtoPage = new Page<>(pageNum, pageSize, productPage.getTotal());
-        dtoPage.setRecords(dtoList);
+        
+        List<Product> products;
+        IPage<ProductShowDTO> dtoPage;
+        
+        if (pageNum == null || pageSize == null) {
+            products = this.list(queryWrapper);
+            List<ProductShowDTO> dtoList = products.stream()
+                    .map(ProductShowDTO::fromProduct)
+                    .toList();
+            dtoPage = new Page<>(1, products.size(), products.size());
+            dtoPage.setRecords(dtoList);
+        } else {
+            Page<Product> page = new Page<>(pageNum, pageSize);
+            Page<Product> productPage = this.page(page, queryWrapper);
+            List<ProductShowDTO> dtoList = productPage.getRecords().stream()
+                    .map(ProductShowDTO::fromProduct)
+                    .toList();
+            dtoPage = new Page<>(pageNum, pageSize, productPage.getTotal());
+            dtoPage.setRecords(dtoList);
+        }
+        
         Response<IPage<ProductShowDTO>> response = new Response<>();
         response.setData(dtoPage);
         return response.value();
 
     }
 
-
+    
     @Override
     public ResponseEntity<Result<Boolean>> add(ProductAddDTO productAddDTO) {
         Response<Boolean> response = new Response<>();
@@ -98,9 +114,16 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Response<Boolean> response = new Response<>();
         UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
         setUpdateWrapper(updateWrapper,productAddDTO);
+            
+        // 检查是否有设置任何更新字段
+        if (updateWrapper.getParamNameValuePairs().isEmpty()) {
+            log.error("更新商品失败，没有可更新的字段，product_id: {}", productAddDTO.getId());
+            throw new ProductException("更新商品失败，没有可更新的字段");
+        }
+            
         if(!this.update(updateWrapper)){
-            log.error("更新商品失败, product_id: "+productAddDTO.getId());
-            throw new ProductException("更新商品失败, product_id: "+productAddDTO.getId());
+            log.error("更新商品失败，product_id: "+productAddDTO.getId());
+            throw new ProductException("更新商品失败，product_id: "+productAddDTO.getId());
         }
         // 记录历史操作：商品修改 (type=1)
         String productName = Optional.ofNullable(productAddDTO.getName())
@@ -221,10 +244,12 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         
         // 创建出入库记录
         InOutProductRecord record = InOutProductRecord.builder()
+                .id(IdUtil.generateInOutRecordId())
                 .productId(productId)
                 .productName(product.getName())
                 .number(Math.abs(inOutnumber))  // 记录为正数
                 .remainNumber(newNumber)
+                .description(productInOutDTO.getDescription())
                 .type(inOutnumber > 0 ? 1 : 2)  // 1:入库, 2:出库
                 .time(java.time.LocalDateTime.now())
                 .build();
@@ -333,6 +358,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         for (ProductInOutDTO dto : productInOutDTOList) {
             Product product = productMap.get(dto.getProductId());
             InOutProductRecord record = InOutProductRecord.builder()
+                    .id(IdUtil.generateInOutRecordId())
                     .productId(dto.getProductId())
                     .productName(product.getName())
                     .number(Math.abs(dto.getNumber()))  // 记录为正数
@@ -381,7 +407,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      */
     @Override
     @Transactional(rollbackFor = ProductException.class,isolation = Isolation.REPEATABLE_READ)
-    public ResponseEntity<Result<Boolean>> delete(Long id) {
+    public ResponseEntity<Result<Boolean>> delete(String id) {
         Response<Boolean> response = new Response<>();
         Product existProduct = this.getById(id);
         if (existProduct == null) {
@@ -426,5 +452,75 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             throw new ProductException("类目ID不能为空");
         }
         return this.count(new QueryWrapper<Product>().eq("category_id", categoryId))>0;
+    }
+    /**
+     * 商户出入库大盘接口，获取昨日零点到今日零点的出入库数据量和当前库存总数量和金额
+     * @return 入出库数据量和当前库存总数量和金额
+     */
+    public ResponseEntity<Result<InoutProductDashBoardVO>> getInoutDashboard(){
+        Response<InoutProductDashBoardVO> response = new Response<>();
+        
+        try {
+            // 获取昨日零点和今日零点
+            LocalDateTime todayStart = LocalDateTime.now().toLocalDate().atStartOfDay();
+            LocalDateTime yesterdayStart = todayStart.minusDays(1);
+            
+            // 查询昨日零点到今日零点的入库记录（type=1）
+            QueryWrapper<InOutProductRecord> inWrapper = new QueryWrapper<>();
+            inWrapper.eq("type", 1)
+                     .ge("time", yesterdayStart)
+                     .lt("time", todayStart);
+            List<InOutProductRecord> inRecords = inOutProductRecordService.list(inWrapper);
+            
+            // 计算昨日入库总数量
+            long yesterdayTotalInNumber = inRecords.stream()
+                    .mapToLong(record -> record.getNumber() != null ? record.getNumber() : 0L)
+                    .sum();
+            
+            // 查询昨日零点到今日零点的出库记录（type=2）
+            QueryWrapper<InOutProductRecord> outWrapper = new QueryWrapper<>();
+            outWrapper.eq("type", 2)
+                      .ge("time", yesterdayStart)
+                      .lt("time", todayStart);
+            List<InOutProductRecord> outRecords = inOutProductRecordService.list(outWrapper);
+            
+            // 计算昨日出库总数量
+            long yesterdayTotalOutNumber = outRecords.stream()
+                    .mapToLong(record -> record.getNumber() != null ? record.getNumber() : 0L)
+                    .sum();
+            
+            // 查询所有商品的库存总数量和总金额（包括在售和停售状态）
+            QueryWrapper<Product> productWrapper = new QueryWrapper<>();
+            productWrapper.in("status", ProductStatusEnum.SELL, ProductStatusEnum.SOLD_OUT);
+            List<Product> products = this.list(productWrapper);
+            
+            // 计算当前库存总数量
+            long currentlyTotalStock = products.stream()
+                    .mapToLong(product -> product.getStorage() != null ? product.getStorage() : 0L)
+                    .sum();
+            
+            // 计算当前库存总金额（库存 * 成本价）
+            long currentLyTotalAmount = products.stream()
+                    .mapToLong(product -> {
+                        long storage = product.getStorage() != null ? product.getStorage() : 0L;
+                        int costPrice = product.getCostPrice() != null ? product.getCostPrice() : 0;
+                        return storage * costPrice;
+                    })
+                    .sum();
+            
+            // 构建返回对象
+            InoutProductDashBoardVO dashboardVO = InoutProductDashBoardVO.builder()
+                    .yesterdayTotalInNumber(yesterdayTotalInNumber)
+                    .yesterdayTotalOutNumber(yesterdayTotalOutNumber)
+                    .currentlyTotalStock(currentlyTotalStock)
+                    .currentLyTotalAmount(currentLyTotalAmount)
+                    .build();
+            
+            response.setData(dashboardVO);
+            return response.value();
+        } catch (Exception e) {
+            log.error("获取商户出入库大盘数据异常", e);
+            throw new ProductException("获取商户出入库大盘数据失败：" + e.getMessage());
+        }
     }
 }

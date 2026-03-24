@@ -6,7 +6,9 @@ import cn.muzisheng.lebo.model.AccountStatusEnum;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,10 +26,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    @TableId(value = "open_id")
+    /**
+     * 主键,用户openid
+     */
     @Id
+    @TableId(value = "open_id")
     @Column(name = "open_id")
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String openId;
     /**
      * 会话密钥

@@ -11,4 +11,8 @@ public class ProductInOutDTO {
      * 增减的商品数量
      */
     private Long number;
+    /**
+     * 出入库描述
+     */
+    private String description;
 }

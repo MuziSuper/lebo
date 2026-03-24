@@ -4,6 +4,8 @@ import cn.muzisheng.lebo.entity.UserPoint;
 import cn.muzisheng.lebo.exception.UserPointException;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 public interface UserPointService extends IService<UserPoint> {
     /**
      * 创建用户积分钱包
@@ -54,4 +56,11 @@ public interface UserPointService extends IService<UserPoint> {
      * @return 是否成功销毁
      */
     Boolean destroy(String openid) throws UserPointException;
+    
+    /**
+     * 根据openid列表批量查询用户积分钱包
+     * @param openIds openid列表
+     * @return 用户积分钱包列表
+     */
+    List<UserPoint> listByOpenIds(List<String> openIds);
 }

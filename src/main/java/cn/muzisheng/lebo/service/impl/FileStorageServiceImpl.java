@@ -5,9 +5,8 @@ import cn.muzisheng.lebo.exception.StorageException;
 import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.StorageService;
-import cn.muzisheng.lebo.utils.RandomUtil;
+import cn.muzisheng.lebo.utils.IdUtil;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,6 @@ public class FileStorageServiceImpl implements StorageService {
      *
      * @param properties StorageProperties 对象
      **/
-    @Autowired
     public FileStorageServiceImpl(StorageConfig properties) {
         // 若下载路径为空，抛出异常
         if (properties.getLocation().trim().isEmpty()) {
@@ -69,7 +67,7 @@ public class FileStorageServiceImpl implements StorageService {
             Files.createDirectories(subDirectory);
 
             // 生成文件名（包含子目录的相对路径）
-            String fileName = generateFileName(file);  // 建议重命名这个方法
+            String fileName = IdUtil.generateFileName(file);  // 建议重命名这个方法
 
             // 构建目标文件路径（在子目录下）
             Path destinationFile = subDirectory.resolve(fileName).normalize().toAbsolutePath();
@@ -100,27 +98,7 @@ public class FileStorageServiceImpl implements StorageService {
         return response.value();
     }
 
-    // 生成唯一文件名的方法
-    private String generateFileName(MultipartFile file) {
 
-        String originalFilename = file.getOriginalFilename();
-        String extension = "";
-
-        // 增强文件名处理
-        if (originalFilename != null && !originalFilename.isEmpty()) {
-            int lastDotIndex = originalFilename.lastIndexOf(".");
-            if (lastDotIndex > 0) {  // 确保不是以点开头的文件
-                extension = originalFilename.substring(lastDotIndex);
-            }
-        }
-
-        // 使用StringBuilder提高性能
-        return new StringBuilder()
-                .append(System.currentTimeMillis()).append("_")
-                .append(RandomUtil.generateId())
-                .append(extension)
-                .toString();
-    }
     /**
      * 获得下载路径下的所有文件Path流
      *
