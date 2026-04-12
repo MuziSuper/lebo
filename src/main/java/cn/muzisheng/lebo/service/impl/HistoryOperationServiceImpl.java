@@ -2,13 +2,11 @@ package cn.muzisheng.lebo.service.impl;
 
 import cn.muzisheng.lebo.dto.HistoryOperationSelectDTO;
 import cn.muzisheng.lebo.entity.HistoryOperation;
-import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.exception.GeneralException;
 import cn.muzisheng.lebo.mapper.HistoryOperationMapper;
 import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.HistoryOperationService;
-import cn.muzisheng.lebo.service.UserService;
 import cn.muzisheng.lebo.utils.IdUtil;
 import cn.muzisheng.lebo.utils.UserThreadUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -32,7 +30,6 @@ import java.util.Optional;
 @Service
 public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMapper, HistoryOperation> implements HistoryOperationService {
 
-    private final UserService userService;
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -52,9 +49,6 @@ public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMap
             9, "导入备份"
     );
 
-    public HistoryOperationServiceImpl(UserService userService) {
-        this.userService = userService;
-    }
 
     /**
      * 添加历史操作记录
@@ -70,10 +64,6 @@ public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMap
 
         // 获取当前操作用户信息
         String operatorId = UserThreadUtil.getCurrentOpenId();
-        String operatorName = Optional.ofNullable(operatorId)
-                .map(userService::getUserByOpenId)
-                .map(User::getNickName)
-                .orElse(null);
 
         // 构建历史操作记录
         HistoryOperation historyOperation = HistoryOperation.builder()
@@ -81,7 +71,6 @@ public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMap
                 .type(type)
                 .content(content)
                 .operatorId(operatorId)
-                .operatorName(operatorName)
                 .time(LocalDateTime.now())
                 .build();
 
@@ -93,8 +82,8 @@ public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMap
                     return new GeneralException("添加历史操作记录失败");
                 });
 
-        log.info("添加历史操作记录成功, type: {}, operatorName: {}, content: {}",
-                OPERATION_TYPE_DESC.get(type), operatorName, content);
+        log.info("添加历史操作记录成功, type: {}, content: {}",
+                OPERATION_TYPE_DESC.get(type),  content);
     }
 
     /**

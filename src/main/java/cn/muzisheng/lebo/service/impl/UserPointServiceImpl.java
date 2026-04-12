@@ -1,14 +1,27 @@
 package cn.muzisheng.lebo.service.impl;
 
+import cn.muzisheng.lebo.dto.ConversionDTO;
+import cn.muzisheng.lebo.dto.ConversionItemDTO;
+import cn.muzisheng.lebo.dto.PointRecordAddDTO;
+import cn.muzisheng.lebo.dto.ProductInOutDTO;
+import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.entity.UserPoint;
 import cn.muzisheng.lebo.exception.UserPointException;
 import cn.muzisheng.lebo.mapper.UserPointMapper;
+import cn.muzisheng.lebo.model.PointRecordTypeEnum;
+import cn.muzisheng.lebo.model.Response;
+import cn.muzisheng.lebo.model.Result;
+import cn.muzisheng.lebo.service.PointRecordService;
+import cn.muzisheng.lebo.service.ProductService;
 import cn.muzisheng.lebo.service.UserPointService;
+import cn.muzisheng.lebo.service.UserService;
 import cn.muzisheng.lebo.utils.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -19,6 +32,19 @@ import java.util.List;
 @Log4j2
 @Service
 public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint> implements UserPointService {
+    
+    private final ProductService productService;
+    private final UserService userService;
+    private final PointRecordService pointRecordService;
+    
+    public UserPointServiceImpl(ProductService productService,
+                                 @Lazy UserService userService,
+                                PointRecordService pointRecordService) {
+        this.productService = productService;
+        this.pointRecordService = pointRecordService;
+        this.userService = userService;
+    }
+    
     /**
      * 创建用户积分钱包
      * @param openid 用户openid
@@ -115,18 +141,17 @@ public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint
     /**
      * 修改用户积分钱包积分
      * @param openid 用户openid
-     * @param point 修改的积分，可为正负，正积分则计入累加总积分
-     * @return 修改后的钱包
+     * @param point 增减的积分，可为正负，正积分则计入累加总积分
      */
-    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = UserPointException.class)
     @Override
-    public UserPoint updatePoint(String openid, @NonNull Long point) throws UserPointException {
+    public void updatePoint(String openid, @NonNull Long point, PointRecordTypeEnum pointRecordType) throws UserPointException {
 
         UserPoint userPoint = this.getOne(new QueryWrapper<UserPoint>().eq("open_id", openid).last("FOR UPDATE"));
         if (userPoint == null) {
             log.error("openid={}, 获取原用户积分记录失败", openid);
             throw new UserPointException("获取原用户积分记录失败");
         }
+        long beforeAmount = userPoint.getCurrentPoint();
         long newPoint = userPoint.getCurrentPoint() + point;
         if (newPoint < 0) {
             log.error("openid={}, 原用户积分不足", openid);
@@ -149,7 +174,37 @@ public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint
             log.error("openid={}, 获取更新后的用户积分记录失败", openid);
             throw new UserPointException("获取更新后的用户积分记录失败");
         }
-        return newUserPoint;
+        
+        String description = buildPointRecordDescription(pointRecordType, point);
+        PointRecordAddDTO pointRecordAddDTO = new PointRecordAddDTO();
+        pointRecordAddDTO.setOpenId(openid);
+        pointRecordAddDTO.setDescription(description);
+        pointRecordAddDTO.setChangeAmount(point);
+        pointRecordAddDTO.setBeforeAmount(beforeAmount);
+        pointRecordAddDTO.setAfterAmount(newCurrentPoint);
+        pointRecordService.addPointRecordInternal(pointRecordAddDTO);
+        
+        log.info("openid={}, 积分更新成功, 变动: {}, 变动前: {}, 变动后: {}, 类型: {}", 
+                openid, point, beforeAmount, newCurrentPoint, pointRecordType.getDescription());
+        
+    }
+    
+    /**
+     * 根据积分记录类型构建描述
+     * @param pointRecordType 积分记录类型
+     * @param point 积分变动值
+     * @return 描述字符串
+     */
+    private String buildPointRecordDescription(PointRecordTypeEnum pointRecordType, Long point) {
+        String action = point > 0 ? "获得" : "消耗";
+        String absValue = String.valueOf(Math.abs(point));
+        
+        return switch (pointRecordType) {
+            case ORDER_PAY -> "订单结算" + action + "积分" + absValue + "分";
+            case PRODUCT_CONVERT -> "商品兑换" + action + "积分" + absValue + "分";
+            case DAY_SIGN_IN -> "每日签到" + action + "积分" + absValue + "分";
+            default -> "积分" + action + absValue + "分";
+        };
     }
     /**
      * 销毁钱包，假删除
@@ -184,5 +239,72 @@ public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint
         QueryWrapper<UserPoint> queryWrapper = new QueryWrapper<>();
         queryWrapper.in("open_id", openIds);
         return this.list(queryWrapper);
+    }
+    
+    /**
+     * 积分兑换商品
+     * @param conversionDTO 积分兑换DTO，包含商品列表和描述
+     * @return 是否兑换成功
+     */
+    @Override
+    @Transactional(rollbackFor = UserPointException.class, isolation = Isolation.REPEATABLE_READ)
+    public ResponseEntity<Result<Boolean>> convert(ConversionDTO conversionDTO) {
+        Response<Boolean> result = new Response<>();
+        // 校验参数
+        if (conversionDTO == null || conversionDTO.getItems() == null || conversionDTO.getItems().isEmpty()) {
+            log.error("兑换商品列表不能为空");
+            throw new UserPointException("兑换商品列表不能为空");
+        }
+        String openId = conversionDTO.getOpenId();
+        if (openId == null || openId.trim().isEmpty()) {
+            log.error("用户openid不能为空");
+            throw new UserPointException("用户openid不能为空");
+        }
+        // 校验用户是否存在
+        User user = userService.getOne(new QueryWrapper<User>().eq("open_id", openId));
+        if (user == null) {
+            log.error("用户不存在, openid={}", openId);
+            throw new UserPointException("用户不存在, openid=" + openId);
+        }
+        
+        List<ConversionItemDTO> items = conversionDTO.getItems();
+        // 获取用户积分钱包
+        UserPoint userPoint = this.getOne(new QueryWrapper<UserPoint>().eq("open_id", openId).last("FOR UPDATE"));
+        // 校验用户积分钱包是否存在
+        if (userPoint == null) {
+            log.error("用户积分钱包不存在, openId: {}", openId);
+            throw new UserPointException("用户积分钱包不存在");
+        }
+        // 构建商品出库DTO列表
+        List<ProductInOutDTO> productInOutDTOList = items.stream()
+                .map(item -> ProductInOutDTO.builder()
+                        .productId(item.getProductId())
+                        .number(-item.getNumber())
+                        .description("积分兑换出库, 用户Id: " + openId)
+                        .build())
+                .toList();
+        // 执行商品出库操作,内部会更新商品库存并创建商品出库记录
+        PointRecordAddDTO pointRecordAddDTO = productService.outBatchByPoints(productInOutDTOList, userPoint.getCurrentPoint(), openId);
+        // 获取用户积分兑换后的积分
+        Long afterAmount = pointRecordAddDTO.getAfterAmount();
+        // 更新用户积分钱包
+        UpdateWrapper<UserPoint> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("open_id", openId);
+        updateWrapper.set("current_point", afterAmount);
+        if (!this.update(updateWrapper)) {
+            log.error("扣除用户积分失败, openId: {}", openId);
+            throw new UserPointException("扣除用户积分失败");
+        }
+        // 组装积分记录的描述
+        String description = buildPointRecordDescription(PointRecordTypeEnum.PRODUCT_CONVERT, pointRecordAddDTO.getChangeAmount());
+        pointRecordAddDTO.setDescription(description);
+        // 添加积分变动记录
+        pointRecordService.addPointRecordInternal(pointRecordAddDTO);
+
+        log.info("openid={}, 积分更新成功, 变动: {}, 变动前: {}, 变动后: {}, 类型: {}",
+                pointRecordAddDTO.getOpenId(), pointRecordAddDTO.getChangeAmount(), pointRecordAddDTO.getBeforeAmount(), afterAmount, PointRecordTypeEnum.PRODUCT_CONVERT);
+
+        result.setData(true);
+        return result.value();
     }
 }

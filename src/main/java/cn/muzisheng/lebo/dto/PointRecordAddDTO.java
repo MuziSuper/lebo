@@ -25,15 +25,15 @@ public class PointRecordAddDTO {
     /**
      * 变动积分数量
      */
-    private Integer changeAmount;
+    private Long changeAmount;
 
     /**
      * 变动前积分
      */
-    private Integer beforeAmount;
+    private Long beforeAmount;
 
     /**
      * 变动后积分
      */
-    private Integer afterAmount;
+    private Long afterAmount;
 }

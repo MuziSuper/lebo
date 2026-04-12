@@ -3,6 +3,7 @@ package cn.muzisheng.lebo.service.impl;
 import cn.muzisheng.lebo.entity.UserSignIn;
 import cn.muzisheng.lebo.exception.UserPointException;
 import cn.muzisheng.lebo.mapper.UserSignInMapper;
+import cn.muzisheng.lebo.model.PointRecordTypeEnum;
 import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.UserPointService;
@@ -82,7 +83,7 @@ public class UserSignInServiceImpl extends ServiceImpl<UserSignInMapper, UserSig
             userSignIn.setContinuousDays(1);
             this.save(userSignIn);
 
-            userPointService.updatePoint(openId, SIGN_BASE_POINT);
+            userPointService.updatePoint(openId, SIGN_BASE_POINT, PointRecordTypeEnum.DAY_SIGN_IN);
             log.info("openid={}, 首次签到成功，获得{}积分", openId, SIGN_BASE_POINT);
         } else {
             // 检查今日是否已签到
@@ -110,11 +111,58 @@ public class UserSignInServiceImpl extends ServiceImpl<UserSignInMapper, UserSig
             }
 
             // 发放积分
-            userPointService.updatePoint(openId, totalPoint);
+            userPointService.updatePoint(openId, totalPoint, PointRecordTypeEnum.DAY_SIGN_IN);
             log.info("openid={}, 签到成功，获得{}积分", openId, totalPoint);
         }
 
         response.setData(true);
         return response.value();
+    }
+
+    /**
+     * 获取用户今日签到状态
+     *
+     * @return true-今日已签到，false-今日未签到
+     */
+    @Override
+    public ResponseEntity<Result<Boolean>> getTodaySignInStatus() {
+        Response<Boolean> response = new Response<>();
+
+        String openId = UserThreadUtil.getCurrentOpenId();
+        if (openId == null) {
+            log.warn("获取签到状态失败：未获取到当前用户信息");
+            response.setData(false);
+            return response.value();
+        }
+
+        LocalDate today = LocalDate.now();
+
+        QueryWrapper<UserSignIn> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("open_id", openId);
+        UserSignIn userSignIn = this.getOne(queryWrapper);
+
+        boolean hasSignedToday = userSignIn != null 
+                && userSignIn.getLastSignDate() != null 
+                && userSignIn.getLastSignDate().equals(today);
+
+        response.setData(hasSignedToday);
+        return response.value();
+    }
+
+    @Override
+    public boolean hasSignedToday(String openId) {
+        if (openId == null) {
+            return false;
+        }
+        
+        LocalDate today = LocalDate.now();
+        
+        QueryWrapper<UserSignIn> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("open_id", openId);
+        UserSignIn userSignIn = this.getOne(queryWrapper);
+        
+        return userSignIn != null 
+                && userSignIn.getLastSignDate() != null 
+                && userSignIn.getLastSignDate().equals(today);
     }
 }

@@ -24,6 +24,13 @@ public interface PointRecordService extends IService<PointRecord> {
      * @return 是否成功
      */
     ResponseEntity<Result<Boolean>> addPointRecord(PointRecordAddDTO pointRecordAddDTO);
+    
+    /**
+     * 新增积分记录（内部调用，无返回值）
+     * @param pointRecordAddDTO 积分记录
+     */
+    void addPointRecordInternal(PointRecordAddDTO pointRecordAddDTO);
+    
     /**
      * 查询积分记录，默认以创建时间倒序
      * @param pointRecordListDTO 积分记录查询条件

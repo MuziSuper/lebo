@@ -1,8 +1,12 @@
 package cn.muzisheng.lebo.service;
 
+import cn.muzisheng.lebo.dto.ConversionDTO;
 import cn.muzisheng.lebo.entity.UserPoint;
 import cn.muzisheng.lebo.exception.UserPointException;
+import cn.muzisheng.lebo.model.PointRecordTypeEnum;
+import cn.muzisheng.lebo.model.Result;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -46,10 +50,10 @@ public interface UserPointService extends IService<UserPoint> {
     /**
      * 修改用户积分钱包积分
      * @param openid 用户openid
-     * @param point 修改的积分，可为正负，正积分则计入累加总积分
-     * @return 修改后的钱包
+     * @param point 增减的积分，可为正负，正积分则计入累加总积分
+     * @param pointRecordType 积分记录类型
      */
-    UserPoint updatePoint(String openid, Long point) throws UserPointException;
+    void updatePoint(String openid, Long point, PointRecordTypeEnum pointRecordType) throws UserPointException;
     /**
      * 销毁钱包，假删除
      * @param openid 用户openid
@@ -63,4 +67,11 @@ public interface UserPointService extends IService<UserPoint> {
      * @return 用户积分钱包列表
      */
     List<UserPoint> listByOpenIds(List<String> openIds);
+    
+    /**
+     * 积分兑换商品
+     * @param conversionDTO 积分兑换DTO，包含商品列表和描述
+     * @return 是否兑换成功
+     */
+    ResponseEntity<Result<Boolean>> convert(ConversionDTO conversionDTO);
 }

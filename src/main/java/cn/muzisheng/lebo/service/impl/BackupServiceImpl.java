@@ -3,6 +3,7 @@ package cn.muzisheng.lebo.service.impl;
 import cn.muzisheng.lebo.dto.BackupDataDTO;
 import cn.muzisheng.lebo.entity.*;
 import cn.muzisheng.lebo.exception.GeneralException;
+import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -31,7 +32,7 @@ import java.util.zip.ZipOutputStream;
 
 /**
  * 数据备份服务实现类
- * 实现全量数据备份功能，将商品、类目、订单、用户等数据导出为压缩的JSON文件
+ * 实现全量数据备份功能，将所有数据库表数据导出为压缩的JSON文件
  */
 @Log4j2
 @Service
@@ -47,9 +48,9 @@ public class BackupServiceImpl implements BackupService {
     private final PointRecordService pointRecordService;
     private final HistoryOperationService historyOperationService;
     private final UserSignInService userSignInService;
+    private final InformationService informationService;
     private final ObjectMapper objectMapper;
     
-    // 批量插入每批次数量
     private static final int BATCH_SIZE = 500;
     
     public BackupServiceImpl(ProductService productService,
@@ -61,7 +62,8 @@ public class BackupServiceImpl implements BackupService {
                              InOutProductRecordService inOutProductRecordService,
                              PointRecordService pointRecordService,
                              HistoryOperationService historyOperationService,
-                             UserSignInService userSignInService) {
+                             UserSignInService userSignInService,
+                             InformationService informationService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.orderService = orderService;
@@ -72,42 +74,26 @@ public class BackupServiceImpl implements BackupService {
         this.pointRecordService = pointRecordService;
         this.historyOperationService = historyOperationService;
         this.userSignInService = userSignInService;
+        this.informationService = informationService;
         this.objectMapper = new ObjectMapper();
-        // 注册Java 8时间模块，支持LocalDateTime序列化
         this.objectMapper.registerModule(new JavaTimeModule());
         this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
     
     @Override
     public ResponseEntity<byte[]> exportBackup() throws IOException {
-        // 1. 全量查询所有商品
         List<Product> products = productService.list(new LambdaQueryWrapper<>());
-        
-        // 2. 全量查询所有类目
         List<Category> categories = categoryService.list(new LambdaQueryWrapper<>());
-        
-        // 3. 全量查询所有订单
         List<Order> orders = orderService.list(new LambdaQueryWrapper<>());
-        
-        // 4. 全量查询所有订单项
         List<OrderItem> orderItems = orderItemService.list(new LambdaQueryWrapper<>());
-        
-        // 5. 全量查询所有用户
         List<User> users = userService.list(new LambdaQueryWrapper<>());
-        
-        // 6. 全量查询所有用户积分
         List<UserPoint> userPoints = userPointService.list(new LambdaQueryWrapper<>());
-        
-        // 7. 全量查询所有商品出入库记录
         List<InOutProductRecord> inOutProductRecords = inOutProductRecordService.list(new LambdaQueryWrapper<>());
-        
-        // 8. 全量查询所有积分记录
         List<PointRecord> pointRecords = pointRecordService.list(new LambdaQueryWrapper<>());
-        
-        // 9. 全量查询所有用户签到记录
         List<UserSignIn> userSignIns = userSignInService.list(new LambdaQueryWrapper<>());
+        List<HistoryOperation> historyOperations = historyOperationService.list(new LambdaQueryWrapper<>());
+        List<Information> informations = informationService.list(new LambdaQueryWrapper<>());
         
-        // 10. 组装备份数据DTO
         BackupDataDTO backupData = BackupDataDTO.builder()
                 .products(products)
                 .categories(categories)
@@ -118,19 +104,16 @@ public class BackupServiceImpl implements BackupService {
                 .inOutProductRecords(inOutProductRecords)
                 .pointRecords(pointRecords)
                 .userSignIns(userSignIns)
+                .historyOperations(historyOperations)
+                .informations(informations)
                 .build();
         
-        // 10. 序列化为JSON字符串
         String jsonContent = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(backupData);
-        
-        // 11. 压缩为ZIP格式
         byte[] zipBytes = compressToZip(jsonContent);
         
-        // 12. 构建响应，设置下载文件名
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
         String filename = "backup_" + timestamp + ".zip";
         
-        // 13. 记录导出备份历史操作
         historyOperationService.addHistoryOperation(3, "手动导出备份数据，文件名：" + filename);
         
         HttpHeaders headers = new HttpHeaders();
@@ -146,7 +129,7 @@ public class BackupServiceImpl implements BackupService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<Result<Boolean>> importBackup(MultipartFile file) throws IOException {
-        // 1. 校验文件
+        Response<Boolean> response = new Response<>();
         if (file == null || file.isEmpty()) {
             throw new GeneralException("上传文件不能为空");
         }
@@ -156,10 +139,8 @@ public class BackupServiceImpl implements BackupService {
             throw new GeneralException("请上传ZIP格式的备份文件");
         }
         
-        // 2. 解析ZIP文件，提取JSON内容
         String jsonContent = extractJsonFromZip(file.getInputStream());
         
-        // 3. 反序列化JSON为BackupDataDTO（如果解析失败会抛出异常，事务还未开始操作数据库）
         BackupDataDTO backupData;
         try {
             backupData = objectMapper.readValue(jsonContent, BackupDataDTO.class);
@@ -168,12 +149,11 @@ public class BackupServiceImpl implements BackupService {
             throw new GeneralException("备份数据格式错误，解析失败：" + e.getMessage());
         }
         
-        // 4. 数据校验（在删除数据前先校验数据完整性）
         if (backupData == null) {
             throw new GeneralException("备份数据为空");
         }
         
-        log.info("开始导入备份数据，商品:{} 类目:{} 订单:{} 订单项:{} 用户:{} 用户积分:{} 出入库记录:{} 积分记录:{} 签到记录:{}",
+        log.info("开始导入备份数据，商品:{} 类目:{} 订单:{} 订单项:{} 用户:{} 用户积分:{} 出入库记录:{} 积分记录:{} 签到记录:{} 历史操作:{} 消息通知:{}",
                 backupData.getProducts() != null ? backupData.getProducts().size() : 0,
                 backupData.getCategories() != null ? backupData.getCategories().size() : 0,
                 backupData.getOrders() != null ? backupData.getOrders().size() : 0,
@@ -182,9 +162,10 @@ public class BackupServiceImpl implements BackupService {
                 backupData.getUserPoints() != null ? backupData.getUserPoints().size() : 0,
                 backupData.getInOutProductRecords() != null ? backupData.getInOutProductRecords().size() : 0,
                 backupData.getPointRecords() != null ? backupData.getPointRecords().size() : 0,
-                backupData.getUserSignIns() != null ? backupData.getUserSignIns().size() : 0);
+                backupData.getUserSignIns() != null ? backupData.getUserSignIns().size() : 0,
+                backupData.getHistoryOperations() != null ? backupData.getHistoryOperations().size() : 0,
+                backupData.getInformations() != null ? backupData.getInformations().size() : 0);
         
-        // 5. 清空并覆盖写入各表数据
         productService.remove(new LambdaQueryWrapper<>());
         categoryService.remove(new LambdaQueryWrapper<>());
         orderService.remove(new LambdaQueryWrapper<>());
@@ -194,51 +175,48 @@ public class BackupServiceImpl implements BackupService {
         inOutProductRecordService.remove(new LambdaQueryWrapper<>());
         pointRecordService.remove(new LambdaQueryWrapper<>());
         userSignInService.remove(new LambdaQueryWrapper<>());
+        historyOperationService.remove(new LambdaQueryWrapper<>());
+        informationService.remove(new LambdaQueryWrapper<>());
         
-        // 批量插入备份数据（按依赖顺序：类目 -> 商品 -> 用户 -> 用户积分 -> 订单 -> 订单项 -> 出入库记录 -> 积分记录 -> 签到记录）
-        // 批量插入类目
         if (backupData.getCategories() != null && !backupData.getCategories().isEmpty()) {
             categoryService.saveBatch(backupData.getCategories(), BATCH_SIZE);
         }
-        // 批量插入商品
         if (backupData.getProducts() != null && !backupData.getProducts().isEmpty()) {
             productService.saveBatch(backupData.getProducts(), BATCH_SIZE);
         }
-        // 批量插入用户
         if (backupData.getUsers() != null && !backupData.getUsers().isEmpty()) {
             userService.saveBatch(backupData.getUsers(), BATCH_SIZE);
         }
-        // 批量插入用户积分
         if (backupData.getUserPoints() != null && !backupData.getUserPoints().isEmpty()) {
             userPointService.saveBatch(backupData.getUserPoints(), BATCH_SIZE);
         }
-        // 批量插入订单
         if (backupData.getOrders() != null && !backupData.getOrders().isEmpty()) {
             orderService.saveBatch(backupData.getOrders(), BATCH_SIZE);
         }
-        // 批量插入订单项
         if (backupData.getOrderItems() != null && !backupData.getOrderItems().isEmpty()) {
             orderItemService.saveBatch(backupData.getOrderItems(), BATCH_SIZE);
         }
-        // 批量插入出入库记录
         if (backupData.getInOutProductRecords() != null && !backupData.getInOutProductRecords().isEmpty()) {
             inOutProductRecordService.saveBatch(backupData.getInOutProductRecords(), BATCH_SIZE);
         }
-        // 批量插入积分记录
         if (backupData.getPointRecords() != null && !backupData.getPointRecords().isEmpty()) {
             pointRecordService.saveBatch(backupData.getPointRecords(), BATCH_SIZE);
         }
-        // 批量插入签到记录
         if (backupData.getUserSignIns() != null && !backupData.getUserSignIns().isEmpty()) {
             userSignInService.saveBatch(backupData.getUserSignIns(), BATCH_SIZE);
         }
+        if (backupData.getHistoryOperations() != null && !backupData.getHistoryOperations().isEmpty()) {
+            historyOperationService.saveBatch(backupData.getHistoryOperations(), BATCH_SIZE);
+        }
+        if (backupData.getInformations() != null && !backupData.getInformations().isEmpty()) {
+            informationService.saveBatch(backupData.getInformations(), BATCH_SIZE);
+        }
         
-        // 6. 记录导入备份历史操作
         historyOperationService.addHistoryOperation(9, "导入备份数据，文件名：" + originalFilename);
         
         log.info("导入备份数据成功，文件名：{}", originalFilename);
-        
-        return ResponseEntity.ok(new Result<>(true, null, LocalDateTime.now()));
+        response.setData(true);
+        return response.value();
     }
     
     /**

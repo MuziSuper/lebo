@@ -24,4 +24,16 @@ public class OrderBossListDTO {
      * 订单结束时间区间，格式: startTime,endTime
      */
     private String orderEndTime;
+    /**
+     * 用户openId
+     */
+    private String openId;
+    /**
+     * 页码，默认为null表示不分页
+     */
+    private Integer pageNum;
+    /**
+     * 每页数量，默认为null表示不分页
+     */
+    private Integer pageSize;
 }

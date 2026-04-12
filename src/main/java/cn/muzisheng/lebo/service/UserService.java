@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 /**
  * 用户服务接口
  */
@@ -34,4 +36,17 @@ public interface UserService extends IService<User> {
      * @return 分页用户列表
      */
     ResponseEntity<Result<IPage<UserListVO>>> list(UserListDTO userListDTO);
+
+    /**
+     * 判断用户是否为商户
+     * @param openId 用户openId
+     * @return true-商户，false-普通用户
+     */
+    boolean isMerchant(String openId);
+    /**
+     * 通过用户openid列表查询用户信息
+     * @param openIds 用户openid列表
+     * @return 用户列表
+     */
+    ResponseEntity<Result<List<UserListVO>>> listByOpenIds(List<String> openIds);
 }

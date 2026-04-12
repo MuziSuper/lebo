@@ -37,12 +37,12 @@ public class Order {
     @Column(name = "total_amount")
     @TableField(value = "total_amount")
     private Long totalAmount;
-//    /**
-//     * 优惠金额
-//     */
-//    @Column(name = "discount_amount")
-//    @TableField(value = "discount_amount")
-//    private Long discountAmount;
+    /**
+     * 获得积分数量
+     */
+    @Column(name = "point_number")
+    @TableField(value = "point_number")
+    private Long pointNumber;
     /**
      * 实际支付金额
      */

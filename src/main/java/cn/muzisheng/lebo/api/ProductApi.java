@@ -50,7 +50,7 @@ public class ProductApi {
         return productService.add(productAddDTO);
     }
     /**
-     * 商品入库出库
+     * 商品出库入库,内部检测库存与判空等信息，主要用于商户操作单商品的出库入库
      * @param productInOutDTO 商品入库出库信息（商品 ID、入库数量、出库数量等）
      * @return 操作结果（true/false）
      */

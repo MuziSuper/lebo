@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 用户管理接口
  * 提供微信小程序用户的登录、信息查询、注销等功能
@@ -105,5 +107,15 @@ public class UserApi {
     @PostMapping("/list")
     public ResponseEntity<Result<IPage<UserListVO>>> list(@RequestBody UserListDTO userListDTO) {
         return userService.list(userListDTO);
+    }
+    /**
+     * 用户列表接口，通过用户openid列表查询用户信息
+     *
+     * @param openIds 用户openid列表
+     * @return 用户列表
+     */
+    @PostMapping("/listByOpenIds")
+    public ResponseEntity<Result<List<UserListVO>>> listByOpenIds(@RequestBody List<String> openIds) {
+        return userService.listByOpenIds(openIds);
     }
 }

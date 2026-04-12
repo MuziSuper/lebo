@@ -16,6 +16,10 @@ public class OrderDetailVO {
      */
     private String id;
     /**
+     * 用户昵称
+     */
+    private String nickName;
+    /**
      * 房间号
      */
     private String homeNumber;
@@ -23,6 +27,10 @@ public class OrderDetailVO {
      * 订单金额
      */
     private Long totalAmount;
+    /**
+     * 获得积分数量
+     */
+    private Long pointNumber;
     /**
      * 实际支付金额
      */
@@ -51,11 +59,13 @@ public class OrderDetailVO {
      * 订单商品列表
      */
     private OrderItemVO[] orderItemVOS;
-    public static OrderDetailVO fromOrder(Order order, List<OrderItem> orderItems) {
+    public static OrderDetailVO fromOrder(Order order, List<OrderItem> orderItems, String nickName) {
         OrderDetailVO orderDetailVO = new OrderDetailVO();
         orderDetailVO.setId(order.getId());
+        orderDetailVO.setNickName(nickName);
         orderDetailVO.setHomeNumber(order.getHomeNumber());
         orderDetailVO.setTotalAmount(order.getTotalAmount());
+        orderDetailVO.setPointNumber(order.getPointNumber());
         orderDetailVO.setPayAmount(order.getPayAmount());
         orderDetailVO.setPayType(order.getPayType().getCode());
         orderDetailVO.setPayOption(order.getPayOption().getCode());

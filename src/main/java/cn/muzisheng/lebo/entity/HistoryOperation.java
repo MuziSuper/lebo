@@ -41,12 +41,6 @@ public class HistoryOperation {
     @TableField("operator_id")
     private String operatorId;
     /**
-     * 操作人名称
-     */
-    @Column(name = "operator_name")
-    @TableField("operator_name")
-    private String operatorName;
-    /**
      * 操作时间
      */
     @Column(name = "time")

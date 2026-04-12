@@ -1,24 +1,24 @@
 package cn.muzisheng.lebo.service.impl;
 
-import cn.muzisheng.lebo.dto.OrderAddDTO;
-import cn.muzisheng.lebo.dto.OrderBossListDTO;
-import cn.muzisheng.lebo.dto.OrderListDTO;
-import cn.muzisheng.lebo.dto.ProductInOutDTO;
+import cn.muzisheng.lebo.dto.*;
+import cn.muzisheng.lebo.entity.Information;
 import cn.muzisheng.lebo.entity.Order;
 import cn.muzisheng.lebo.entity.OrderItem;
 import cn.muzisheng.lebo.entity.Product;
+import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.exception.OrderException;
+import cn.muzisheng.lebo.handler.OrderWebSocketHandler;
 import cn.muzisheng.lebo.mapper.OrderMapper;
 import cn.muzisheng.lebo.model.*;
-import cn.muzisheng.lebo.service.OrderItemService;
-import cn.muzisheng.lebo.service.OrderService;
-import cn.muzisheng.lebo.service.ProductService;
-import cn.muzisheng.lebo.service.UserPointService;
+import cn.muzisheng.lebo.service.*;
 import cn.muzisheng.lebo.utils.IdUtil;
+import cn.muzisheng.lebo.utils.InformationUtil;
 import cn.muzisheng.lebo.utils.UserThreadUtil;
 import cn.muzisheng.lebo.vo.OrderDetailVO;
 import cn.muzisheng.lebo.vo.OrderInfoVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -43,14 +44,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     private final ProductService productService;
     private final UserPointService userPointService;
     private final OrderItemService orderItemService;
+    private final UserService userService;
+    private final InformationService informationService;
     
     private final ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
     private final ConcurrentHashMap<String, Boolean> pendingOrders = new ConcurrentHashMap<>();
 
-    public OrderServiceImpl(ProductService productService, UserPointService userPointService, OrderItemService orderItemService) {
+    public OrderServiceImpl(ProductService productService, UserPointService userPointService, OrderItemService orderItemService, UserService userService, InformationService informationService) {
         this.productService = productService;
         this.userPointService = userPointService;
         this.orderItemService = orderItemService;
+        this.userService = userService;
+        this.informationService = informationService;
     }
 
     /**
@@ -64,18 +69,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public ResponseEntity<Result<String>> create(OrderAddDTO orderAddDTO) {
         Response<String> response = new Response<>();
         
-        if (orderAddDTO == null || orderAddDTO.getProductInOutDTOList() == null || orderAddDTO.getProductInOutDTOList().isEmpty()) {
+        if (orderAddDTO == null || orderAddDTO.getProductOutDTOList() == null || orderAddDTO.getProductOutDTOList().isEmpty()) {
             log.error("订单商品不能为空");
             throw new OrderException("订单商品不能为空");
         }
         
         String openId = UserThreadUtil.getCurrentOpenId();
         String orderId = IdUtil.generateOrderId();
-        
+        // 订单商品列表
         Map<String, OrderItem> orderItemMap = new HashMap<>();
         List<String> productIds = new ArrayList<>();
-        
-        for (ProductInOutDTO item : orderAddDTO.getProductInOutDTOList()) {
+        // 填充订单商品信息
+        for (ProductOutDTO item : orderAddDTO.getProductOutDTOList()) {
             if (item.getProductId() == null || item.getNumber() == null || item.getNumber() <= 0) {
                 log.error("订单商品传参异常");
                 throw new OrderException("订单商品传参异常");
@@ -87,7 +92,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                     .quantity(item.getNumber())
                     .build());
         }
+        // 获取所有商品信息
         List<Product> products = productService.listByIds(productIds);
+        if (products.isEmpty()) {
+            log.error("商品不存在");
+            throw new OrderException("商品不存在");
+        }
         if (products.size() != productIds.size()) {
             log.error("部分商品不存在");
             throw new OrderException("部分商品不存在");
@@ -95,6 +105,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         
         List<String> notSellingProducts = new ArrayList<>();
         long totalAmount = 0;
+        long totalPoints = 0;
+        // 遍历所有商品信息
         for (Product product : products) {
             if (!product.getStatus().equals(ProductStatusEnum.SELL)) {
                 notSellingProducts.add(product.getName());
@@ -105,6 +117,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             orderItem.setOnePrice(product.getSalePrice());
             orderItem.setTotalAmount(product.getSalePrice() * orderItem.getQuantity());
             totalAmount += orderItem.getTotalAmount();
+            totalPoints += product.getPoint() * orderItem.getQuantity();
         }
         
         if (!notSellingProducts.isEmpty()) {
@@ -116,6 +129,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 .openId(openId)
                 .homeNumber(orderAddDTO.getHomeNumber())
                 .totalAmount(totalAmount)
+                .pointNumber(totalPoints)
                 .payType(OrderTypeEnum.NONPAYMENT)
                 .createTime(LocalDateTime.now())
                 .build();
@@ -124,10 +138,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             log.error("订单创建失败");
             throw new OrderException("订单创建失败");
         }
-        
+        // 批量创建订单项
         orderItemService.createBatch(new ArrayList<>(orderItemMap.values()));
-        
+        // 添加订单超时处理任务
         pendingOrders.put(orderId, true);
+        // 如果订单超时5分钟未处理，则订单超时处理
         scheduledExecutor.schedule(() -> {
             if (pendingOrders.remove(orderId) != null) {
                 handleOrderTimeout(orderId);
@@ -147,15 +162,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      */
     @Override
     @Transactional(rollbackFor = OrderException.class, isolation = Isolation.REPEATABLE_READ)
-    public ResponseEntity<Result<String>> submit(OrderAddDTO orderAddDTO) {
+    public ResponseEntity<Result<String>> submit(OrderPayDTO orderAddDTO) {
         Response<String> response = new Response<>();
 
         if (orderAddDTO == null || orderAddDTO.getOrderId() == null) {
             log.error("订单ID不能为空");
             throw new OrderException("订单ID不能为空");
         }
-
-        String orderId = orderAddDTO.getOrderId();
+       String orderId = orderAddDTO.getOrderId();
 
         Order order = this.getOne(new QueryWrapper<Order>().eq("id", orderId).last("FOR UPDATE"));
         if (order == null) {
@@ -186,6 +200,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         pendingOrders.remove(orderId);
 
         log.info("订单支付成功, orderId: {}, payAmount: {}", orderId, order.getPayAmount());
+        // 通知商户有新订单
+        OrderWebSocketHandler.notifyMerchantNewOrder();
+        
         response.setData(orderId);
         return response.value();
     }
@@ -266,7 +283,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new OrderException("订单不存在");
         }
         List<OrderItem> orderItems = orderItemService.listByOrderId(orderId);
-        OrderDetailVO orderDetailVO = OrderDetailVO.fromOrder(order, orderItems);
+        
+        // 获取用户信息，处理用户可能不存在的情况
+        User user = userService.getUserByOpenId(order.getOpenId());
+        String nickName = user != null ? user.getNickName() : null;
+        OrderDetailVO orderDetailVO = OrderDetailVO.fromOrder(order, orderItems, nickName);
         response.setData(orderDetailVO);
         return response.value();
     }
@@ -280,10 +301,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         Response<List<OrderInfoVO>> response = new Response<>();
         String openId = UserThreadUtil.getCurrentOpenId();
         
-        // 构建查询条件
-        QueryWrapper<Order> queryWrapper = new QueryWrapper<Order>().eq("open_id", openId);
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<Order>().eq("open_id", openId).orderByDesc("create_time");
         
-        // 如果指定了订单状态，添加状态筛选条件
         if (orderListDTO != null && orderListDTO.getOrderTypeCode() != null) {
             try {
                 Integer statusCode = Integer.parseInt(orderListDTO.getOrderTypeCode());
@@ -306,29 +325,35 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             return response.value();
         }
         
-        List<OrderInfoVO> orderInfoVOList = orders.stream().map(OrderInfoVO::fromOrder).toList();
+        User user = userService.getUserByOpenId(openId);
+        String nickName = user != null ? user.getNickName() : null;
+        List<OrderInfoVO> orderInfoVOList = orders.stream()
+                .map(order -> OrderInfoVO.fromOrder(order, nickName))
+                .toList();
         response.setData(orderInfoVOList);
         return response.value();
     }
     /**
      * 商家获取订单列表，筛选条件为订单状态,订单创建时间区间，订单结束时间区间，订单支付方式，订单ID
-     * @param orderBossListDTO 订单列表
-     * @return 订单详情
+     * @param orderBossListDTO 订单列表查询条件
+     * @return 订单分页数据
      */
     @Override
-    public ResponseEntity<Result<List<OrderInfoVO>>> orderBossInfoList(OrderBossListDTO orderBossListDTO) {
-        Response<List<OrderInfoVO>> response = new Response<>();
+    public ResponseEntity<Result<IPage<OrderInfoVO>>> orderBossInfoList(OrderBossListDTO orderBossListDTO) {
+        Response<IPage<OrderInfoVO>> response = new Response<>();
         
-        // 构建查询条件
         QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
         
         if (orderBossListDTO != null) {
-            // 订单号筛选
             if (orderBossListDTO.getOrderId() != null && !orderBossListDTO.getOrderId().trim().isEmpty()) {
                 queryWrapper.like("id", orderBossListDTO.getOrderId());
             }
             
-            // 订单状态筛选
+            // 订单号筛选
+            if (orderBossListDTO.getOpenId() != null && !orderBossListDTO.getOpenId().trim().isEmpty()) {
+                queryWrapper.eq("open_id", orderBossListDTO.getOpenId());
+            }
+            
             if (orderBossListDTO.getOrderTypeCode() != null && !orderBossListDTO.getOrderTypeCode().trim().isEmpty()) {
                 try {
                     Integer statusCode = Integer.parseInt(orderBossListDTO.getOrderTypeCode());
@@ -360,7 +385,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 }
             }
             
-            // 订单创建时间区间筛选
             if (orderBossListDTO.getOrderCreateTime() != null && !orderBossListDTO.getOrderCreateTime().trim().isEmpty()) {
                 String[] createTimeRange = orderBossListDTO.getOrderCreateTime().split(",");
                 if (createTimeRange.length == 2) {
@@ -375,7 +399,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 }
             }
             
-            // 订单结束时间区间筛选
             if (orderBossListDTO.getOrderEndTime() != null && !orderBossListDTO.getOrderEndTime().trim().isEmpty()) {
                 String[] endTimeRange = orderBossListDTO.getOrderEndTime().split(",");
                 if (endTimeRange.length == 2) {
@@ -391,15 +414,36 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             }
         }
         
-        List<Order> orders = this.list(queryWrapper);
-        if (orders == null || orders.isEmpty()) {
-            log.info("无符合条件的订单");
-            response.setData(new ArrayList<>());
-            return response.value();
+        Integer pageNum = orderBossListDTO != null ? orderBossListDTO.getPageNum() : null;
+        Integer pageSize = orderBossListDTO != null ? orderBossListDTO.getPageSize() : null;
+        
+        if (pageNum != null && pageSize != null && pageNum > 0 && pageSize > 0) {
+            Page<Order> page = new Page<>(pageNum, pageSize);
+            IPage<Order> orderPage = this.page(page, queryWrapper);
+            
+            IPage<OrderInfoVO> voPage = orderPage.convert(order -> {
+                User user = userService.getUserByOpenId(order.getOpenId());
+                String nickName = user != null ? user.getNickName() : null;
+                return OrderInfoVO.fromOrder(order, nickName);
+            });
+            
+            response.setData(voPage);
+        } else {
+            List<Order> orders = this.list(queryWrapper);
+            
+            List<OrderInfoVO> orderInfoVOList = orders.stream()
+                    .map(order -> {
+                        User user = userService.getUserByOpenId(order.getOpenId());
+                        String nickName = user != null ? user.getNickName() : null;
+                        return OrderInfoVO.fromOrder(order, nickName);
+                    })
+                    .toList();
+            
+            Page<OrderInfoVO> resultPage = new Page<>(1, orders.size(), orders.size());
+            resultPage.setRecords(orderInfoVOList);
+            response.setData(resultPage);
         }
         
-        List<OrderInfoVO> orderInfoVOList = orders.stream().map(OrderInfoVO::fromOrder).toList();
-        response.setData(orderInfoVOList);
         return response.value();
     }
     /**
@@ -409,7 +453,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      * @return 是否成功
      */
     @Override
-    @Transactional(rollbackFor = OrderException.class, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(rollbackFor = Exception.class, isolation = Isolation.REPEATABLE_READ)
     public ResponseEntity<Result<Boolean>> orderOver(String orderId) {
         Response<Boolean> response = new Response<>();
         
@@ -448,7 +492,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         
         List<Product> products = productService.listByIds(productIds);
         Map<String, Product> productMap = products.stream()
-                .collect(java.util.stream.Collectors.toMap(Product::getId, p -> p));
+                .collect(Collectors.toMap(Product::getId, p -> p));
         
         long totalPoint = 0L;
         for (OrderItem orderItem : orderItems) {
@@ -460,6 +504,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         
         order.setPayType(OrderTypeEnum.OVER);
         order.setPayAmount(order.getTotalAmount());
+        order.setPointNumber(totalPoint);
         order.setEndTime(LocalDateTime.now());
         
         if (!this.updateById(order)) {
@@ -469,7 +514,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         
         if (totalPoint > 0) {
             try {
-                userPointService.updatePoint(order.getOpenId(), totalPoint);
+                userPointService.updatePoint(order.getOpenId(), totalPoint,PointRecordTypeEnum.ORDER_PAY);
                 log.info("订单积分已计入用户钱包, orderId: {}, openId: {}, totalPoint: {}", orderId, order.getOpenId(), totalPoint);
             } catch (Exception e) {
                 log.error("订单积分计入用户钱包失败, orderId: {}, openId: {}, totalPoint: {}, error: {}", orderId, order.getOpenId(), totalPoint, e.getMessage());
@@ -478,6 +523,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         
         log.info("订单结束成功, orderId: {}, payAmount: {}, totalPoint: {}", orderId, order.getPayAmount(), totalPoint);
+        
+        StringBuilder contentBuilder = new StringBuilder();
+        contentBuilder.append("您的订单已确认完成！\n");
+        contentBuilder.append("订单号：").append(orderId).append("\n");
+        contentBuilder.append("订单金额：").append(order.getTotalAmount()).append("元\n");
+        if (totalPoint > 0) {
+            contentBuilder.append("获得积分：").append(totalPoint);
+        }
+        
+        Information orderOverInfo = InformationUtil.buildPersonalNotification(
+                order.getOpenId(),
+                "订单确认成功",
+                contentBuilder.toString()
+        );
+        informationService.save(orderOverInfo);
+        log.info("订单确认成功消息已发送, orderId: {}, openId: {}", orderId, order.getOpenId());
+        
+        OrderWebSocketHandler.notifyCustomerOrderAccepted(order.getOpenId());
+        
         response.setData(true);
         return response.value();
     }
@@ -518,6 +582,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         
         log.info("订单拒绝成功，商品库存已退回, orderId: {}", orderId);
+        
+        StringBuilder contentBuilder = new StringBuilder();
+        contentBuilder.append("很抱歉，您的订单已被商家拒绝。\n");
+        contentBuilder.append("订单号：").append(orderId).append("\n");
+        contentBuilder.append("订单金额将原路退回。");
+        
+        Information orderRejectInfo = InformationUtil.buildPersonalNotification(
+                order.getOpenId(),
+                "订单已被拒绝",
+                contentBuilder.toString()
+        );
+        informationService.save(orderRejectInfo);
+        log.info("订单拒绝消息已发送, orderId: {}, openId: {}", orderId, order.getOpenId());
+        
+        OrderWebSocketHandler.notifyCustomerOrderRejected(order.getOpenId());
+        
         response.setData(true);
         return response.value();
     }

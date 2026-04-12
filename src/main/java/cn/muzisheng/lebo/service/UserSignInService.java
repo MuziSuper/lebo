@@ -22,4 +22,19 @@ public interface UserSignInService extends IService<UserSignIn> {
      * @throws UserPointException 当签到失败时抛出（如重复签到、用户信息获取失败等）
      */
     ResponseEntity<Result<Boolean>> sign() throws UserPointException;
+
+    /**
+     * 获取用户今日签到状态
+     *
+     * @return true-今日已签到，false-今日未签到
+     */
+    ResponseEntity<Result<Boolean>> getTodaySignInStatus();
+    
+    /**
+     * 判断用户今日是否已签到
+     *
+     * @param openId 用户openid
+     * @return true-今日已签到，false-今日未签到
+     */
+    boolean hasSignedToday(String openId);
 }

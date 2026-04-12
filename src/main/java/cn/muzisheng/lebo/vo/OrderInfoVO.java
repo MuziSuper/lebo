@@ -14,6 +14,10 @@ public class OrderInfoVO {
      */
     private String id;
     /**
+     * 用户昵称
+     */
+    private String nickName;
+    /**
      * 房间号
      */
     private String homeNumber;
@@ -21,6 +25,10 @@ public class OrderInfoVO {
      * 订单金额
      */
     private Long totalAmount;
+    /**
+     * 获得积分数量
+     */
+    private Long pointNumber;
     /**
      * 实际支付金额
      */
@@ -45,11 +53,13 @@ public class OrderInfoVO {
      * 订单结束时间
      */
     private LocalDateTime endTime;
-    public static OrderInfoVO fromOrder(Order order) {
+    public static OrderInfoVO fromOrder(Order order, String nickName) {
         return OrderInfoVO.builder()
                 .id(order.getId())
+                .nickName(nickName)
                 .homeNumber(order.getHomeNumber())
                 .totalAmount(order.getTotalAmount())
+                .pointNumber(order.getPointNumber())
                 .payAmount(order.getPayAmount())
                 .payType(order.getPayType().getCode())
                 .payOption(order.getPayOption().getCode())

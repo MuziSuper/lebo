@@ -6,13 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 /**
- * 数据备份DTO
- * 用于封装全量备份数据（商品、类目、订单、订单项、用户、用户积分、商品出入库记录、积分记录）
+ * 备份数据DTO
+ * 用于封装全量备份数据
  */
 @Data
 @Builder
@@ -20,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 public class BackupDataDTO implements Serializable {
     
-    @Serial
     private static final long serialVersionUID = 1L;
     
     /**
@@ -67,4 +65,14 @@ public class BackupDataDTO implements Serializable {
      * 所有用户签到记录
      */
     private List<UserSignIn> userSignIns;
+    
+    /**
+     * 所有历史操作记录
+     */
+    private List<HistoryOperation> historyOperations;
+    
+    /**
+     * 所有消息通知记录
+     */
+    private List<Information> informations;
 }

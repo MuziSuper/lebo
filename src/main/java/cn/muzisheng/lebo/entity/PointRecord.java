@@ -52,21 +52,21 @@ public class PointRecord {
      */
     @TableField(value = "change_amount")
     @Column(name = "change_amount")
-    private Integer changeAmount;
+    private Long changeAmount;
     
     /**
      * 变动前积分
      */
     @TableField(value = "before_amount")
     @Column(name = "before_amount")
-    private Integer beforeAmount;
+    private Long beforeAmount;
     
     /**
      * 变动后积分
      */
     @TableField(value = "after_amount")
     @Column(name = "after_amount")
-    private Integer afterAmount;
+    private Long afterAmount;
     
     /**
      * 创建时间

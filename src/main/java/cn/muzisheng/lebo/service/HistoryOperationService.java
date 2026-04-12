@@ -4,9 +4,10 @@ import cn.muzisheng.lebo.dto.HistoryOperationSelectDTO;
 import cn.muzisheng.lebo.entity.HistoryOperation;
 import cn.muzisheng.lebo.model.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.http.ResponseEntity;
 
-public interface HistoryOperationService {
+public interface HistoryOperationService extends IService<HistoryOperation> {
     /**
      * 添加历史操作,
      * @param type 操作类型，0: 商品添加，1: 商品修改，2: 商品删除，3: 手动备份数据，4: 自动备份数据，5: 后台系统登录 6: 商品分类添加，7: 商品分类修改，8: 商品分类删除

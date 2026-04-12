@@ -16,7 +16,6 @@ import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +80,44 @@ public class PointRecordServiceImpl extends ServiceImpl<PointRecordMapper, Point
         log.info("新增积分记录成功：openId={}, changeAmount={}", openId, pointRecordAddDTO.getChangeAmount());
         response.setData(true);
         return response.value();
+    }
+
+    /**
+     * 新增积分记录（内部调用，无返回值）
+     *
+     * @param pointRecordAddDTO 积分记录
+     */
+    @Override
+    public void addPointRecordInternal(PointRecordAddDTO pointRecordAddDTO) {
+        if (pointRecordAddDTO == null) {
+            log.error("新增积分记录失败：参数为空");
+            throw new IllegalArgumentException("积分记录参数不能为空");
+        }
+
+        String openId = pointRecordAddDTO.getOpenId();
+
+        if (StringUtils.isBlank(openId)) {
+            log.error("新增积分记录失败：用户openid为空");
+            throw new IllegalArgumentException("用户openid不能为空");
+        }
+
+        PointRecord pointRecord = new PointRecord();
+        pointRecord.setId(IdUtil.generatePointRecordId());
+        pointRecord.setOpenId(openId);
+        pointRecord.setOrderId(pointRecordAddDTO.getOrderId());
+        pointRecord.setDescription(pointRecordAddDTO.getDescription());
+        pointRecord.setChangeAmount(pointRecordAddDTO.getChangeAmount());
+        pointRecord.setBeforeAmount(pointRecordAddDTO.getBeforeAmount());
+        pointRecord.setAfterAmount(pointRecordAddDTO.getAfterAmount());
+        pointRecord.setGmtCreated(LocalDateTime.now());
+
+        boolean saved = this.save(pointRecord);
+        if (!saved) {
+            log.error("新增积分记录失败：openId={}", openId);
+            throw new RuntimeException("新增积分记录失败");
+        }
+
+        log.info("新增积分记录成功：openId={}, changeAmount={}", openId, pointRecordAddDTO.getChangeAmount());
     }
 
     /**
@@ -155,7 +192,14 @@ public class PointRecordServiceImpl extends ServiceImpl<PointRecordMapper, Point
      */
     private PointRecordListVO convertToVO(PointRecord pointRecord) {
         PointRecordListVO vo = new PointRecordListVO();
-        BeanUtils.copyProperties(pointRecord, vo);
+        vo.setId(pointRecord.getId());
+        vo.setOrderId(pointRecord.getOrderId());
+        vo.setDescription(pointRecord.getDescription());
+        vo.setChangeAmount(pointRecord.getChangeAmount() != null ? pointRecord.getChangeAmount().intValue() : null);
+        vo.setBeforeAmount(pointRecord.getBeforeAmount() != null ? pointRecord.getBeforeAmount().intValue() : null);
+        vo.setAfterAmount(pointRecord.getAfterAmount() != null ? pointRecord.getAfterAmount().intValue() : null);
+        vo.setGmtCreated(pointRecord.getGmtCreated());
         return vo;
     }
+    
 }

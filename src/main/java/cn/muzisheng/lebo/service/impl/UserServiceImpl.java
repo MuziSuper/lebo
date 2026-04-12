@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -361,6 +362,41 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 UserListVO.of(user, finalUserPointMap.get(user.getOpenId())));
         
         response.setData(voPage);
+        return response.value();
+    }
+
+    @Override
+    public boolean isMerchant(String openId) {
+        User user = this.getById(openId);
+        if (user == null) {
+            log.warn("用户不存在，openId: {}", openId);
+            return false;
+        }
+        return user.getIsSuper() != null && user.getIsSuper() == 1;
+    }
+
+    @Override
+    public ResponseEntity<Result<List<UserListVO>>> listByOpenIds(List<String> openIds) {
+        Response<List<UserListVO>> response = new Response<>();
+        if(openIds == null || openIds.isEmpty()){
+            log.error("openIds不能为空");
+            throw new UserException("openIds不能为空");
+        }
+        List<User> users = this.listByIds(openIds);
+        if(users == null || users.isEmpty()){
+            log.error("用户不存在，openIds: {}", Arrays.toString(openIds.toArray()));
+            throw new UserException("用户不存在");
+        }
+        if(users.size() != openIds.size()){
+           String[] notExistOpenIds = openIds.stream()
+                    .filter(openId -> !users.stream().map(User::getOpenId).toList().contains(openId)).toArray(String[]::new);
+           log.error("用户不存在，openIds: {}", Arrays.toString(notExistOpenIds));
+           throw new UserException("用户不存在");
+        }
+        List<UserListVO> vos = users.stream()
+                .map(user -> UserListVO.of(user, userPointService.getById(user.getOpenId())))
+                .toList();
+        response.setData(vos);
         return response.value();
     }
 }

@@ -3,10 +3,12 @@ package cn.muzisheng.lebo.api;
 import cn.muzisheng.lebo.dto.OrderAddDTO;
 import cn.muzisheng.lebo.dto.OrderBossListDTO;
 import cn.muzisheng.lebo.dto.OrderListDTO;
+import cn.muzisheng.lebo.dto.OrderPayDTO;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.OrderService;
 import cn.muzisheng.lebo.vo.OrderDetailVO;
 import cn.muzisheng.lebo.vo.OrderInfoVO;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +37,7 @@ public class OrderApi {
      * @return 订单ID
      */
     @PostMapping("/submit")
-    public ResponseEntity<Result<String>> submit(@RequestBody OrderAddDTO orderAddDTO) {
+    public ResponseEntity<Result<String>> submit(@RequestBody OrderPayDTO orderAddDTO) {
         return orderService.submit(orderAddDTO);
     }
     /**
@@ -53,17 +55,17 @@ public class OrderApi {
      * @return 订单详情
      */
     @PostMapping("/orderInfolist")
-    public ResponseEntity<Result<List<OrderInfoVO>>> orderInfoList(OrderListDTO orderListDTO) {
+    public ResponseEntity<Result<List<OrderInfoVO>>> orderInfoList(@RequestBody OrderListDTO orderListDTO) {
         return orderService.orderInfoList(orderListDTO);
     }
 
     /**
-     * 商家获取订单列表，筛选条件为订单状态,订单创建时间区间，订单结束时间区间，订单支付方式，订单ID
-     * @param orderBossListDTO 订单列表
-     * @return 订单详情
+     * 商家获取订单列表，筛选条件为订单状态,订单创建时间区间，订单结束时间区间，订单支付方式，订单ID，支持分页
+     * @param orderBossListDTO 订单列表查询条件
+     * @return 订单分页数据
      */
     @PostMapping("/bossOrderInfolist")
-    public ResponseEntity<Result<List<OrderInfoVO>>> bossOrderInfoList(OrderBossListDTO orderBossListDTO) {
+    public ResponseEntity<Result<IPage<OrderInfoVO>>> bossOrderInfoList(@RequestBody OrderBossListDTO orderBossListDTO) {
         return orderService.orderBossInfoList(orderBossListDTO);
     }
     /**

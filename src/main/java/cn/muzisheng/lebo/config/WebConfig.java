@@ -31,8 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/user/register",
                         "/files/**",
                         "/upload",
-                        "/user/bossLogin",
-                        "/order/**"
+                        "/user/bossLogin"
                 );  // 白名单路径
     }
     @Bean

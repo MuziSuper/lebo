@@ -1,8 +1,6 @@
 package cn.muzisheng.lebo.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import lombok.Builder;
@@ -17,10 +15,9 @@ import java.time.LocalDateTime;
 @Builder
 public class InOutProductRecord {
     /**
-     * 记录ID，格式：INOUT_yyyyMMddHHmmss + 4位序列号
+     * 记录ID
      */
     @Id
-    @TableId(type = IdType.INPUT)
     private String id;
     /**
      * 商品名称

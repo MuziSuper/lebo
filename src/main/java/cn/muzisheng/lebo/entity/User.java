@@ -129,4 +129,11 @@ public class User {
     @Column(name = "is_deleted")
     @TableField(value = "is_deleted")
     private Integer deleted;
+
+    /**
+     * 是否为商户,0-普通用户，1-商户
+     */
+    @Column(name = "is_super")
+    @TableField(value = "is_super")
+    private Integer isSuper;
 }

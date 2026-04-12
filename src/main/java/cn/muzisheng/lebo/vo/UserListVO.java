@@ -14,6 +14,11 @@ import java.time.LocalDateTime;
 @Data
 public class UserListVO {
     /**
+     * 用户openId
+     */
+    private String openId;
+
+    /**
      * 昵称
      */
     private String nickName;
@@ -73,6 +78,7 @@ public class UserListVO {
      */
     public static UserListVO of(User user, UserPoint userPoint) {
         return UserListVO.builder()
+                .openId(user.getOpenId())
                 .nickName(user.getNickName())
                 .gender(user.getGender())
                 .city(user.getCity())

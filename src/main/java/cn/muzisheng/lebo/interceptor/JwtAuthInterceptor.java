@@ -67,7 +67,6 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        String requestURI = request.getRequestURI();
         // 请求完成后清理请求级别上下文
         UserThreadUtil.removeCurrentOpenId();
     }

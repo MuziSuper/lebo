@@ -38,6 +38,9 @@ public class IdUtil {
     /** 积分记录ID前缀 */
     private static final String POINT_RECORD_ID_PREFIX = "PR_";
 
+    /** 消息通知ID前缀 */
+    private static final String INFORMATION_ID_PREFIX = "INFO_";
+
     /** 日期时间格式化器 */
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
@@ -58,6 +61,9 @@ public class IdUtil {
         SEQUENCE_MAP.put(HISTORY_OPERATION_ID_PREFIX, new AtomicInteger(0));
         SEQUENCE_MAP.put(IN_OUT_RECORD_ID_PREFIX, new AtomicInteger(0));
         SEQUENCE_MAP.put(POINT_RECORD_ID_PREFIX, new AtomicInteger(0));
+        SEQUENCE_MAP.put(INFORMATION_ID_PREFIX, new AtomicInteger(0));
+
+
 
         CURRENT_SECOND_MAP.put(ORDER_ID_PREFIX, "");
         CURRENT_SECOND_MAP.put(IMAGE_ID_PREFIX, "");
@@ -66,6 +72,7 @@ public class IdUtil {
         CURRENT_SECOND_MAP.put(HISTORY_OPERATION_ID_PREFIX, "");
         CURRENT_SECOND_MAP.put(IN_OUT_RECORD_ID_PREFIX, "");
         CURRENT_SECOND_MAP.put(POINT_RECORD_ID_PREFIX, "");
+        CURRENT_SECOND_MAP.put(INFORMATION_ID_PREFIX, "");
     }
 
     /**
@@ -159,6 +166,18 @@ public class IdUtil {
      */
     public static synchronized String generatePointRecordId() {
         return generate(POINT_RECORD_ID_PREFIX);
+    }
+
+    /**
+     * 生成消息通知ID
+     * 格式：INFO_yyyyMMddHHmmss + 2位序列号 + 2位随机数
+     * 示例：INFO_202506021103020153
+     * 线程安全，每秒最多生成99个消息通知ID
+     *
+     * @return 消息通知ID
+     */
+    public static synchronized String generateInformationId() {
+        return generate(INFORMATION_ID_PREFIX);
     }
 
     /**

@@ -1,9 +1,6 @@
 package cn.muzisheng.lebo.service;
 
-import cn.muzisheng.lebo.dto.ProductAddDTO;
-import cn.muzisheng.lebo.dto.ProductInOutDTO;
-import cn.muzisheng.lebo.dto.ProductListDTO;
-import cn.muzisheng.lebo.dto.ProductShowDTO;
+import cn.muzisheng.lebo.dto.*;
 import cn.muzisheng.lebo.entity.Product;
 import cn.muzisheng.lebo.exception.ProductException;
 import cn.muzisheng.lebo.model.Result;
@@ -45,11 +42,20 @@ public interface ProductService extends IService<Product> {
 
 
     /**
-     * 商品批量出库入库,内部检测库存与判空等信息，主要用于客户支付订单候商品的批量出库
+     * 商品批量出库,内部检测库存与判空等信息，主要用于客户支付订单候商品的批量出库
+     * 数据库内实现商品出库操作以及创建商品出入库记录
      * @param productInOutDTOList 商品出库入库信息列表
      * @throws ProductException 商品异常
      */
-    List<Product> inOutBatch(List<ProductInOutDTO> productInOutDTOList);
+    void inOutBatch(List<ProductInOutDTO> productInOutDTOList);
+    /**
+     * 商品批量出库,内部检测库存与判空等信息，还检测商品是否可积分兑换，主要用于客户积分兑换商品的批量出库
+     * 数据库执行了更新商品库存操作、创建商品出入库记录
+     * @param productInOutDTOList 商品出库入库信息列表
+     * @param currentUserPoint 用户当前积分
+     * @throws ProductException 商品异常
+     */
+    PointRecordAddDTO outBatchByPoints(List<ProductInOutDTO> productInOutDTOList, long currentUserPoint, String openId);
 
 //    /**
 //     * 获取商品详情

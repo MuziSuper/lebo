@@ -3,6 +3,7 @@ package cn.muzisheng.lebo.api;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.UserSignInService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,5 +36,15 @@ public class UserSignInApi {
     @PostMapping
     public ResponseEntity<Result<Boolean>> sign() {
         return userSignInService.sign();
+    }
+
+    /**
+     * 获取用户今日签到状态
+     *
+     * @return true-今日已签到，false-今日未签到
+     */
+    @GetMapping("/status")
+    public ResponseEntity<Result<Boolean>> getTodaySignInStatus() {
+        return userSignInService.getTodaySignInStatus();
     }
 }

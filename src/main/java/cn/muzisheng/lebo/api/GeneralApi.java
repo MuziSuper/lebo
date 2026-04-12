@@ -119,6 +119,4 @@ public class GeneralApi {
 
         return storageService.store(file, pictureCategory);
     }
-
-    
 }

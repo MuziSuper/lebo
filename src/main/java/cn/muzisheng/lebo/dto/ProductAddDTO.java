@@ -47,10 +47,6 @@ public class ProductAddDTO {
      */
     private Integer salePrice;
     /**
-     * 商品会员价格
-     */
-    private Integer vipPrice;
-    /**
      * 商品库存
      */
     private Long storage;
