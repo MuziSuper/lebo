@@ -28,7 +28,7 @@ CREATE TABLE `category` (
     `gmt_modified` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品分类表' AUTO_INCREMENT=1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='商品分类表' AUTO_INCREMENT=1;
 
 -- ----------------------------
 -- Table structure for user
@@ -60,7 +60,7 @@ CREATE TABLE `user` (
     KEY `idx_gmt_created` (`gmt_created`),
     CONSTRAINT `user_chk_1` CHECK ((`status` between 0 and 4)),
     CONSTRAINT `user_chk_2` CHECK ((`gender` between 0 and 2))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户信息表';
 
 -- ----------------------------
 -- Table structure for user_point
@@ -78,7 +78,7 @@ CREATE TABLE `user_point` (
     UNIQUE KEY `uk_open_id` (`open_id`),
     KEY `idx_current_point` (`current_point`),
     CONSTRAINT `user_point_chk_1` CHECK ((`current_point` >= 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户积分账户表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户积分账户表';
 
 -- ----------------------------
 -- Table structure for point_record
@@ -97,7 +97,7 @@ CREATE TABLE `point_record` (
     KEY `idx_open_id` (`open_id`),
     KEY `idx_order_id` (`order_id`),
     KEY `idx_gmt_created` (`gmt_created`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户积分变动记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户积分变动记录表';
 
 -- ----------------------------
 -- Table structure for product
@@ -129,7 +129,7 @@ CREATE TABLE `product` (
     KEY `idx_gmt_created` (`gmt_created`),
     CONSTRAINT `product_chk_1` CHECK ((`status` between 0 and 2)),
     CONSTRAINT `product_chk_2` CHECK ((`storage` >= 0))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='商品信息表';
 
 -- ----------------------------
 -- Table structure for in_out_product_record
@@ -151,7 +151,7 @@ CREATE TABLE `in_out_product_record` (
     KEY `idx_time` (`time`),
     KEY `idx_product_time` (`product_id`, `time`),
     CONSTRAINT `in_out_product_record_chk_1` CHECK ((`type` between 1 and 2))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='商品出入库记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='商品出入库记录表';
 
 -- ----------------------------
 -- Table structure for order
@@ -177,7 +177,7 @@ CREATE TABLE `order` (
     KEY `idx_create_time` (`create_time`),
     CONSTRAINT `order_chk_1` CHECK ((`pay_type` between 0 and 5)),
     CONSTRAINT `order_chk_2` CHECK ((`pay_option` between 0 and 2))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='订单表';
 
 -- ----------------------------
 -- Table structure for order_item
@@ -195,7 +195,7 @@ CREATE TABLE `order_item` (
     PRIMARY KEY (`id`),
     KEY `idx_order_id` (`order_id`),
     KEY `idx_product_id` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='订单商品关联表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='订单商品关联表';
 
 -- ----------------------------
 -- Table structure for history_operation
@@ -211,7 +211,7 @@ CREATE TABLE `history_operation` (
     KEY `idx_type` (`type`),
     KEY `idx_time` (`time`),
     KEY `idx_operator_id` (`operator_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='历史操作记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='历史操作记录表';
 
 -- ----------------------------
 -- Table structure for user_sign_in
@@ -227,7 +227,7 @@ CREATE TABLE `user_sign_in` (
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_open_id` (`open_id`),
     KEY `idx_last_sign_date` (`last_sign_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户签到记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户签到记录表';
 
 -- ----------------------------
 -- Table structure for award_record
@@ -242,7 +242,7 @@ CREATE TABLE `award_record` (
     KEY `idx_user_openid` (`user_openid`),
     KEY `idx_create_date` (`create_date`),
     KEY `idx_user_date` (`user_openid`, `create_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='抽奖记录表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='抽奖记录表';
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -375,4 +375,4 @@ CREATE TABLE `information` (
     KEY `idx_type` (`type`),
     KEY `idx_gmt_created` (`gmt_created`),
     KEY `idx_open_id_gmt_created` (`open_id`, `gmt_created`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='消息通知表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='消息通知表';
