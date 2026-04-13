@@ -14,7 +14,6 @@ import cn.muzisheng.lebo.service.UserPointService;
 import cn.muzisheng.lebo.service.UserSignInService;
 import cn.muzisheng.lebo.utils.InformationUtil;
 import cn.muzisheng.lebo.utils.UserThreadUtil;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.log4j.Log4j2;
