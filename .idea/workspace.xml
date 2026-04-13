@@ -214,7 +214,7 @@
       <workItem from="1773971570747" duration="107394000" />
       <workItem from="1775554676062" duration="25794000" />
       <workItem from="1775979699758" duration="33000" />
-      <workItem from="1775980903896" duration="5524000" />
+      <workItem from="1775980903896" duration="8742000" />
     </task>
     <task id="LOCAL-00001" summary="暂存代码">
       <option name="closed" value="true" />
@@ -432,7 +432,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776063398890</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="refactor(docker): 优化 Dockerfile 构建配置&#10;&#10;- 移除无用的注释和空行，简化 Dockerfile 结构&#10;- 更新包管理器命令，从 apk 切换到 apt-get&#10;- 修复健康检查端口配置，从 8080 改为 80&#10;- 添加跳过测试的构建参数 -DskipTests&#10;- 优化时区设置和包安装流程&#10;- 简化 Java 类导入，使用通配符导入实体类">
+      <option name="closed" value="true" />
+      <created>1776073102589</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1776073102589</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -515,6 +523,12 @@
           <option name="totalLines" value="17517" />
           <option name="info" value="refactor(docker): 优化 Dockerfile 构建配置&#10;&#10;- 移除无用的注释和空行" />
         </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1776073102787" />
+          <option name="linesCode" value="9375" />
+          <option name="totalLines" value="17517" />
+          <option name="info" value="refactor(docker): 优化 Dockerfile 构建配置&#10;&#10;- 移除无用的注释和空行" />
+        </TimePoint>
       </list>
     </option>
     <option name="genericTimePoints">
@@ -544,7 +558,7 @@
           <option name="info" value="2026年4月12日" />
         </TimePoint>
         <TimePoint>
-          <option name="timestamp" value="1776063398953" />
+          <option name="timestamp" value="1776073102787" />
           <option name="linesCode" value="9375" />
           <option name="totalLines" value="17517" />
           <option name="info" value="2026年4月13日" />
