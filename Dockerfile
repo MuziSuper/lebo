@@ -1,6 +1,6 @@
 # 二开推荐阅读[如何提高项目构建效率](https://developers.weixin.qq.com/miniprogram/dev/wxcloudrun/src/scene/build/speed.html)
 # 选择构建用基础镜像。如需更换，请到[dockerhub官方仓库](https://hub.docker.com/_/java?tab=tags)自行选择后替换。
-FROM maven:3.9.6-eclipse-temurin-21-alpine as builder
+FROM maven:3.9.6-eclipse-temurin-21 as builder
 
 # 指定构建过程中的工作目录
 WORKDIR /app
@@ -16,7 +16,7 @@ COPY settings.xml pom.xml /app/
 RUN mvn -s /app/settings.xml -f /app/pom.xml clean package
 
 # 选择运行时基础镜像
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:21-jre
 
 
 # 容器默认时区为UTC，如需使用上海时间请启用以下时区设置命令

@@ -44,7 +44,7 @@ public class WXServiceImpl implements WXService {
     public WXServiceImpl(Environment environment) {
         this.appId = environment.getProperty("APP_ID", String.class);
         this.appSecret = environment.getProperty("APP_SECRET", String.class);
-        log.info("appId: {}, appSecret: {}", appId, appSecret);
+//        log.info("appId: {}, appSecret: {}", appId, appSecret);
     }
 
     /**
