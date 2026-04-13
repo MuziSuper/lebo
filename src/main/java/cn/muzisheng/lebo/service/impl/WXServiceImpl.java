@@ -142,6 +142,10 @@ public class WXServiceImpl implements WXService {
             }
         }
         String accessToken = (String) result.get("access_token");
+        if(accessToken== null|| accessToken.isEmpty()){
+            log.error("获取稳定版access_token失败: access_token为空");
+            throw new WXException("获取稳定版access_token失败: access_token为空");
+        }
         log.info("获取稳定版access_token成功, 有效期: {}秒", result.get("expires_in"));
         return accessToken;
     }
