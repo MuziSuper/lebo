@@ -32,7 +32,7 @@ public class WxCloudStorageConfig {
      * 微信云托管环境ID
      * 在微信云托管控制台可查看
      */
-    @Value("${wx.cloud.env:}")
+    @Value("${wx.cloud.env:prod-2g6spcyj607904cd}")
     private String env;
 
     /**

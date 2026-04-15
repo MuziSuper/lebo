@@ -1,5 +1,6 @@
 package cn.muzisheng.lebo.service.impl;
 
+import cn.muzisheng.lebo.config.WXSecretConfig;
 import cn.muzisheng.lebo.constant.Constant;
 import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.exception.WXException;
@@ -33,18 +34,19 @@ public class WXServiceImpl implements WXService {
 
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final WXSecretConfig wxSecretConfig;
     @Getter
     private final String appId;
     @Getter
-    private volatile String accessToken;
-    @Getter
     private final String appSecret;
+    @Getter
+    private volatile String accessToken;
 
 
-    public WXServiceImpl(Environment environment) {
-        this.appId = environment.getProperty("APP_ID", String.class);
-        this.appSecret = environment.getProperty("APP_SECRET", String.class);
-//        log.info("appId: {}, appSecret: {}", appId, appSecret);
+    public WXServiceImpl(Environment environment, WXSecretConfig wxSecretConfig) {
+        this.wxSecretConfig = wxSecretConfig;
+        this.appId = wxSecretConfig.getAppId();
+        this.appSecret = wxSecretConfig.getAppSecret();
     }
 
     /**
