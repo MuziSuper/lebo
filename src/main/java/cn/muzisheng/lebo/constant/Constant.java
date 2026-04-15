@@ -46,6 +46,11 @@ public class Constant {
     public static final String WX_STABLE_TOKEN_URL = WX_API_BASE + "/cgi-bin/stable_token";
     public static final String WX_GET_USER_INFO_URL = WX_API_BASE + "/cgi-bin/user/info";
 
+    // 微信云托管对象存储API常量
+    public static final String WX_CLOUD_UPLOAD_URL = WX_API_BASE + "/tcb/uploadfile";
+    public static final String WX_CLOUD_DOWNLOAD_URL = WX_API_BASE + "/tcb/batchdownloadfile";
+    public static final String WX_CLOUD_DELETE_URL = WX_API_BASE + "/tcb/deletefile";
+
     /**
      * 加密算法名称
      */

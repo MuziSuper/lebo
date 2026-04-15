@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class LoginDTO {
     private String nickName;
-    private String avatarUrl;
+    private String avatar;
     private Integer gender;
 }

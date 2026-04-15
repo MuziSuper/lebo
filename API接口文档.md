@@ -51,6 +51,12 @@
   - [文件管理接口](#文件管理接口)
     - [上传文件](#上传文件)
     - [下载/查看文件](#下载查看文件)
+  - [微信云存储接口](#微信云存储接口)
+    - [上传文件到云存储](#上传文件到云存储)
+    - [获取文件下载链接](#获取文件下载链接)
+    - [批量获取文件下载链接](#批量获取文件下载链接)
+    - [删除单个文件](#删除单个文件)
+    - [批量删除文件](#批量删除文件)
   - [数据备份接口](#数据备份接口)
     - [导出备份数据](#导出备份数据)
     - [导入备份数据](#导入备份数据)
@@ -182,7 +188,7 @@ POST /user/login?jscode=微信登录凭证
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
 | nickName | String | 否 | 用户昵称 |
-| avatarUrl | String | 否 | 用户头像URL |
+| avatar | String | 否 | 用户头像URL |
 | gender | Integer | 否 | 性别：0-保密，1-男，2-女 |
 
 **请求示例**:
@@ -2294,6 +2300,300 @@ pictureCategory: "product"
 **响应**:
 - 成功时返回文件流
 - 失败时返回错误信息
+
+---
+
+## 微信云存储接口
+
+**基础路径**: `/wx-cloud`
+
+微信云托管对象存储接口，基于腾讯云COS实现文件的云端存储。支持文件上传、获取下载链接、删除等操作。
+
+### 使用前提
+
+在使用微信云存储接口前，需要完成以下配置：
+
+1. **开启开放接口服务**
+   - 登录微信云托管控制台
+   - 进入「云调用」设置
+   - 打开「开放接口服务」开关
+
+2. **配置接口权限**
+   - 在「微信令牌权限配置」中添加以下接口路径：
+     ```
+     /tcb/uploadfile
+     /tcb/batchdownloadfile
+     /tcb/deletefile
+     ```
+   - 点击保存
+
+3. **配置环境变量**
+   - 在微信云托管环境变量中设置 `WX_CLOUD_ENV` 为云环境ID
+   - 重新构建服务版本使配置生效
+
+### 与本地文件存储的对比
+
+| 特性 | 本地文件存储 | 微信云存储 |
+|------|-------------|-----------|
+| 持久性 | 容器重启丢失 | 永久保存 |
+| 扩展性 | 受容器磁盘限制 | 无限制 |
+| 访问方式 | 本地路径 | HTTP URL |
+| 鉴权 | 无 | 需要token |
+| 适用场景 | 临时文件 | 用户上传文件、静态资源 |
+
+### 错误码说明
+
+| 错误码 | 说明 |
+|--------|------|
+| 0 | 请求成功 |
+| -1 | 系统错误 |
+| 40014 | AccessToken 不合法 |
+| 40097 | 请求参数错误 |
+| 40101 | 缺少必填参数 |
+| 41001 | 缺少AccessToken |
+| 42001 | AccessToken过期 |
+| 85088 | 该小程序/公众号未开通云开发 |
+
+### 注意事项
+
+1. **上传文件时必须携带 x-cos-meta-fileid**
+   - 如果漏传此字段，文件看似上传成功但下载时会报错
+   - 本服务已自动处理此字段
+
+2. **下载链接有效期**
+   - 临时下载链接有过期时间限制
+   - 默认有效期为 24 小时（86400 秒）
+   - 可通过 maxAge 参数自定义有效期
+
+3. **批量操作限制**
+   - 批量获取下载链接：最多 50 个文件
+   - 批量删除文件：最多 50 个文件
+
+4. **文件路径规范**
+   - 路径不要以 `/` 开头
+   - 推荐格式：`{分类}/{日期}/{文件名}`，如 `product/20260411/abc.png`
+
+---
+
+### 上传文件到云存储
+
+上传文件到微信云托管对象存储。
+
+**业务逻辑**:
+1. 调用微信API获取上传凭证
+2. 将文件上传到腾讯云COS
+3. 返回文件ID（file_id）用于后续操作
+
+- **URL**: `/wx-cloud/upload`
+- **Method**: `POST`
+- **认证**: 需要认证（Authorization token）
+- **Content-Type**: `multipart/form-data`
+
+**表单参数**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| file | File | 是 | 上传的文件 |
+| path | String | 是 | 云端存储路径（不要以 / 开头），如 `images/product/abc.png` |
+
+**请求示例 (form-data)**:
+```
+file: [二进制文件]
+path: "images/product/example.png"
+```
+
+**响应示例**:
+
+```json
+{
+  "data": "cloud://env-xxx.xxx/images/product/example.png",
+  "error": null,
+  "time": "2026-04-11T10:30:00"
+}
+```
+
+**响应字段说明**:
+
+| 字段名 | 类型 | 说明 |
+|--------|------|------|
+| data | String | 文件ID（file_id），用于后续下载和删除操作 |
+| error | String | 错误信息，成功时为null |
+| time | DateTime | 响应时间 |
+
+---
+
+### 获取文件下载链接
+
+获取单个文件的临时下载链接。
+
+- **URL**: `/wx-cloud/download-url`
+- **Method**: `GET`
+- **认证**: 需要认证（Authorization token）
+
+**查询参数**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| fileId | String | 是 | 文件ID（上传时返回的file_id） |
+| maxAge | Long | 否 | 下载链接有效期（秒），默认86400（24小时） |
+
+**请求示例**:
+```
+GET /wx-cloud/download-url?fileId=cloud://env-xxx.xxx/images/product/example.png&maxAge=3600
+```
+
+**响应示例**:
+
+```json
+{
+  "data": "https://xxx.cos.ap-shanghai.myqcloud.com/xxx?sign=xxx",
+  "error": null,
+  "time": "2026-04-11T10:30:00"
+}
+```
+
+**响应字段说明**:
+
+| 字段名 | 类型 | 说明 |
+|--------|------|------|
+| data | String | 临时下载链接，可直接用于下载文件 |
+| error | String | 错误信息，成功时为null |
+| time | DateTime | 响应时间 |
+
+---
+
+### 批量获取文件下载链接
+
+批量获取多个文件的临时下载链接（最多50个）。
+
+- **URL**: `/wx-cloud/download-urls`
+- **Method**: `POST`
+- **认证**: 需要认证（Authorization token）
+- **Content-Type**: `application/json`
+
+**请求体**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| fileIds | Array\<String\> | 是 | 文件ID列表（最多50个） |
+| maxAge | Long | 否 | 下载链接有效期（秒），默认86400 |
+
+**请求示例**:
+
+```json
+{
+  "fileIds": [
+    "cloud://env-xxx.xxx/images/product/a.png",
+    "cloud://env-xxx.xxx/images/product/b.png"
+  ],
+  "maxAge": 3600
+}
+```
+
+**响应示例**:
+
+```json
+{
+  "data": [
+    "https://xxx.cos.ap-shanghai.myqcloud.com/a?sign=xxx",
+    "https://xxx.cos.ap-shanghai.myqcloud.com/b?sign=xxx"
+  ],
+  "error": null,
+  "time": "2026-04-11T10:30:00"
+}
+```
+
+**响应字段说明**:
+
+| 字段名 | 类型 | 说明 |
+|--------|------|------|
+| data | Array\<String\> | 临时下载链接列表，顺序与请求中的fileIds对应 |
+| error | String | 错误信息，成功时为null |
+| time | DateTime | 响应时间 |
+
+---
+
+### 删除单个文件
+
+从云存储中删除单个文件。
+
+- **URL**: `/wx-cloud/file`
+- **Method**: `DELETE`
+- **认证**: 需要认证（Authorization token）
+
+**查询参数**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| fileId | String | 是 | 要删除的文件ID |
+
+**请求示例**:
+```
+DELETE /wx-cloud/file?fileId=cloud://env-xxx.xxx/images/product/example.png
+```
+
+**响应示例**:
+
+```json
+{
+  "data": true,
+  "error": null,
+  "time": "2026-04-11T10:30:00"
+}
+```
+
+**响应字段说明**:
+
+| 字段名 | 类型 | 说明 |
+|--------|------|------|
+| data | Boolean | 删除结果，true表示成功 |
+| error | String | 错误信息，成功时为null |
+| time | DateTime | 响应时间 |
+
+---
+
+### 批量删除文件
+
+批量删除多个文件（最多50个）。
+
+- **URL**: `/wx-cloud/files`
+- **Method**: `DELETE`
+- **认证**: 需要认证（Authorization token）
+- **Content-Type**: `application/json`
+
+**请求体**:
+
+文件ID列表（JSON数组格式）
+
+**请求示例**:
+
+```json
+[
+  "cloud://env-xxx.xxx/images/product/a.png",
+  "cloud://env-xxx.xxx/images/product/b.png"
+]
+```
+
+**响应示例**:
+
+```json
+{
+  "data": [
+    "cloud://env-xxx.xxx/images/product/a.png",
+    "cloud://env-xxx.xxx/images/product/b.png"
+  ],
+  "error": null,
+  "time": "2026-04-11T10:30:00"
+}
+```
+
+**响应字段说明**:
+
+| 字段名 | 类型 | 说明 |
+|--------|------|------|
+| data | Array\<String\> | 已删除的文件ID列表 |
+| error | String | 错误信息，成功时为null |
+| time | DateTime | 响应时间 |
 
 ---
 

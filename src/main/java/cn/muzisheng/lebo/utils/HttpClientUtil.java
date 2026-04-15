@@ -10,7 +10,11 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -202,6 +206,42 @@ public class HttpClientUtil {
     }
 
     /**
+     * 执行POST请求（multipart/form-data格式，用于文件上传）
+     *
+     * @param url        请求URL
+     * @param textParams 文本参数
+     * @param fileData   文件数据
+     * @param fileName   文件名
+     * @return 响应内容
+     */
+    public static String postMultipart(String url, Map<String, String> textParams, byte[] fileData, String fileName) {
+        try {
+            HttpPost httpPost = new HttpPost(url);
+
+            // 构建 multipart 表单数据
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            
+            // 添加文本参数
+            if (textParams != null) {
+                for (Map.Entry<String, String> entry : textParams.entrySet()) {
+                    builder.addPart(entry.getKey(), new StringBody(entry.getValue(), ContentType.TEXT_PLAIN));
+                }
+            }
+            
+            // 添加文件
+            if (fileData != null && fileName != null) {
+                builder.addPart("file", new ByteArrayBody(fileData, fileName));
+            }
+
+            httpPost.setEntity(builder.build());
+            return execute(httpPost);
+        } catch (Exception e) {
+            log.error("发送Multipart POST请求失败: {}", url, e);
+            throw new RuntimeException("发送Multipart POST请求失败", e);
+        }
+    }
+
+    /**
      * 执行HTTP请求
      *
      * @param request HTTP请求对象
@@ -213,9 +253,13 @@ public class HttpClientUtil {
 
             try (org.apache.http.client.methods.CloseableHttpResponse response = httpClient.execute(request)) {
                 HttpEntity entity = response.getEntity();
-                String result = EntityUtils.toString(entity, StandardCharsets.UTF_8);
-                // 确保实体内容被完全消费
-                EntityUtils.consume(entity);
+                String result = "";
+                
+                // 处理可能为空的响应体（如 COS 上传返回 204 No Content）
+                if (entity != null) {
+                    result = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+                    EntityUtils.consume(entity);
+                }
 
                 log.debug("HTTP请求响应: {} {}", response.getStatusLine().getStatusCode(), result);
                 return result;

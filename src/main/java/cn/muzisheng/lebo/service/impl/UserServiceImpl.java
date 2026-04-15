@@ -258,7 +258,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setStatus(AccountStatusEnum.INACTIVE);
         if(loginDTO!=null){
             user.setNickName(loginDTO.getNickName());
-            user.setAvatar(loginDTO.getAvatarUrl());
+            user.setAvatar(loginDTO.getAvatar());
             user.setGender(loginDTO.getGender());
         }
         if (!this.save(user)) {
