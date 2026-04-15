@@ -13,5 +13,4 @@ import org.springframework.context.annotation.Configuration;
 public class StorageConfig {
     @Value("${storage.path}")
     private String location;
-
 }

@@ -1,6 +1,8 @@
 package cn.muzisheng.lebo.config;
 
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,6 +23,7 @@ import org.springframework.context.annotation.Configuration;
  * wx.cloud.download.default-max-age=86400
  * </pre>
  */
+@Log4j2
 @Getter
 @Configuration
 public class WxCloudStorageConfig {
@@ -38,4 +41,15 @@ public class WxCloudStorageConfig {
      */
     @Value("${wx.cloud.download.default-max-age:86400}")
     private Long defaultMaxAge;
+
+    /**
+     * 配置初始化后验证必填项
+     */
+    @PostConstruct
+    public void validate() {
+        if (env == null || env.trim().isEmpty()) {
+            log.error("微信云托管环境ID(wx.cloud.env)未配置，请检查配置文件");
+            throw new IllegalStateException("微信云托管环境ID(wx.cloud.env)未配置，请检查配置文件");
+        }
+    }
 }
