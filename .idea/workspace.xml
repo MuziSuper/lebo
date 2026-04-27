@@ -4,45 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="refactor(config): 重构微信配置管理&#10;&#10;- 将WXSecretConfig改为使用@Data注解和@Value注入&#10;- 移除Environment依赖，改用配置类获取APP_ID和APP_SECRET&#10;- 更新WXServiceImpl构造函数以使用新的配置类&#10;- 为微信云存储环境ID设置默认值&#10;- 简化配置属性的访问方式">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/order_accept.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/order_refuse.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/product-default.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/wait.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/API接口文档.md" beforeDir="false" afterPath="$PROJECT_DIR$/API接口文档.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lebo.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/GeneralApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/GeneralApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/HistoryOperationApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/HistoryOperationApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InformationApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InformationApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/UserApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/UserApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/WebConfig.java" afterDir="false" />
+    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="docs(api): 更新API接口文档并添加轮播图管理功能&#10;&#10;- 新增批量查询用户信息接口(/user/listByOpenIds)及其详细文档&#10;- 添加轮播图管理接口模块，包含上传、查询、删除三个子接口&#10;- 在订单详情中新增商品图片字段(productImage)及相应说明&#10;- 调整订单列表分页参数默认值，pageNum默认为1，pageSize默认为9&#10;- 更新统计接口返回字段，将出入库数量改为盈利金额和用户数&#10;- 在消息通知接口中新增用户查阅消息和删除消息功能&#10;- 完善WebSocket订阅说明，添加type参数用于区分商户和客户订阅类型&#10;- 修复错误码锚点链接问题并更新相关说明&#10;- 在操作日志查询中将操作人ID改为操作人昵称字段&#10;- 配置文件中禁用Redis健康检查并增加文件上传大小限制配置">
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/MessageListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/MessageListDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderBossListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderBossListDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/HistoryOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/HistoryOperation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Information.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Information.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/HistoryOperationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/HistoryOperationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InformationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InformationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/HistoryOperationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/HistoryOperationServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InformationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InformationServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserPointServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserPointServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/WxCloudStorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/WxCloudStorageServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InformationBossVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InformationBossVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InformationVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InformationVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InoutProductDashBoardVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InoutProductDashBoardVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderDetailVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderDetailVO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderItemVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderItemVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/后端系分文档.md" beforeDir="false" afterPath="$PROJECT_DIR$/后端系分文档.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -255,7 +221,7 @@
       <workItem from="1775554676062" duration="25794000" />
       <workItem from="1775979699758" duration="33000" />
       <workItem from="1775980903896" duration="8742000" />
-      <workItem from="1776592263286" duration="44955000" />
+      <workItem from="1776592263286" duration="49480000" />
     </task>
     <task id="LOCAL-00001" summary="暂存代码">
       <option name="closed" value="true" />
@@ -505,7 +471,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776235239772</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="docs(api): 更新API接口文档并添加轮播图管理功能&#10;&#10;- 新增批量查询用户信息接口(/user/listByOpenIds)及其详细文档&#10;- 添加轮播图管理接口模块，包含上传、查询、删除三个子接口&#10;- 在订单详情中新增商品图片字段(productImage)及相应说明&#10;- 调整订单列表分页参数默认值，pageNum默认为1，pageSize默认为9&#10;- 更新统计接口返回字段，将出入库数量改为盈利金额和用户数&#10;- 在消息通知接口中新增用户查阅消息和删除消息功能&#10;- 完善WebSocket订阅说明，添加type参数用于区分商户和客户订阅类型&#10;- 修复错误码锚点链接问题并更新相关说明&#10;- 在操作日志查询中将操作人ID改为操作人昵称字段&#10;- 配置文件中禁用Redis健康检查并增加文件上传大小限制配置">
+      <option name="closed" value="true" />
+      <created>1777259597890</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1777259597890</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -552,7 +526,8 @@
     <MESSAGE value="feat(api): 添加微信云存储接口并完善文件管理功能&#10;&#10;- 新增微信云存储API接口，支持文件上传、下载链接获取和删除操作&#10;- 实现云存储服务层，集成腾讯云COS文件管理功能&#10;- 添加multipart文件上传支持和相关依赖配置&#10;- 更新API文档，增加云存储接口详细说明和使用指南&#10;- 配置微信云存储环境变量和默认参数设置&#10;- 修复用户头像字段映射问题，统一使用avatar命名&#10;- 优化HTTP客户端工具类，增强文件上传处理能力" />
     <MESSAGE value="refactor(config): 优化微信云存储配置类&#10;&#10;- 移除StorageConfig中的多余空行&#10;- 在WxCloudStorageConfig中添加PostConstruct注解支持&#10;- 添加Log4j2日志记录功能&#10;- 实现配置初始化后的必填项验证逻辑&#10;- 当微信云托管环境ID未配置时抛出异常" />
     <MESSAGE value="refactor(config): 重构微信配置管理&#10;&#10;- 将WXSecretConfig改为使用@Data注解和@Value注入&#10;- 移除Environment依赖，改用配置类获取APP_ID和APP_SECRET&#10;- 更新WXServiceImpl构造函数以使用新的配置类&#10;- 为微信云存储环境ID设置默认值&#10;- 简化配置属性的访问方式" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(config): 重构微信配置管理&#10;&#10;- 将WXSecretConfig改为使用@Data注解和@Value注入&#10;- 移除Environment依赖，改用配置类获取APP_ID和APP_SECRET&#10;- 更新WXServiceImpl构造函数以使用新的配置类&#10;- 为微信云存储环境ID设置默认值&#10;- 简化配置属性的访问方式" />
+    <MESSAGE value="docs(api): 更新API接口文档并添加轮播图管理功能&#10;&#10;- 新增批量查询用户信息接口(/user/listByOpenIds)及其详细文档&#10;- 添加轮播图管理接口模块，包含上传、查询、删除三个子接口&#10;- 在订单详情中新增商品图片字段(productImage)及相应说明&#10;- 调整订单列表分页参数默认值，pageNum默认为1，pageSize默认为9&#10;- 更新统计接口返回字段，将出入库数量改为盈利金额和用户数&#10;- 在消息通知接口中新增用户查阅消息和删除消息功能&#10;- 完善WebSocket订阅说明，添加type参数用于区分商户和客户订阅类型&#10;- 修复错误码锚点链接问题并更新相关说明&#10;- 在操作日志查询中将操作人ID改为操作人昵称字段&#10;- 配置文件中禁用Redis健康检查并增加文件上传大小限制配置" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs(api): 更新API接口文档并添加轮播图管理功能&#10;&#10;- 新增批量查询用户信息接口(/user/listByOpenIds)及其详细文档&#10;- 添加轮播图管理接口模块，包含上传、查询、删除三个子接口&#10;- 在订单详情中新增商品图片字段(productImage)及相应说明&#10;- 调整订单列表分页参数默认值，pageNum默认为1，pageSize默认为9&#10;- 更新统计接口返回字段，将出入库数量改为盈利金额和用户数&#10;- 在消息通知接口中新增用户查阅消息和删除消息功能&#10;- 完善WebSocket订阅说明，添加type参数用于区分商户和客户订阅类型&#10;- 修复错误码锚点链接问题并更新相关说明&#10;- 在操作日志查询中将操作人ID改为操作人昵称字段&#10;- 配置文件中禁用Redis健康检查并增加文件上传大小限制配置" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -615,6 +590,12 @@
           <option name="totalLines" value="20022" />
           <option name="info" value="refactor(config): 重构微信配置管理&#10;&#10;- 将WXSecretConfig改为使用@" />
         </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1777259598115" />
+          <option name="linesCode" value="11162" />
+          <option name="totalLines" value="20669" />
+          <option name="info" value="docs(api): 更新API接口文档并添加轮播图管理功能&#10;&#10;- 新增批量查询用户信息接口(/us" />
+        </TimePoint>
       </list>
     </option>
     <option name="genericTimePoints">
@@ -660,6 +641,12 @@
           <option name="linesCode" value="11006" />
           <option name="totalLines" value="20364" />
           <option name="info" value="2026年4月22日" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1777259598115" />
+          <option name="linesCode" value="11162" />
+          <option name="totalLines" value="20669" />
+          <option name="info" value="2026年4月27日" />
         </TimePoint>
       </list>
     </option>

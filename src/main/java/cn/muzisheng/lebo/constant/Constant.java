@@ -21,14 +21,14 @@ public class Constant {
     public static final CodeStatus ILLEGAL_EXCEPTION=new CodeStatus(HttpStatus.BAD_REQUEST,ILLEGAL_EXCEPTION_CODE);
     public static final CodeStatus UNAPPROVED_EXCEPTION=new CodeStatus(HttpStatus.UNAUTHORIZED,UNAPPROVED_EXCEPTION_CODE);
     public static final CodeStatus FORBIDDEN_EXCEPTION=new CodeStatus(HttpStatus.FORBIDDEN,FORBIDDEN_EXCEPTION_CODE);
-    public static final CodeStatus WX_EXCEPTION=new CodeStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE,WX_EXCEPTION_CODE);
+    public static final CodeStatus WX_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR,WX_EXCEPTION_CODE);
     public static final CodeStatus GENERAL_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR,GENERAL_EXCEPTION_CODE);
-    public static final CodeStatus SQL_EXCEPTION=new CodeStatus(HttpStatus.BAD_GATEWAY, SQL_EXCEPTION_CODE);
-    public static final CodeStatus STORAGE_EXCEPTION=new CodeStatus(HttpStatus.NETWORK_AUTHENTICATION_REQUIRED, STORAGE_EXCEPTION_CODE);
-    public static final CodeStatus USER_POINT_EXCEPTION=new CodeStatus(HttpStatus.NOT_IMPLEMENTED, USER_POINT_EXCEPTION_CODE);
-    public static final CodeStatus USER_EXCEPTION=new CodeStatus(HttpStatus.SERVICE_UNAVAILABLE, USER_EXCEPTION_CODE);
+    public static final CodeStatus SQL_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR, SQL_EXCEPTION_CODE);
+    public static final CodeStatus STORAGE_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR, STORAGE_EXCEPTION_CODE);
+    public static final CodeStatus USER_POINT_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR, USER_POINT_EXCEPTION_CODE);
+    public static final CodeStatus USER_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR, USER_EXCEPTION_CODE);
     public static final CodeStatus PRODUCT_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR, PRODUCT_EXCEPTION_CODE);
-    public static final CodeStatus ORDER_EXCEPTION=new CodeStatus(HttpStatus.HTTP_VERSION_NOT_SUPPORTED, ORDER_EXCEPTION_CODE);
+    public static final CodeStatus ORDER_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR, ORDER_EXCEPTION_CODE);
     public static final CodeStatus CATEGORY_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR, CATEGORY_POINT_EXCEPTION_CODE);
 
     // token默认配置
