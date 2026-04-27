@@ -2,13 +2,16 @@ package cn.muzisheng.lebo.service.impl;
 
 import cn.muzisheng.lebo.dto.HistoryOperationSelectDTO;
 import cn.muzisheng.lebo.entity.HistoryOperation;
+import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.exception.GeneralException;
 import cn.muzisheng.lebo.mapper.HistoryOperationMapper;
+import cn.muzisheng.lebo.mapper.UserMapper;
 import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.HistoryOperationService;
 import cn.muzisheng.lebo.utils.IdUtil;
 import cn.muzisheng.lebo.utils.UserThreadUtil;
+import cn.muzisheng.lebo.vo.HistoryOperationVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -20,22 +23,24 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-/**
- * 历史操作记录服务实现
- */
 @Log4j2
 @Service
 public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMapper, HistoryOperation> implements HistoryOperationService {
 
+    private final UserMapper userMapper;
+
+    public HistoryOperationServiceImpl(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    /**
-     * 操作类型枚举
-     */
     private static final Map<Integer, String> OPERATION_TYPE_DESC = Map.of(
             0, "商品添加",
             1, "商品修改",
@@ -86,17 +91,10 @@ public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMap
                 OPERATION_TYPE_DESC.get(type),  content);
     }
 
-    /**
-     * 获取历史操作记录列表（分页）
-     *
-     * @param dto 查询条件DTO
-     * @return 分页历史操作记录
-     */
     @Override
-    public ResponseEntity<Result<IPage<HistoryOperation>>> getHistoryOperation(HistoryOperationSelectDTO dto) {
-        Response<IPage<HistoryOperation>> response = new Response<>();
+    public ResponseEntity<Result<IPage<HistoryOperationVO>>> getHistoryOperation(HistoryOperationSelectDTO dto) {
+        Response<IPage<HistoryOperationVO>> response = new Response<>();
 
-        // 获取分页参数
         int pageNum = Optional.ofNullable(dto)
                 .map(HistoryOperationSelectDTO::getPageNum)
                 .orElse(1);
@@ -104,18 +102,15 @@ public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMap
                 .map(HistoryOperationSelectDTO::getPageSize)
                 .orElse(10);
 
-        // 构建查询条件
         QueryWrapper<HistoryOperation> queryWrapper = new QueryWrapper<>();
 
         Optional.ofNullable(dto).ifPresent(d -> {
-            // 操作类型筛选
             Optional.ofNullable(d.getType())
                     .ifPresent(type -> {
                         validateOperationType(type);
                         queryWrapper.eq("type", type);
                     });
 
-            // 时间范围筛选
             Optional.ofNullable(d.getStartTime())
                     .filter(this::isNotBlank)
                     .ifPresent(startTime -> queryWrapper.ge("time", parseDateTime(startTime, "开始时间")));
@@ -124,25 +119,58 @@ public class HistoryOperationServiceImpl extends ServiceImpl<HistoryOperationMap
                     .filter(this::isNotBlank)
                     .ifPresent(endTime -> queryWrapper.le("time", parseDateTime(endTime, "结束时间")));
 
-            // 操作内容模糊查询
             Optional.ofNullable(d.getContent())
                     .filter(this::isNotBlank)
                     .ifPresent(content -> queryWrapper.like("content", content));
-
-            // 用户名称模糊查询
-            Optional.ofNullable(d.getUserName())
-                    .filter(this::isNotBlank)
-                    .ifPresent(userName -> queryWrapper.like("operator_name", userName));
         });
 
-        // 按时间倒序排列
         queryWrapper.orderByDesc("time");
 
-        // 分页查询
         Page<HistoryOperation> pageParam = new Page<>(pageNum, pageSizeNum);
         IPage<HistoryOperation> resultPage = this.page(pageParam, queryWrapper);
 
-        response.setData(resultPage);
+        List<HistoryOperation> records = resultPage.getRecords();
+        Set<String> operatorIds = records.stream()
+                .map(HistoryOperation::getOperatorId)
+                .filter(id -> id != null && !id.isEmpty())
+                .collect(Collectors.toSet());
+
+        Map<String, String> userNameMap = Map.of();
+        if (!operatorIds.isEmpty()) {
+            List<User> users = userMapper.selectBatchIds(operatorIds);
+            userNameMap = users.stream()
+                    .collect(Collectors.toMap(User::getOpenId, User::getNickName, (a, b) -> a));
+        }
+
+        Map<String, String> finalUserNameMap = userNameMap;
+        List<HistoryOperationVO> voList = records.stream()
+                .map(op -> {
+                    HistoryOperationVO vo = new HistoryOperationVO();
+                    vo.setId(op.getId());
+                    vo.setContent(op.getContent());
+                    vo.setType(op.getType());
+                    vo.setOperatorId(op.getOperatorId());
+                    vo.setOperatorName(finalUserNameMap.getOrDefault(op.getOperatorId(), ""));
+                    vo.setTime(op.getTime());
+                    return vo;
+                })
+                .collect(Collectors.toList());
+
+        if (dto != null && isNotBlank(dto.getUserName())) {
+            String userNameFilter = dto.getUserName().trim();
+            voList = voList.stream()
+                    .filter(vo -> vo.getOperatorName() != null && vo.getOperatorName().contains(userNameFilter))
+                    .collect(Collectors.toList());
+        }
+
+        Page<HistoryOperationVO> voPage = new Page<>(pageNum, pageSizeNum);
+        voPage.setRecords(voList);
+        voPage.setTotal(resultPage.getTotal());
+        voPage.setSize(resultPage.getSize());
+        voPage.setCurrent(resultPage.getCurrent());
+        voPage.setPages(resultPage.getPages());
+
+        response.setData(voPage);
         return response.value();
     }
 

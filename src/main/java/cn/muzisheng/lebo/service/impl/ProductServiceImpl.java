@@ -2,10 +2,12 @@ package cn.muzisheng.lebo.service.impl;
 
 import cn.muzisheng.lebo.dto.*;
 import cn.muzisheng.lebo.entity.InOutProductRecord;
+import cn.muzisheng.lebo.entity.Order;
 import cn.muzisheng.lebo.entity.Product;
 import cn.muzisheng.lebo.exception.ProductException;
 import cn.muzisheng.lebo.exception.UserPointException;
 import cn.muzisheng.lebo.mapper.ProductMapper;
+import cn.muzisheng.lebo.model.OrderTypeEnum;
 import cn.muzisheng.lebo.model.ProductStatusEnum;
 import cn.muzisheng.lebo.model.Response;
 import cn.muzisheng.lebo.model.Result;
@@ -13,7 +15,9 @@ import cn.muzisheng.lebo.param.PointConversionParam;
 import cn.muzisheng.lebo.param.ProductConsumeParam;
 import cn.muzisheng.lebo.service.HistoryOperationService;
 import cn.muzisheng.lebo.service.InOutProductRecordService;
+import cn.muzisheng.lebo.service.OrderService;
 import cn.muzisheng.lebo.service.ProductService;
+import cn.muzisheng.lebo.service.UserService;
 import cn.muzisheng.lebo.utils.IdUtil;
 import cn.muzisheng.lebo.vo.InoutProductDashBoardVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -22,6 +26,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.log4j.Log4j2;
+
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -36,12 +42,17 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
     private final InOutProductRecordService inOutProductRecordService;
     private final HistoryOperationService historyOperationService;
+    private final OrderService orderService;
+    private final UserService userService;
 
     public ProductServiceImpl(InOutProductRecordService inOutProductRecordService,
-                              HistoryOperationService historyOperationService) {
+                              HistoryOperationService historyOperationService,
+                              @Lazy OrderService orderService,
+                              @Lazy UserService userService) {
         this.inOutProductRecordService = inOutProductRecordService;
         this.historyOperationService = historyOperationService;
-
+        this.orderService = orderService;
+        this.userService = userService;
     }
 
     @Override
@@ -58,7 +69,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             queryWrapper.eq("category_id", categoryId.toString());
         }
         if (keyword != null && !keyword.trim().isEmpty()) {
-            queryWrapper.like("name", keyword);
+            queryWrapper.and(wrapper -> wrapper.like("name", keyword).or().like("description", keyword));
         }
         if (statusCode != null) {
             if (ProductStatusEnum.contains(statusCode)) {
@@ -662,45 +673,29 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public ResponseEntity<Result<InoutProductDashBoardVO>> getInoutDashboard() {
         Response<InoutProductDashBoardVO> response = new Response<>();
 
-        // 获取昨日零点和今日零点
         LocalDateTime todayStart = LocalDateTime.now().toLocalDate().atStartOfDay();
         LocalDateTime yesterdayStart = todayStart.minusDays(1);
 
-        // 查询昨日零点到今日零点的入库记录（type=1）
-        QueryWrapper<InOutProductRecord> inWrapper = new QueryWrapper<>();
-        inWrapper.eq("type", 1)
-                .ge("time", yesterdayStart)
-                .lt("time", todayStart);
-        List<InOutProductRecord> inRecords = inOutProductRecordService.list(inWrapper);
+        QueryWrapper<Order> orderWrapper = new QueryWrapper<>();
+        orderWrapper.eq("pay_type", OrderTypeEnum.OVER.getCode())
+                .ge("end_time", yesterdayStart)
+                .lt("end_time", todayStart);
+        List<Order> orders = orderService.list(orderWrapper);
 
-        // 计算昨日入库总数量
-        long yesterdayTotalInNumber = inRecords.stream()
-                .mapToLong(record -> record.getNumber() != null ? record.getNumber() : 0L)
+        long yesterdayProfit = orders.stream()
+                .mapToLong(order -> order.getTotalAmount() != null ? order.getTotalAmount() : 0L)
                 .sum();
 
-        // 查询昨日零点到今日零点的出库记录（type=2）
-        QueryWrapper<InOutProductRecord> outWrapper = new QueryWrapper<>();
-        outWrapper.eq("type", 2)
-                .ge("time", yesterdayStart)
-                .lt("time", todayStart);
-        List<InOutProductRecord> outRecords = inOutProductRecordService.list(outWrapper);
+        long currentUserCount = userService.count();
 
-        // 计算昨日出库总数量
-        long yesterdayTotalOutNumber = outRecords.stream()
-                .mapToLong(record -> record.getNumber() != null ? record.getNumber() : 0L)
-                .sum();
-
-        // 查询所有商品的库存总数量和总金额（包括在售和停售状态）
         QueryWrapper<Product> productWrapper = new QueryWrapper<>();
         productWrapper.in("status", ProductStatusEnum.SELL, ProductStatusEnum.SOLD_OUT);
         List<Product> products = this.list(productWrapper);
 
-        // 计算当前库存总数量
         long currentlyTotalStock = products.stream()
                 .mapToLong(product -> product.getStorage() != null ? product.getStorage() : 0L)
                 .sum();
 
-        // 计算当前库存总金额（库存 * 成本价）
         long currentLyTotalAmount = products.stream()
                 .mapToLong(product -> {
                     long storage = product.getStorage() != null ? product.getStorage() : 0L;
@@ -709,10 +704,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                 })
                 .sum();
 
-        // 构建返回对象
         InoutProductDashBoardVO dashboardVO = InoutProductDashBoardVO.builder()
-                .yesterdayTotalInNumber(yesterdayTotalInNumber)
-                .yesterdayTotalOutNumber(yesterdayTotalOutNumber)
+                .yesterdayProfit(yesterdayProfit)
+                .currentUserCount(currentUserCount)
                 .currentlyTotalStock(currentlyTotalStock)
                 .currentLyTotalAmount(currentLyTotalAmount)
                 .build();

@@ -7,6 +7,10 @@ import java.time.LocalDateTime;
 
 public class InformationVO {
     /**
+     * 消息主键ID
+     */
+    private String id;
+    /**
      * 消息类型
      */
     private Integer type;
@@ -18,6 +22,10 @@ public class InformationVO {
      * 消息内容
      */
     private String content;
+    /**
+     * 是否已查阅
+     */
+    private Boolean isLook;
     /**
      * 创建时间
      */

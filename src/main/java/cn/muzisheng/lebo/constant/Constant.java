@@ -13,7 +13,7 @@ public class Constant {
     public static final int USER_POINT_EXCEPTION_CODE = 501;
     public static final int SQL_EXCEPTION_CODE = 502;
     public static final int USER_EXCEPTION_CODE = 503;
-    public static final int PRODUCT_EXCEPTION_CODE = 504;
+    public static final int PRODUCT_EXCEPTION_CODE = 500;
     public static final int ORDER_EXCEPTION_CODE = 505;
     public static final int CATEGORY_POINT_EXCEPTION_CODE = 506;
     public static final int STORAGE_EXCEPTION_CODE = 511;
@@ -27,7 +27,7 @@ public class Constant {
     public static final CodeStatus STORAGE_EXCEPTION=new CodeStatus(HttpStatus.NETWORK_AUTHENTICATION_REQUIRED, STORAGE_EXCEPTION_CODE);
     public static final CodeStatus USER_POINT_EXCEPTION=new CodeStatus(HttpStatus.NOT_IMPLEMENTED, USER_POINT_EXCEPTION_CODE);
     public static final CodeStatus USER_EXCEPTION=new CodeStatus(HttpStatus.SERVICE_UNAVAILABLE, USER_EXCEPTION_CODE);
-    public static final CodeStatus PRODUCT_EXCEPTION=new CodeStatus(HttpStatus.GATEWAY_TIMEOUT, PRODUCT_EXCEPTION_CODE);
+    public static final CodeStatus PRODUCT_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR, PRODUCT_EXCEPTION_CODE);
     public static final CodeStatus ORDER_EXCEPTION=new CodeStatus(HttpStatus.HTTP_VERSION_NOT_SUPPORTED, ORDER_EXCEPTION_CODE);
     public static final CodeStatus CATEGORY_EXCEPTION=new CodeStatus(HttpStatus.INTERNAL_SERVER_ERROR, CATEGORY_POINT_EXCEPTION_CODE);
 
@@ -49,7 +49,7 @@ public class Constant {
     // 微信云托管对象存储API常量
     public static final String WX_CLOUD_UPLOAD_URL = WX_API_BASE + "/tcb/uploadfile";
     public static final String WX_CLOUD_DOWNLOAD_URL = WX_API_BASE + "/tcb/batchdownloadfile";
-    public static final String WX_CLOUD_DELETE_URL = WX_API_BASE + "/tcb/deletefile";
+    public static final String WX_CLOUD_DELETE_URL = WX_API_BASE + "/tcb/batchdeletefile";
 
     /**
      * 加密算法名称

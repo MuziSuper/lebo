@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -279,11 +280,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new OrderException("订单不存在");
         }
         List<OrderItem> orderItems = orderItemService.listByOrderId(orderId);
-        
-        // 获取用户信息，处理用户可能不存在的情况
+
+        List<String> productIds = orderItems.stream()
+                .map(OrderItem::getProductId)
+                .toList();
+        Map<String, String> productImageMap = new HashMap<>();
+        if (!productIds.isEmpty()) {
+            List<Product> products = productService.listByIds(productIds);
+            productImageMap = products.stream()
+                    .collect(Collectors.toMap(Product::getId, Product::getImage, (a, b) -> a));
+        }
+
         User user = userService.getUserByOpenId(order.getOpenId());
         String nickName = user != null ? user.getNickName() : null;
-        OrderDetailVO orderDetailVO = OrderDetailVO.fromOrder(order, orderItems, nickName);
+        OrderDetailVO orderDetailVO = OrderDetailVO.fromOrder(order, orderItems, nickName, productImageMap);
         response.setData(orderDetailVO);
         return response.value();
     }
@@ -410,35 +420,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             }
         }
         
-        Integer pageNum = orderBossListDTO != null ? orderBossListDTO.getPageNum() : null;
-        Integer pageSize = orderBossListDTO != null ? orderBossListDTO.getPageSize() : null;
-        
-        if (pageNum != null && pageSize != null && pageNum > 0 && pageSize > 0) {
-            Page<Order> page = new Page<>(pageNum, pageSize);
-            IPage<Order> orderPage = this.page(page, queryWrapper);
-            
-            IPage<OrderInfoVO> voPage = orderPage.convert(order -> {
-                User user = userService.getUserByOpenId(order.getOpenId());
-                String nickName = user != null ? user.getNickName() : null;
-                return OrderInfoVO.fromOrder(order, nickName);
-            });
-            
-            response.setData(voPage);
-        } else {
-            List<Order> orders = this.list(queryWrapper);
-            
-            List<OrderInfoVO> orderInfoVOList = orders.stream()
-                    .map(order -> {
-                        User user = userService.getUserByOpenId(order.getOpenId());
-                        String nickName = user != null ? user.getNickName() : null;
-                        return OrderInfoVO.fromOrder(order, nickName);
-                    })
-                    .toList();
-            
-            Page<OrderInfoVO> resultPage = new Page<>(1, orders.size(), orders.size());
-            resultPage.setRecords(orderInfoVOList);
-            response.setData(resultPage);
-        }
+        int pageNum = Optional.ofNullable(orderBossListDTO)
+                .map(OrderBossListDTO::getPageNum)
+                .filter(num -> num > 0)
+                .orElse(1);
+        int pageSize = Optional.ofNullable(orderBossListDTO)
+                .map(OrderBossListDTO::getPageSize)
+                .filter(size -> size > 0)
+                .orElse(9);
+
+        Page<Order> page = new Page<>(pageNum, pageSize);
+        IPage<Order> orderPage = this.page(page, queryWrapper);
+
+        IPage<OrderInfoVO> voPage = orderPage.convert(order -> {
+            User user = userService.getUserByOpenId(order.getOpenId());
+            String nickName = user != null ? user.getNickName() : null;
+            return OrderInfoVO.fromOrder(order, nickName);
+        });
+
+        response.setData(voPage);
         
         return response.value();
     }
@@ -476,6 +476,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             inOutDTOList.add(ProductInOutDTO.builder()
                     .productId(orderItem.getProductId())
                     .number(-orderItem.getQuantity())
+                    .description("订单商品出库")
                     .build());
         }
         

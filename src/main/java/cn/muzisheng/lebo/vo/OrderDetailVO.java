@@ -7,59 +7,24 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
 public class OrderDetailVO {
-    /**
-     * 订单ID
-     */
     private String id;
-    /**
-     * 用户昵称
-     */
     private String nickName;
-    /**
-     * 房间号
-     */
     private String homeNumber;
-    /**
-     * 订单金额
-     */
     private Long totalAmount;
-    /**
-     * 获得积分数量
-     */
     private Long pointNumber;
-    /**
-     * 实际支付金额
-     */
     private Long payAmount;
-    /**
-     * 支付状态，1: 未支付, 2: 已支付,3: 支付失败, 4: 已退款
-     */
     private Integer payType;
-    /**
-     * 支付选项，0: 线下支付, 1: 微信支付, 2: 支付宝支付
-     */
     private Integer payOption;
-    /**
-     * 支付时间
-     */
     private LocalDateTime payTime;
-    /**
-     * 创建时间
-     */
     private LocalDateTime createTime;
-    /**
-     * 订单结束时间
-     */
     private LocalDateTime endTime;
-    /**
-     * 订单商品列表
-     */
     private OrderItemVO[] orderItemVOS;
-    public static OrderDetailVO fromOrder(Order order, List<OrderItem> orderItems, String nickName) {
+    public static OrderDetailVO fromOrder(Order order, List<OrderItem> orderItems, String nickName, Map<String, String> productImageMap) {
         OrderDetailVO orderDetailVO = new OrderDetailVO();
         orderDetailVO.setId(order.getId());
         orderDetailVO.setNickName(nickName);
@@ -72,7 +37,9 @@ public class OrderDetailVO {
         orderDetailVO.setPayTime(order.getPayTime());
         orderDetailVO.setCreateTime(order.getCreateTime());
         orderDetailVO.setEndTime(order.getEndTime());
-        List<OrderItemVO> orderItemVOS = orderItems.stream().map(OrderItemVO::fromOrderItem).toList();
+        List<OrderItemVO> orderItemVOS = orderItems.stream()
+                .map(item -> OrderItemVO.fromOrderItem(item, productImageMap.get(item.getProductId())))
+                .toList();
         orderDetailVO.setOrderItemVOS(orderItemVOS.toArray(new OrderItemVO[0]));
         return orderDetailVO;
     }

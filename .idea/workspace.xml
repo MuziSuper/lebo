@@ -4,16 +4,45 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="refactor(docker): 优化 Dockerfile 构建配置&#10;&#10;- 移除无用的注释和空行，简化 Dockerfile 结构&#10;- 更新包管理器命令，从 apk 切换到 apt-get&#10;- 修复健康检查端口配置，从 8080 改为 80&#10;- 添加跳过测试的构建参数 -DskipTests&#10;- 优化时区设置和包安装流程&#10;- 简化 Java 类导入，使用通配符导入实体类">
+    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="refactor(config): 重构微信配置管理&#10;&#10;- 将WXSecretConfig改为使用@Data注解和@Value注入&#10;- 移除Environment依赖，改用配置类获取APP_ID和APP_SECRET&#10;- 更新WXServiceImpl构造函数以使用新的配置类&#10;- 为微信云存储环境ID设置默认值&#10;- 简化配置属性的访问方式">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/order_accept.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/order_refuse.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/product-default.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/static/icon/wait.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/API接口文档.md" beforeDir="false" afterPath="$PROJECT_DIR$/API接口文档.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lebo.sql" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/GeneralApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/GeneralApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/HistoryOperationApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/HistoryOperationApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InformationApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/InformationApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/UserApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/api/UserApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/WebConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/config/WebConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/LoginDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/LoginDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/MessageListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/MessageListDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderBossListDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/dto/OrderBossListDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/HistoryOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/HistoryOperation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Information.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/entity/Information.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/HistoryOperationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/HistoryOperationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InformationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/InformationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/HistoryOperationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/HistoryOperationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InformationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/InformationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserPointServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserPointServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/HttpClientUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/utils/HttpClientUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/WxCloudStorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/WxCloudStorageServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InformationBossVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InformationBossVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InformationVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InformationVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InoutProductDashBoardVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/InoutProductDashBoardVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderDetailVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderDetailVO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderItemVO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/vo/OrderItemVO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/后端系分文档.md" beforeDir="false" afterPath="$PROJECT_DIR$/后端系分文档.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -226,6 +255,7 @@
       <workItem from="1775554676062" duration="25794000" />
       <workItem from="1775979699758" duration="33000" />
       <workItem from="1775980903896" duration="8742000" />
+      <workItem from="1776592263286" duration="44955000" />
     </task>
     <task id="LOCAL-00001" summary="暂存代码">
       <option name="closed" value="true" />
@@ -451,7 +481,31 @@
       <option name="project" value="LOCAL" />
       <updated>1776073102589</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="feat(api): 添加微信云存储接口并完善文件管理功能&#10;&#10;- 新增微信云存储API接口，支持文件上传、下载链接获取和删除操作&#10;- 实现云存储服务层，集成腾讯云COS文件管理功能&#10;- 添加multipart文件上传支持和相关依赖配置&#10;- 更新API文档，增加云存储接口详细说明和使用指南&#10;- 配置微信云存储环境变量和默认参数设置&#10;- 修复用户头像字段映射问题，统一使用avatar命名&#10;- 优化HTTP客户端工具类，增强文件上传处理能力">
+      <option name="closed" value="true" />
+      <created>1776232258904</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1776232258904</updated>
+    </task>
+    <task id="LOCAL-00030" summary="refactor(config): 优化微信云存储配置类&#10;&#10;- 移除StorageConfig中的多余空行&#10;- 在WxCloudStorageConfig中添加PostConstruct注解支持&#10;- 添加Log4j2日志记录功能&#10;- 实现配置初始化后的必填项验证逻辑&#10;- 当微信云托管环境ID未配置时抛出异常并记录错误日志">
+      <option name="closed" value="true" />
+      <created>1776233280949</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1776233280949</updated>
+    </task>
+    <task id="LOCAL-00031" summary="refactor(config): 重构微信配置管理&#10;&#10;- 将WXSecretConfig改为使用@Data注解和@Value注入&#10;- 移除Environment依赖，改用配置类获取APP_ID和APP_SECRET&#10;- 更新WXServiceImpl构造函数以使用新的配置类&#10;- 为微信云存储环境ID设置默认值&#10;- 简化配置属性的访问方式">
+      <option name="closed" value="true" />
+      <created>1776235239772</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1776235239772</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -495,7 +549,10 @@
     <MESSAGE value="docs(api): 更新API文档增加积分抽奖消息通知和WebSocket接口&#10;&#10;- 新增用户积分接口包括积分兑换商品功能&#10;- 新增抽奖接口包括奖项配置更新和抽奖功能&#10;- 新增消息通知接口支持商户发送消息给客户&#10;- 新增WebSocket接口实现实时订单状态推送&#10;- 更新订单接口增加积分相关字段和分页功能&#10;- 更新商品接口增加积分兑换筛选功能&#10;- 更新用户接口增加openId字段和签到状态&#10;- 更新操作记录接口优化字段说明&#10;- 优化API请求参数格式和响应示例&#10;- 添加WebSocket连接和消息格式详细说明&#10;- 更新文档时间戳至2026年3月31日" />
     <MESSAGE value="chore(docker): 更新Dockerfile基础镜像配置&#10;&#10;- 将builder阶段的基础镜像从maven:3.9.6-eclipse-temurin-21-alpine改为maven:3.9.6-eclipse-temurin-21&#10;- 将运行时基础镜像从eclipse-temurin:21-jre-alpine改为eclipse-temurin:21-jre&#10;- 注释掉WXServiceImpl中appSecret的敏感信息日志输出" />
     <MESSAGE value="refactor(docker): 优化 Dockerfile 构建配置&#10;&#10;- 移除无用的注释和空行，简化 Dockerfile 结构&#10;- 更新包管理器命令，从 apk 切换到 apt-get&#10;- 修复健康检查端口配置，从 8080 改为 80&#10;- 添加跳过测试的构建参数 -DskipTests&#10;- 优化时区设置和包安装流程&#10;- 简化 Java 类导入，使用通配符导入实体类" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor(docker): 优化 Dockerfile 构建配置&#10;&#10;- 移除无用的注释和空行，简化 Dockerfile 结构&#10;- 更新包管理器命令，从 apk 切换到 apt-get&#10;- 修复健康检查端口配置，从 8080 改为 80&#10;- 添加跳过测试的构建参数 -DskipTests&#10;- 优化时区设置和包安装流程&#10;- 简化 Java 类导入，使用通配符导入实体类" />
+    <MESSAGE value="feat(api): 添加微信云存储接口并完善文件管理功能&#10;&#10;- 新增微信云存储API接口，支持文件上传、下载链接获取和删除操作&#10;- 实现云存储服务层，集成腾讯云COS文件管理功能&#10;- 添加multipart文件上传支持和相关依赖配置&#10;- 更新API文档，增加云存储接口详细说明和使用指南&#10;- 配置微信云存储环境变量和默认参数设置&#10;- 修复用户头像字段映射问题，统一使用avatar命名&#10;- 优化HTTP客户端工具类，增强文件上传处理能力" />
+    <MESSAGE value="refactor(config): 优化微信云存储配置类&#10;&#10;- 移除StorageConfig中的多余空行&#10;- 在WxCloudStorageConfig中添加PostConstruct注解支持&#10;- 添加Log4j2日志记录功能&#10;- 实现配置初始化后的必填项验证逻辑&#10;- 当微信云托管环境ID未配置时抛出异常" />
+    <MESSAGE value="refactor(config): 重构微信配置管理&#10;&#10;- 将WXSecretConfig改为使用@Data注解和@Value注入&#10;- 移除Environment依赖，改用配置类获取APP_ID和APP_SECRET&#10;- 更新WXServiceImpl构造函数以使用新的配置类&#10;- 为微信云存储环境ID设置默认值&#10;- 简化配置属性的访问方式" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor(config): 重构微信配置管理&#10;&#10;- 将WXSecretConfig改为使用@Data注解和@Value注入&#10;- 移除Environment依赖，改用配置类获取APP_ID和APP_SECRET&#10;- 更新WXServiceImpl构造函数以使用新的配置类&#10;- 为微信云存储环境ID设置默认值&#10;- 简化配置属性的访问方式" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -540,6 +597,24 @@
           <option name="totalLines" value="17517" />
           <option name="info" value="refactor(docker): 优化 Dockerfile 构建配置&#10;&#10;- 移除无用的注释和空行" />
         </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1776232259038" />
+          <option name="linesCode" value="10755" />
+          <option name="totalLines" value="20004" />
+          <option name="info" value="feat(api): 添加微信云存储接口并完善文件管理功能&#10;&#10;- 新增微信云存储API接口，支持文件" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1776233281127" />
+          <option name="linesCode" value="10763" />
+          <option name="totalLines" value="20017" />
+          <option name="info" value="refactor(config): 优化微信云存储配置类&#10;&#10;- 移除StorageConfig中的多" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1776235239940" />
+          <option name="linesCode" value="10764" />
+          <option name="totalLines" value="20022" />
+          <option name="info" value="refactor(config): 重构微信配置管理&#10;&#10;- 将WXSecretConfig改为使用@" />
+        </TimePoint>
       </list>
     </option>
     <option name="genericTimePoints">
@@ -573,6 +648,18 @@
           <option name="linesCode" value="9375" />
           <option name="totalLines" value="17517" />
           <option name="info" value="2026年4月13日" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1776235239940" />
+          <option name="linesCode" value="10764" />
+          <option name="totalLines" value="20022" />
+          <option name="info" value="2026年4月15日" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1776842211359" />
+          <option name="linesCode" value="11006" />
+          <option name="totalLines" value="20364" />
+          <option name="info" value="2026年4月22日" />
         </TimePoint>
       </list>
     </option>

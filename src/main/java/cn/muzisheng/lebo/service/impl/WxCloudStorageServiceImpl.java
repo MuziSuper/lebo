@@ -319,7 +319,14 @@ public class WxCloudStorageServiceImpl implements WxCloudStorageService {
             JsonNode deleteList = root.path("delete_list");
             if (deleteList.isArray()) {
                 for (JsonNode item : deleteList) {
-                    deletedList.add(item.asText());
+                    String deletedFileId = item.path("fileid").asText();
+                    int status = item.path("status").asInt();
+                    if (status == 0) {
+                        deletedList.add(deletedFileId);
+                    } else {
+                        String errMsg = item.path("errmsg").asText();
+                        log.warn("删除文件失败, fileId: {}, status: {}, errmsg: {}", deletedFileId, status, errMsg);
+                    }
                 }
             }
 

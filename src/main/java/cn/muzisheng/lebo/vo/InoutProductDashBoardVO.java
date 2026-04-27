@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InoutProductDashBoardVO {
     /**
-     * 昨日入库数量
+     * 昨日盈利金额（昨日所有已完成订单的总金额）
      */
-    private Long yesterdayTotalInNumber;
+    private Long yesterdayProfit;
     /**
-     * 昨日出库数量
+     * 当前用户人数
      */
-    private Long yesterdayTotalOutNumber;
+    private Long currentUserCount;
     /**
      * 当前库存总数量
      */

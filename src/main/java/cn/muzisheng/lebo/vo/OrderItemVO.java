@@ -11,30 +11,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderItemVO {
-        /**
-         * 商品ID
-         */
         private String productId;
-        /**
-         * 商品名称
-         */
         private String productName;
-        /**
-         * 单价
-         */
+        private String productImage;
         private Integer onePrice;
-        /**
-         * 数量
-         */
         private Long quantity;
-        /**
-         * 总金额
-         */
         private Long totalAmount;
-        public static OrderItemVO fromOrderItem(OrderItem orderItem) {
+        public static OrderItemVO fromOrderItem(OrderItem orderItem, String productImage) {
                 return OrderItemVO.builder()
                         .productId(orderItem.getProductId())
                         .productName(orderItem.getProductName())
+                        .productImage(productImage)
                         .onePrice(orderItem.getOnePrice())
                         .quantity(orderItem.getQuantity())
                         .totalAmount(orderItem.getTotalAmount())

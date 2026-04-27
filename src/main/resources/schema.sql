@@ -244,6 +244,17 @@ CREATE TABLE `award_record` (
     KEY `idx_user_date` (`user_openid`, `create_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='抽奖记录表';
 
+-- ----------------------------
+-- Table structure for slideshow_file_id
+-- ----------------------------
+DROP TABLE IF EXISTS `slideshow_file_id`;
+CREATE TABLE `slideshow_file_id` (
+    `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    `file_id` varchar(255) NOT NULL COMMENT '微信云对象存储文件ID',
+    PRIMARY KEY (`id`),
+    KEY `idx_file_id` (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='轮播图文件ID表';
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- ----------------------------
@@ -367,6 +378,7 @@ CREATE TABLE `information` (
     `content` varchar(1024) NOT NULL DEFAULT '' COMMENT '消息内容',
     `type` tinyint NOT NULL DEFAULT 0 COMMENT '消息类型：0-通知消息，1-系统消息，2-个人消息',
     `is_deleted` tinyint NOT NULL DEFAULT 0 COMMENT '逻辑删除：0-未删除，1-已删除',
+    `is_look` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否已查阅：0-未查阅，1-已查阅',
     `gmt_created` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
     `gmt_modified` datetime(6) DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
     PRIMARY KEY (`id`),

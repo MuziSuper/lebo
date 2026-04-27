@@ -3,6 +3,7 @@ package cn.muzisheng.lebo.service.impl;
 import cn.muzisheng.lebo.dto.BossLoginDTO;
 import cn.muzisheng.lebo.dto.LoginDTO;
 import cn.muzisheng.lebo.dto.UserListDTO;
+import cn.muzisheng.lebo.dto.UserOpenIdsDTO;
 import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.entity.UserPoint;
 import cn.muzisheng.lebo.exception.GeneralException;
@@ -31,7 +32,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -316,6 +316,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         
         // 构建查询条件
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+
+        // 仅查询普通用户，排除商户(is_super=1)
+        queryWrapper.and(wrapper -> wrapper.isNull("is_super").or().eq("is_super", 0));
         
         // 昵称模糊查询
         if (StringUtils.hasText(userListDTO.getNickName())) {
@@ -376,28 +379,42 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public ResponseEntity<Result<List<UserListVO>>> listByOpenIds(List<String> openIds) {
+    public ResponseEntity<Result<List<UserListVO>>> listByOpenIds(UserOpenIdsDTO userOpenIdsDTO) {
         Response<List<UserListVO>> response = new Response<>();
-        if(openIds == null || openIds.isEmpty()){
-            log.error("openIds不能为空");
-            throw new UserException("openIds不能为空");
+        List<String> openIds = Optional.ofNullable(userOpenIdsDTO)
+                .map(UserOpenIdsDTO::getOpenIds)
+                .orElse(List.of());
+        if (openIds.isEmpty()) {
+            response.setData(List.of());
+            return response.value();
         }
-        List<User> users = this.listByIds(openIds);
-        if(users == null || users.isEmpty()){
-            log.error("用户不存在，openIds: {}", Arrays.toString(openIds.toArray()));
-            throw new UserException("用户不存在");
+
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("open_id", openIds);
+        List<User> users = this.list(queryWrapper);
+        if (users == null || users.isEmpty()) {
+            response.setData(List.of());
+            return response.value();
         }
-        if(users.size() != openIds.size()){
-           String[] notExistOpenIds = openIds.stream()
-                    .filter(openId -> !users.stream().map(User::getOpenId).toList().contains(openId)).toArray(String[]::new);
-           log.error("用户不存在，openIds: {}", Arrays.toString(notExistOpenIds));
-           throw new UserException("用户不存在");
-        }
+
+        Map<String, UserPoint> userPointMap = userPointService.listByOpenIds(openIds).stream()
+                .collect(Collectors.toMap(UserPoint::getOpenId, up -> up, (a, b) -> a));
+
         List<UserListVO> vos = users.stream()
-                .map(user -> UserListVO.of(user, userPointService.getById(user.getOpenId())))
+                .map(user -> UserListVO.of(user, userPointMap.get(user.getOpenId())))
                 .toList();
+        if (!openIds.isEmpty()) {
+            Map<String, Integer> orderMap = openIds.stream()
+                    .distinct()
+                    .collect(Collectors.toMap(openId -> openId, openId -> openIds.indexOf(openId), (a, b) -> a));
+            vos = vos.stream()
+                    .sorted((a, b) -> Integer.compare(
+                            orderMap.getOrDefault(a.getOpenId(), Integer.MAX_VALUE),
+                            orderMap.getOrDefault(b.getOpenId(), Integer.MAX_VALUE)))
+                    .toList();
+        }
+
         response.setData(vos);
         return response.value();
     }
 }
-

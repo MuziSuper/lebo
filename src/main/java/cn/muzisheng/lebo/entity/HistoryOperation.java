@@ -5,16 +5,17 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * 历史操作记录，针对商户对商品的添加、修改、删除，对商品分类的添加、修改、删除，对后台系统的登录操作进行记录，以及对数据的手动备份和自动备份操作进行记录
- */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class HistoryOperation {
     /**
      * 记录ID，格式：HIS_yyyyMMddHHmmss + 4位序列号

@@ -29,11 +29,11 @@ public class OrderBossListDTO {
      */
     private String openId;
     /**
-     * 页码，默认为null表示不分页
+     * 页码，默认1
      */
     private Integer pageNum;
     /**
-     * 每页数量，默认为null表示不分页
+     * 每页数量，默认9
      */
     private Integer pageSize;
 }

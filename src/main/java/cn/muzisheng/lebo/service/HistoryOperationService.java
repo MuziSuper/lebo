@@ -3,6 +3,7 @@ package cn.muzisheng.lebo.service;
 import cn.muzisheng.lebo.dto.HistoryOperationSelectDTO;
 import cn.muzisheng.lebo.entity.HistoryOperation;
 import cn.muzisheng.lebo.model.Result;
+import cn.muzisheng.lebo.vo.HistoryOperationVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.http.ResponseEntity;
@@ -20,5 +21,5 @@ public interface HistoryOperationService extends IService<HistoryOperation> {
      * @param dto 查询条件DTO
      * @return 分页历史操作记录
      */
-    ResponseEntity<Result<IPage<HistoryOperation>>> getHistoryOperation(HistoryOperationSelectDTO dto);
+    ResponseEntity<Result<IPage<HistoryOperationVO>>> getHistoryOperation(HistoryOperationSelectDTO dto);
 }

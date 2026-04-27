@@ -3,6 +3,7 @@ package cn.muzisheng.lebo.service;
 import cn.muzisheng.lebo.dto.BossLoginDTO;
 import cn.muzisheng.lebo.dto.LoginDTO;
 import cn.muzisheng.lebo.dto.UserListDTO;
+import cn.muzisheng.lebo.dto.UserOpenIdsDTO;
 import cn.muzisheng.lebo.entity.User;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.vo.LoginVO;
@@ -45,8 +46,8 @@ public interface UserService extends IService<User> {
     boolean isMerchant(String openId);
     /**
      * 通过用户openid列表查询用户信息
-     * @param openIds 用户openid列表
+     * @param userOpenIdsDTO 用户openid列表
      * @return 用户列表
      */
-    ResponseEntity<Result<List<UserListVO>>> listByOpenIds(List<String> openIds);
+    ResponseEntity<Result<List<UserListVO>>> listByOpenIds(UserOpenIdsDTO userOpenIdsDTO);
 }

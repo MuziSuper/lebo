@@ -107,12 +107,10 @@ public class GeneralApi {
             @RequestParam("file") MultipartFile file,
             @RequestParam String pictureCategory) {
 
-        // 验证目录名是否为空
         if (pictureCategory == null || pictureCategory.trim().isEmpty()) {
             throw new StorageException("文件分类目录不能为空");
         }
 
-        // 防止目录遍历攻击
         if (!pictureCategory.matches("^[a-zA-Z0-9_-]+$")) {
             throw new StorageException("非法的目录名称");
         }

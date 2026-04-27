@@ -4,6 +4,7 @@ package cn.muzisheng.lebo.api;
 import cn.muzisheng.lebo.dto.BossLoginDTO;
 import cn.muzisheng.lebo.dto.LoginDTO;
 import cn.muzisheng.lebo.dto.UserListDTO;
+import cn.muzisheng.lebo.dto.UserOpenIdsDTO;
 import cn.muzisheng.lebo.model.Result;
 import cn.muzisheng.lebo.service.UserService;
 import cn.muzisheng.lebo.vo.LoginVO;
@@ -111,11 +112,11 @@ public class UserApi {
     /**
      * 用户列表接口，通过用户openid列表查询用户信息
      *
-     * @param openIds 用户openid列表
+     * @param userOpenIdsDTO 用户openid列表
      * @return 用户列表
      */
     @PostMapping("/listByOpenIds")
-    public ResponseEntity<Result<List<UserListVO>>> listByOpenIds(@RequestBody List<String> openIds) {
-        return userService.listByOpenIds(openIds);
+    public ResponseEntity<Result<List<UserListVO>>> listByOpenIds(@RequestBody UserOpenIdsDTO userOpenIdsDTO) {
+        return userService.listByOpenIds(userOpenIdsDTO);
     }
 }

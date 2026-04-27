@@ -6,8 +6,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 /**
@@ -15,6 +17,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Information {
     /**
      * 主键,UUID格式
@@ -66,6 +70,14 @@ public class Information {
     @Column(name = "is_deleted")
     @TableField(value = "is_deleted")
     private Integer deleted;
+    /**
+     * 是否已查阅
+     * false：未查阅
+     * true：已查阅
+     */
+    @Column(name = "is_look")
+    @TableField(value = "is_look")
+    private Boolean isLook;
     /**
      * 创建时间
      */

@@ -10,6 +10,14 @@ import java.util.List;
 @Data
 public class InformationBossVO {
     /**
+     * 消息唯一ID
+     */
+    private String id;
+    /**
+     * 消息批次ID
+     */
+    private String informationId;
+    /**
      * 消息类型
      */
     private Integer type;

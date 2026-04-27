@@ -1,5 +1,6 @@
 package cn.muzisheng.lebo.api;
 
+import cn.muzisheng.lebo.dto.InformationDeleteDTO;
 import cn.muzisheng.lebo.dto.MessageBossListDTO;
 import cn.muzisheng.lebo.dto.MessageListDTO;
 import cn.muzisheng.lebo.dto.SendMessageDTO;
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,7 +46,7 @@ public class InformationApi {
      * @return 消息列表
      */
     @PostMapping("/messageList")
-    public ResponseEntity<Result<IPage<InformationVO>>> messageList(MessageListDTO messageListDTO) {
+    public ResponseEntity<Result<IPage<InformationVO>>> messageList(@RequestBody MessageListDTO messageListDTO) {
         return informationService.messageList(messageListDTO);
     }
     /**
@@ -54,8 +56,30 @@ public class InformationApi {
      * @return 消息列表
      */
     @PostMapping("/bossMessageList")
-    public ResponseEntity<Result<IPage<InformationBossVO>>> bossMessageList(MessageBossListDTO messageBossListDTO) {
+    public ResponseEntity<Result<IPage<InformationBossVO>>> bossMessageList(@RequestBody MessageBossListDTO messageBossListDTO) {
         return informationService.bossMessageList(messageBossListDTO);
+    }
+
+    /**
+     * 用户查阅消息，将消息更新为已查阅状态
+     *
+     * @param id 消息主键ID
+     * @return 已查阅消息主键ID
+     */
+    @PostMapping("/look")
+    public ResponseEntity<Result<String>> look(@RequestParam("id") String id) {
+        return informationService.look(id);
+    }
+
+    /**
+     * 删除消息，按 informationId 批量删除
+     *
+     * @param informationDeleteDTO 删除参数
+     * @return 是否删除成功
+     */
+    @PostMapping("/delete")
+    public ResponseEntity<Result<Boolean>> delete(@RequestBody InformationDeleteDTO informationDeleteDTO) {
+        return informationService.delete(informationDeleteDTO);
     }
 
     

@@ -12,6 +12,7 @@
     - [获取当前用户信息](#获取当前用户信息)
     - [用户注销](#用户注销)
     - [用户列表](#用户列表)
+    - [批量查询用户信息](#批量查询用户信息)
   - [订单管理接口](#订单管理接口)
     - [创建订单](#创建订单)
     - [提交订单（确认支付）](#提交订单确认支付)
@@ -50,8 +51,16 @@
     - [抽奖](#抽奖)
   - [文件管理接口](#文件管理接口)
     - [上传文件](#上传文件)
+  - [轮播图管理接口](#轮播图管理接口)
+    - [上传轮播图](#上传轮播图)
+    - [获取所有轮播图文件ID](#获取所有轮播图文件id)
+    - [删除轮播图](#删除轮播图)
     - [下载/查看文件](#下载查看文件)
   - [微信云存储接口](#微信云存储接口)
+    - [使用前提](#使用前提)
+    - [与本地文件存储的对比](#与本地文件存储的对比)
+    - [错误码说明](#错误码说明)
+    - [注意事项](#注意事项)
     - [上传文件到云存储](#上传文件到云存储)
     - [获取文件下载链接](#获取文件下载链接)
     - [批量获取文件下载链接](#批量获取文件下载链接)
@@ -63,9 +72,12 @@
   - [消息通知接口](#消息通知接口)
     - [发送消息](#发送消息)
     - [客户获取消息列表](#客户获取消息列表)
+    - [用户查阅消息](#用户查阅消息)
+    - [删除消息](#删除消息)
     - [商家获取消息列表](#商家获取消息列表)
   - [WebSocket 接口](#websocket-接口)
     - [连接地址](#连接地址)
+    - [订阅说明](#订阅说明)
     - [消息格式](#消息格式)
     - [事件类型](#事件类型)
     - [心跳机制](#心跳机制)
@@ -74,7 +86,7 @@
       - [2. 商户确认接单通知用户](#2-商户确认接单通知用户)
       - [3. 商户拒绝接单通知用户](#3-商户拒绝接单通知用户)
     - [前端集成示例](#前端集成示例)
-  - [错误码说明](#错误码说明)
+  - [错误码说明](#错误码说明-1)
   - [订单状态枚举](#订单状态枚举)
   - [商品状态枚举](#商品状态枚举)
   - [支付方式枚举](#支付方式枚举)
@@ -355,6 +367,7 @@ POST /user/login?jscode=微信登录凭证
 ### 用户列表
 
 获取用户列表，支持按昵称模糊查询、手机号尾号四位查询、状态查询、性别查询。
+接口会自动过滤商户用户（`isSuper=true`，即 `is_super=1`）。
 
 - **URL**: `/user/list`
 - **Method**: `POST`
@@ -436,6 +449,81 @@ POST /user/login?jscode=微信登录凭证
 | size | Long | 每页数量 |
 | current | Long | 当前页码 |
 | pages | Long | 总页数 |
+
+---
+
+### 批量查询用户信息
+
+根据 `openId` 列表批量查询用户信息。
+
+- **URL**: `/user/listByOpenIds`
+- **Method**: `POST`
+- **认证**: 需要认证（Authorization token）
+
+**请求体**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| openIds | Array<String> | 是 | 用户 openId 列表 |
+
+**请求示例**:
+
+```json
+{
+  "openIds": [
+    "oXXXXXXXXXXXXXX1",
+    "oXXXXXXXXXXXXXX2",
+    "oXXXXXXXXXXXXXX3"
+  ]
+}
+```
+
+**响应示例**:
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": [
+    {
+      "openId": "oXXXXXXXXXXXXXX1",
+      "nickName": "张三",
+      "gender": 1,
+      "city": "北京",
+      "age": 25,
+      "birthday": "2000-01-01",
+      "email": "zhangsan@example.com",
+      "phone": "13800138000",
+      "status": 0,
+      "currentPoint": 1000,
+      "lastLogin": "2025-03-20T10:30:00",
+      "gmtCreated": "2025-01-01T08:00:00"
+    }
+  ]
+}
+```
+
+**响应字段说明**:
+
+| 字段名 | 类型 | 说明 |
+|--------|------|------|
+| data | Array | 用户信息列表 |
+| data[].openId | String | 用户openId |
+| data[].nickName | String | 昵称 |
+| data[].gender | Integer | 性别：0-保密，1-男，2-女 |
+| data[].city | String | 城市 |
+| data[].age | Integer | 年龄 |
+| data[].birthday | String | 生日 |
+| data[].email | String | 邮箱 |
+| data[].phone | String | 手机号 |
+| data[].status | Integer | 状态：0-正常，1-不活跃，2-暂停，3-封禁，4-注销 |
+| data[].currentPoint | Long | 当前可用积分 |
+| data[].lastLogin | String | 上次登录时间（ISO 8601格式） |
+| data[].gmtCreated | String | 创建时间（ISO 8601格式） |
+
+**说明**:
+- 服务端使用 `open_id in (...)` 查询用户
+- 若部分 `openId` 不存在，不报错，直接返回查询到的用户列表
 
 ---
 
@@ -645,6 +733,7 @@ POST /order/detail?orderId=ORD_202503221530300001
       {
         "productId": "PRO_202503221530300001",
         "productName": "商品名称",
+        "productImage": "product/xxx.jpg",
         "onePrice": 100,
         "quantity": 10,
         "totalAmount": 1000
@@ -677,6 +766,7 @@ POST /order/detail?orderId=ORD_202503221530300001
 |--------|------|------|
 | productId | String | 商品ID |
 | productName | String | 商品名称 |
+| productImage | String | 商品图片相对路径 |
 | onePrice | Integer | 商品单价（单位：分） |
 | quantity | Long | 购买数量 |
 | totalAmount | Long | 该商品总金额（单位：分） |
@@ -775,8 +865,8 @@ POST /order/detail?orderId=ORD_202503221530300001
 | orderCreateTime | String | 否 | 订单创建时间区间，格式：startTime,endTime |
 | orderEndTime | String | 否 | 订单结束时间区间，格式：startTime,endTime |
 | openId | String | 否 | 用户openId（精确匹配） |
-| pageNum | Integer | 否 | 页码，不传或传null则不分页 |
-| pageSize | Integer | 否 | 每页数量，不传或传null则不分页 |
+| pageNum | Integer | 否 | 页码，默认1（小于等于0时按1处理） |
+| pageSize | Integer | 否 | 每页数量，默认9（小于等于0时按9处理） |
 
 **请求示例**:
 
@@ -790,11 +880,11 @@ POST /order/detail?orderId=ORD_202503221530300001
   "orderEndTime": "",
   "openId": "oXXXXXXXXXXXXXX",
   "pageNum": 1,
-  "pageSize": 10
+  "pageSize": 9
 }
 ```
 
-不分页查询（返回全部数据）：
+默认分页查询（不传分页参数）：
 ```json
 {
   "orderId": "ORD_202503",
@@ -826,12 +916,16 @@ POST /order/detail?orderId=ORD_202503221530300001
       }
     ],
     "total": 100,
-    "size": 10,
+    "size": 9,
     "current": 1,
-    "pages": 10
+    "pages": 12
   }
 }
 ```
+
+默认分页参数说明：
+- `pageNum` 未传或小于等于 0 时，按 `1` 处理
+- `pageSize` 未传或小于等于 0 时，按 `9` 处理
 
 **响应字段说明**:
 
@@ -1300,8 +1394,8 @@ POST /product/delete?id=PRO_202503221530300001
   "code": 200,
   "message": "success",
   "data": {
-    "yesterdayTotalInNumber": 100,
-    "yesterdayTotalOutNumber": 50,
+    "yesterdayProfit": 15000,
+    "currentUserCount": 128,
     "currentlyTotalStock": 500,
     "currentLyTotalAmount": 25000
   }
@@ -1312,10 +1406,10 @@ POST /product/delete?id=PRO_202503221530300001
 
 | 字段名 | 类型 | 说明 |
 |--------|------|------|
-| yesterdayTotalInNumber | Long | 昨日入库总数量 |
-| yesterdayTotalOutNumber | Long | 昨日出库总数量 |
+| yesterdayProfit | Long | 昨日盈利金额（昨日所有已完成订单的总金额，单位：元） |
+| currentUserCount | Long | 当前用户人数 |
 | currentlyTotalStock | Long | 当前库存总数量（包括在售和停售状态的商品） |
-| currentLyTotalAmount | Long | 当前库存总金额（库存 × 成本价，单位：分） |
+| currentLyTotalAmount | Long | 当前库存总金额（库存 × 成本价，单位：元） |
 
 ---
 
@@ -1655,7 +1749,7 @@ POST /category/delete?id=1
 | startTime | String | 否 | 开始时间（格式：yyyy-MM-dd HH:mm:ss） |
 | endTime | String | 否 | 结束时间（格式：yyyy-MM-dd HH:mm:ss） |
 | content | String | 否 | 操作内容（模糊查询） |
-| userName | String | 否 | 操作人ID（模糊查询） |
+| userName | String | 否 | 操作人昵称（模糊查询） |
 
 **请求示例**:
 
@@ -1667,7 +1761,7 @@ POST /category/delete?id=1
   "startTime": "2024-01-01 00:00:00",
   "endTime": "2024-12-31 23:59:59",
   "content": "操作内容关键词",
-  "userName": "openid"
+  "userName": "张三"
 }
 ```
 
@@ -1684,6 +1778,7 @@ POST /category/delete?id=1
         "content": "添加商品：测试商品A",
         "type": 0,
         "operatorId": "openid_xxx",
+        "operatorName": "张三",
         "time": "2024-01-01T12:00:00"
       }
     ],
@@ -1713,6 +1808,7 @@ POST /category/delete?id=1
 | content | String | 操作内容描述 |
 | type | Integer | 操作类型 |
 | operatorId | String | 操作人ID |
+| operatorName | String | 操作人昵称 |
 | time | String | 操作时间（ISO 8601格式） |
 
 ---
@@ -2258,6 +2354,131 @@ pictureCategory: "product"
 
 ---
 
+## 轮播图管理接口
+
+**基础路径**: `/slideshow`
+
+轮播图管理接口，用于轮播图的上传、查询和删除操作。轮播图存储在微信云对象存储中。
+
+### 上传轮播图
+
+上传轮播图到微信云对象存储，并自动记录文件ID到数据库。
+
+- **URL**: `/slideshow/upload`
+- **Method**: `POST`
+- **认证**: 需要认证（Authorization token）
+- **Content-Type**: `multipart/form-data`
+
+**表单参数**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| file | File | 是 | 上传的轮播图图片文件 |
+
+**请求示例 (form-data)**:
+```
+file: [二进制文件]
+```
+
+**响应示例**:
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": "cloud://env-xxx.slideshow-xxx.png"
+}
+```
+
+**响应字段说明**:
+
+| 字段名 | 类型 | 说明 |
+|--------|------|------|
+| code | Integer | 状态码，200表示成功 |
+| message | String | 响应消息 |
+| data | String | 微信云对象存储文件ID |
+
+---
+
+### 获取所有轮播图文件ID
+
+获取数据库中存储的所有轮播图文件ID。
+
+- **URL**: `/slideshow/fileIds`
+- **Method**: `GET`
+- **认证**: 无需认证
+
+**响应示例**:
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": [
+    "cloud://env-xxx.slideshow-abc123.png",
+    "cloud://env-xxx.slideshow-def456.jpg",
+    "cloud://env-xxx.slideshow-ghi789.png"
+  ]
+}
+```
+
+**响应字段说明**:
+
+| 字段名 | 类型 | 说明 |
+|--------|------|------|
+| code | Integer | 状态码，200表示成功 |
+| message | String | 响应消息 |
+| data | Array<String> | 轮播图文件ID列表 |
+
+---
+
+### 删除轮播图
+
+删除指定的轮播图记录，同时删除云存储中的文件。
+
+- **URL**: `/slideshow`
+- **Method**: `DELETE`
+- **认证**: 需要认证（Authorization token）
+- **Content-Type**: `application/json`
+
+**请求体参数**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| fileId | String | 是 | 微信云对象存储文件ID |
+
+**请求示例**:
+```json
+DELETE /slideshow
+Content-Type: application/json
+
+{
+  "fileId": "cloud://env-xxx.slideshow-abc123.png"
+}
+```
+
+**响应示例**:
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": null
+}
+```
+
+**错误响应示例**:
+
+```json
+{
+  "status": 511,
+  "message": "轮播图记录不存在",
+  "time": "2024-01-01T12:00:00"
+}
+```
+
+---
+
 ### 下载/查看文件
 
 代理下载或查看资源文件。
@@ -2709,6 +2930,11 @@ file: [ZIP文件]
 
 **基础路径**: `/information`
 
+说明：
+- 商户发送消息时，系统会为同一批次消息生成同一个 `informationId`
+- 客户侧列表展示的是单条消息记录（主键 `id`）
+- 商户侧列表按 `informationId` 聚合展示，删除时也以 `informationId` 为维度操作
+
 ### 发送消息
 
 商户发送消息给指定客户或所有客户。
@@ -2780,6 +3006,7 @@ file: [ZIP文件]
 | pageNum | Integer | 否 | 分页页号，默认1 |
 | pageSize | Integer | 否 | 分页数量，默认10 |
 | type | Integer | 否 | 消息类型筛选 |
+| isLook | Boolean | 否 | 是否已查阅筛选，`true`-已查阅，`false`-未查阅 |
 
 **请求示例**:
 
@@ -2787,7 +3014,8 @@ file: [ZIP文件]
 {
   "pageNum": 1,
   "pageSize": 10,
-  "type": 0
+  "type": 0,
+  "isLook": false
 }
 ```
 
@@ -2800,9 +3028,11 @@ file: [ZIP文件]
   "data": {
     "records": [
       {
+        "id": "msg_001",
         "type": 0,
         "subject": "新活动通知",
         "content": "尊敬的客户，我们即将推出新的优惠活动，敬请期待！",
+        "isLook": false,
         "gmtCreated": "2024-01-01T12:00:00"
       }
     ],
@@ -2828,16 +3058,105 @@ file: [ZIP文件]
 
 | 字段名 | 类型 | 说明 |
 |--------|------|------|
+| id | String | 消息主键ID |
 | type | Integer | 消息类型 |
 | subject | String | 消息主题 |
 | content | String | 消息内容 |
+| isLook | Boolean | 是否已查阅，`true`-已查阅，`false`-未查阅 |
 | gmtCreated | String | 创建时间（ISO 8601格式） |
+
+---
+
+### 用户查阅消息
+
+用户查阅某条消息后，将该消息更新为已查阅状态。
+
+- **URL**: `/information/look`
+- **Method**: `POST`
+- **认证**: 需要认证（Authorization token）
+
+**请求参数**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| id | String | 是 | 消息主键ID |
+
+**请求示例**:
+
+```http
+POST /information/look?id=msg_001
+```
+
+**响应示例**:
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": "msg_001"
+}
+```
+
+**响应字段说明**:
+
+| 字段名 | 类型 | 说明 |
+|--------|------|------|
+| code | Integer | 状态码，200表示成功 |
+| message | String | 响应消息 |
+| data | String | 已查阅消息主键ID |
+
+---
+
+### 删除消息
+
+商户按消息批次删除消息。一个批次内发给多个客户的消息共用同一个 `informationId`，调用后会删除该批次下的全部消息记录。
+
+- **URL**: `/information/delete`
+- **Method**: `POST`
+- **认证**: 需要认证（Authorization token）
+
+**请求体**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| informationId | String | 是 | 消息批次ID，对应 `information_id` |
+
+**请求示例**:
+
+```json
+{
+  "informationId": "INFO_202604261230000001"
+}
+```
+
+**响应示例**:
+
+```json
+{
+  "code": 200,
+  "message": "success",
+  "data": true
+}
+```
+
+**响应字段说明**:
+
+| 字段名 | 类型 | 说明 |
+|--------|------|------|
+| code | Integer | 状态码，200表示成功 |
+| message | String | 响应消息 |
+| data | Boolean | 是否删除成功 |
 
 ---
 
 ### 商家获取消息列表
 
 商家获取发送的消息分页列表，支持多种筛选条件。
+
+说明：
+- 列表按 `informationId` 聚合同一批次消息，每条 `records` 代表一个消息批次
+- `id` 为该批次中一条代表性消息记录的唯一主键ID，可用于前端唯一标识
+- `informationId` 为消息批次ID，可用于调用删除接口
 
 - **URL**: `/information/bossMessageList`
 - **Method**: `POST`
@@ -2878,6 +3197,8 @@ file: [ZIP文件]
   "data": {
     "records": [
       {
+        "id": "msg_row_001",
+        "informationId": "INFO_202604261230000001",
         "type": 0,
         "subject": "新活动通知",
         "content": "尊敬的客户，我们即将推出新的优惠活动，敬请期待！",
@@ -2908,6 +3229,8 @@ file: [ZIP文件]
 
 | 字段名 | 类型 | 说明 |
 |--------|------|------|
+| id | String | 消息唯一主键ID（该批次中的代表记录ID） |
+| informationId | String | 消息批次ID，对应 `information_id` |
 | type | Integer | 消息类型 |
 | subject | String | 消息主题 |
 | content | String | 消息内容 |
@@ -2925,17 +3248,59 @@ file: [ZIP文件]
 
 - **WebSocket URL**: `ws://{host}/ws/order`
 - **认证方式**: JWT Token 通过 URL 参数传递
+- **订阅参数**: `type`，用于声明当前连接订阅的消息类型
 
 **连接示例**:
 ```
-ws://localhost:8080/ws/order?token=your_jwt_token
+ws://localhost:8080/ws/order?type=merchant&token=your_jwt_token
+ws://localhost:8080/ws/order?type=customer&token=your_jwt_token
 ```
 
 **认证流程**:
 1. 客户端发起 WebSocket 连接请求，携带 JWT Token
 2. 服务端通过 `JwtHandshakeInterceptor` 验证 Token 有效性
-3. 验证通过后建立连接，验证失败返回 401 错误
-4. 商户连接时额外验证 `isSuper` 字段是否为 1
+3. 服务端读取 `type` 参数，将连接注册到对应订阅通道
+4. 验证通过后建立连接，验证失败返回 401 错误
+5. 商户连接时额外验证当前用户是否为商户身份
+
+### 订阅说明
+
+当前项目中的“订阅”不是单独的 HTTP 接口，而是在建立 WebSocket 连接时通过 URL 参数完成。
+
+**连接参数**:
+
+| 参数名 | 类型 | 必填 | 说明 |
+|--------|------|------|------|
+| token | String | 是 | JWT Token |
+| type | String | 是 | 订阅类型，可选值：`merchant`、`customer` |
+
+**订阅类型说明**:
+
+| type 值 | 订阅对象 | 可接收事件 | 说明 |
+|---------|----------|------------|------|
+| merchant | 商户端 | `ORDER_PAID` | 接收所有在线订单支付通知 |
+| customer | 客户端 | `ORDER_ACCEPT`、`ORDER_REJECT` | 接收当前登录用户自己的订单状态通知 |
+
+**订阅示例**:
+
+商户端订阅新订单通知：
+
+```text
+ws://localhost:8080/ws/order?type=merchant&token=your_jwt_token
+```
+
+客户端订阅个人订单状态通知：
+
+```text
+ws://localhost:8080/ws/order?type=customer&token=your_jwt_token
+```
+
+**订阅行为说明**:
+- 同一个 `openId` 在商户端和客户端各维护一条连接映射
+- `merchant` 连接建立后，服务端会把当前连接加入商户订阅池
+- `customer` 连接建立后，服务端会把当前连接加入当前用户的订阅池
+- 未传 `type` 或传入其他值时，服务端会拒绝连接
+- 商户身份用户使用 `customer` 类型连接时，也只会按客户通道接收自己的订单通知
 
 ### 消息格式
 
@@ -3058,7 +3423,8 @@ ws://localhost:8080/ws/order?token=your_jwt_token
 ```javascript
 // 建立 WebSocket 连接
 const token = localStorage.getItem('token');
-const ws = new WebSocket(`ws://localhost:8080/ws/order?token=${token}`);
+const type = isMerchant ? 'merchant' : 'customer';
+const ws = new WebSocket(`ws://localhost:8080/ws/order?type=${type}&token=${token}`);
 
 // 连接成功
 ws.onopen = () => {

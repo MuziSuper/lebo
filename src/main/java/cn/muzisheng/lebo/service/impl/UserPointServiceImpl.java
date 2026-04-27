@@ -280,7 +280,7 @@ public class UserPointServiceImpl extends ServiceImpl<UserPointMapper, UserPoint
                 .map(item -> ProductInOutDTO.builder()
                         .productId(item.getProductId())
                         .number(-item.getNumber())
-                        .description("积分兑换出库, 用户Id: " + openId)
+                        .description("积分兑换出库")
                         .build())
                 .toList();
         // 执行商品出库操作,内部会更新商品库存并创建商品出库记录

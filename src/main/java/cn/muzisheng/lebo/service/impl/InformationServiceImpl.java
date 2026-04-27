@@ -1,5 +1,6 @@
 package cn.muzisheng.lebo.service.impl;
 
+import cn.muzisheng.lebo.dto.InformationDeleteDTO;
 import cn.muzisheng.lebo.dto.MessageBossListDTO;
 import cn.muzisheng.lebo.dto.MessageListDTO;
 import cn.muzisheng.lebo.dto.SendMessageDTO;
@@ -16,6 +17,7 @@ import cn.muzisheng.lebo.utils.UserThreadUtil;
 import cn.muzisheng.lebo.vo.InformationBossVO;
 import cn.muzisheng.lebo.vo.InformationVO;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -87,6 +89,7 @@ public class InformationServiceImpl extends ServiceImpl<InformationMapper, Infor
                     .content(sendMessageDTO.getContent())
                     .type(sendMessageDTO.getType())
                     .deleted(0)
+                    .isLook(false)
                     .build();
             informationList.add(information);
         }
@@ -119,6 +122,10 @@ public class InformationServiceImpl extends ServiceImpl<InformationMapper, Infor
         if (messageListDTO != null && messageListDTO.getType() != null) {
             queryWrapper.eq("type", messageListDTO.getType());
         }
+
+        if (messageListDTO != null && messageListDTO.getIsLook() != null) {
+            queryWrapper.eq("is_look", messageListDTO.getIsLook());
+        }
         
         queryWrapper.orderByDesc("gmt_created");
         
@@ -127,6 +134,66 @@ public class InformationServiceImpl extends ServiceImpl<InformationMapper, Infor
         IPage<InformationVO> voPage = informationPage.convert(this::convertToVO);
         
         result.setData(voPage);
+        return result.value();
+    }
+
+    @Override
+    @Transactional(rollbackFor = InformationException.class)
+    public ResponseEntity<Result<Boolean>> delete(InformationDeleteDTO informationDeleteDTO) {
+        Response<Boolean> result = new Response<>();
+        String informationId = informationDeleteDTO == null ? null : informationDeleteDTO.getInformationId();
+        if (informationId == null || informationId.trim().isEmpty()) {
+            log.error("消息批次ID不能为空");
+            throw new InformationException("消息批次ID不能为空");
+        }
+
+        QueryWrapper<Information> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("information_id", informationId);
+        if (!this.remove(queryWrapper)) {
+            log.error("删除消息失败, informationId: {}", informationId);
+            throw new InformationException("删除消息失败");
+        }
+        result.setData(true);
+        return result.value();
+    }
+
+    @Override
+    @Transactional(rollbackFor = InformationException.class)
+    public ResponseEntity<Result<String>> look(String id) {
+        Response<String> result = new Response<>();
+        if (id == null || id.trim().isEmpty()) {
+            log.error("消息ID不能为空");
+            throw new InformationException("消息ID不能为空");
+        }
+
+        String openId = UserThreadUtil.getCurrentOpenId();
+        if (openId == null || openId.isEmpty()) {
+            log.error("用户未登录");
+            throw new InformationException("用户未登录");
+        }
+
+        QueryWrapper<Information> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id).eq("open_id", openId);
+        Information information = this.getOne(queryWrapper);
+        if (information == null) {
+            log.error("消息不存在或无权限查阅, id: {}, openId: {}", id, openId);
+            throw new InformationException("消息不存在或无权限查阅");
+        }
+
+        if (Boolean.TRUE.equals(information.getIsLook())) {
+            result.setData(id);
+            return result.value();
+        }
+
+        UpdateWrapper<Information> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id", id)
+                .eq("open_id", openId)
+                .set("is_look", true);
+        if (!this.update(updateWrapper)) {
+            log.error("消息查阅状态更新失败, id: {}, openId: {}", id, openId);
+            throw new InformationException("消息查阅状态更新失败");
+        }
+        result.setData(id);
         return result.value();
     }
 
@@ -172,7 +239,7 @@ public class InformationServiceImpl extends ServiceImpl<InformationMapper, Infor
         List<Map<String, Object>> countResult = this.getBaseMapper().selectMaps(countWrapper);
         long total = countResult.isEmpty() ? 0L : ((Number) countResult.get(0).get("total")).longValue();
         
-        idWrapper.select("MIN(id) as id").groupBy("information_id").orderByDesc("gmt_created");
+        idWrapper.select("MIN(id) as id", "MAX(gmt_created) as gmt_created").groupBy("information_id").orderByDesc("gmt_created");
         
         List<Map<String, Object>> idRecords = this.getBaseMapper().selectMaps(idWrapper);
         List<String> ids = idRecords.stream()
@@ -236,15 +303,19 @@ public class InformationServiceImpl extends ServiceImpl<InformationMapper, Infor
     
     private InformationVO convertToVO(Information information) {
         InformationVO vo = new InformationVO();
+        vo.setId(information.getId());
         vo.setType(information.getType());
         vo.setSubject(information.getSubject());
         vo.setContent(information.getContent());
+        vo.setIsLook(information.getIsLook());
         vo.setGmtCreated(information.getGmtCreated());
         return vo;
     }
     
     private InformationBossVO convertToBossVO(Information information, Map<String, List<String>> informationOpenIdsMap) {
         InformationBossVO vo = new InformationBossVO();
+        vo.setId(information.getId());
+        vo.setInformationId(information.getInformationId());
         vo.setType(information.getType());
         vo.setSubject(information.getSubject());
         vo.setContent(information.getContent());

@@ -27,4 +27,8 @@ public class MessageListDTO {
      * 消息类型
      */
     private Integer type;
+    /**
+     * 是否已查阅
+     */
+    private Boolean isLook;
 }
