@@ -36,22 +36,22 @@ public class WebConfig implements WebMvcConfigurer {
                         "/awards/list"
                 );  // 白名单路径
     }
-    @Bean
-    public CorsFilter corsFilter() {
-        CorsConfiguration config = new CorsConfiguration();
-        // 允许所有源（生产环境建议指定具体域名）
-        config.addAllowedOriginPattern("*");
-        // 允许所有方法
-        config.addAllowedMethod("*");
-        // 允许所有请求头
-        config.addAllowedHeader("*");
-        // 【关键】暴露 Authorization 头给前端，否则前端 JS 读不到
-        config.addExposedHeader("Authorization");
-        // 允许携带凭证（Cookie/Headers）
-        config.setAllowCredentials(true);
+    // @Bean
+    // public CorsFilter corsFilter() {
+    //     CorsConfiguration config = new CorsConfiguration();
+    //     // 允许所有源（生产环境建议指定具体域名）
+    //     config.addAllowedOriginPattern("*");
+    //     // 允许所有方法
+    //     config.addAllowedMethod("*");
+    //     // 允许所有请求头
+    //     config.addAllowedHeader("*");
+    //     // 【关键】暴露 Authorization 头给前端，否则前端 JS 读不到
+    //     config.addExposedHeader("Authorization");
+    //     // 允许携带凭证（Cookie/Headers）
+    //     config.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
+    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    //     source.registerCorsConfiguration("/**", config);
+    //     return new CorsFilter(source);
+    // }
 }

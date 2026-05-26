@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="docs(api): 更新API接口文档并添加轮播图管理功能&#10;&#10;- 新增批量查询用户信息接口(/user/listByOpenIds)及其详细文档&#10;- 添加轮播图管理接口模块，包含上传、查询、删除三个子接口&#10;- 在订单详情中新增商品图片字段(productImage)及相应说明&#10;- 调整订单列表分页参数默认值，pageNum默认为1，pageSize默认为9&#10;- 更新统计接口返回字段，将出入库数量改为盈利金额和用户数&#10;- 在消息通知接口中新增用户查阅消息和删除消息功能&#10;- 完善WebSocket订阅说明，添加type参数用于区分商户和客户订阅类型&#10;- 修复错误码锚点链接问题并更新相关说明&#10;- 在操作日志查询中将操作人ID改为操作人昵称字段&#10;- 配置文件中禁用Redis健康检查并增加文件上传大小限制配置">
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/constant/Constant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/muzisheng/lebo/service/impl/FileStorageServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="chore(build): 集成JaCoCo代码覆盖率工具并配置测试依赖&#10;&#10;- 添加Jacoco Maven插件及其版本配置&#10;- 配置代码覆盖率检查规则，设置指令和行覆盖率最低为95%&#10;- 指定需要覆盖的源码包路径包括API和服务实现类&#10;- 排除Mockito模拟类和辅助类的覆盖率统计&#10;- 配置Maven Surefire插件以支持Jacoco代理参数&#10;- 添加Spring Boot测试依赖用于单元测试框架">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +44,10 @@
     &quot;CodeFuse_applyCachedRules.once.366700735&quot;: &quot;1&quot;,
     &quot;Docker.Dockerfile build.executor&quot;: &quot;Run&quot;,
     &quot;JAR 应用程序.Lebo-1.0-SNAPSHOT.jar.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AwardApiTest 和其他 14 个.executor&quot;: &quot;Coverage&quot;,
+    &quot;JUnit.AwardApiTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AwardRecordServiceImplTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.JwtAndContextTest.executor&quot;: &quot;Run&quot;,
     &quot;Maven.Lebo [clean,package].executor&quot;: &quot;Run&quot;,
     &quot;Maven.Lebo [clean].executor&quot;: &quot;Run&quot;,
     &quot;Maven.Lebo [compile].executor&quot;: &quot;Run&quot;,
@@ -67,7 +69,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
@@ -105,22 +107,70 @@
       <recent name="cn.muzisheng.lebo.service" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.LeboApplication">
-    <configuration name="StorageException" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cn.muzisheng.lebo.exception.StorageException" />
+  <component name="RunManager" selected="JUnit.AwardApiTest 和其他 14 个">
+    <configuration name="AwardApiTest 和其他 14 个" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Lebo" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="cn.muzisheng.lebo.exception.*" />
+          <option name="PATTERN" value="cn.muzisheng.lebo.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="cn.muzisheng.lebo" />
+      <option name="MAIN_CLASS_NAME" value="cn.muzisheng.lebo.UnitTestSupport" />
+      <option name="TEST_OBJECT" value="pattern" />
+      <patterns>
+        <pattern testClass="cn.muzisheng.lebo.api.AwardApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.BackupApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.CategoryApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.GeneralApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.HistoryOperationApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.InOutProductRecordApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.InformationApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.OrderApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.ProductApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.SlideshowApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.UserApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.UserPointApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.UserPointRecordApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.UserSignInApiTest" />
+        <pattern testClass="cn.muzisheng.lebo.api.WxCloudStorageApiTest" />
+      </patterns>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WechatApiCryptoUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cn.muzisheng.lebo.utils.WechatApiCryptoUtil" />
+    <configuration name="AwardApiTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Lebo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.muzisheng.lebo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cn.muzisheng.lebo.api" />
+      <option name="MAIN_CLASS_NAME" value="cn.muzisheng.lebo.api.AwardApiTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AwardRecordServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Lebo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.muzisheng.lebo.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cn.muzisheng.lebo.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="cn.muzisheng.lebo.service.impl.AwardRecordServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JwtAndContextTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Lebo" />
       <extension name="coverage">
         <pattern>
@@ -128,13 +178,12 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="cn.muzisheng.lebo.utils" />
+      <option name="MAIN_CLASS_NAME" value="cn.muzisheng.lebo.utils.JwtAndContextTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-    </configuration>
-    <configuration name="Lebo-1.0-SNAPSHOT.jar" type="JarApplication" temporary="true">
-      <option name="JAR_PATH" value="$PROJECT_DIR$/target/Lebo-1.0-SNAPSHOT.jar" />
-      <method v="2" />
     </configuration>
     <configuration name="LeboApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <envs>
@@ -157,17 +206,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Dockerfile build" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
-      <deployment type="dockerfile">
-        <settings>
-          <option name="imageTag" value="maven3.9.6-jdk-21-slim_build" />
-          <option name="buildCliOptions" value="--target build" />
-          <option name="buildOnly" value="true" />
-          <option name="sourceFilePath" value="Dockerfile" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
     <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
       <deployment type="dockerfile">
         <settings />
@@ -175,21 +213,29 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Docker.Dockerfile build" />
-      <item itemvalue="JAR 应用程序.Lebo-1.0-SNAPSHOT.jar" />
+      <item itemvalue="JUnit.AwardRecordServiceImplTest" />
+      <item itemvalue="JUnit.AwardApiTest" />
+      <item itemvalue="JUnit.AwardApiTest 和其他 14 个" />
+      <item itemvalue="JUnit.JwtAndContextTest" />
       <item itemvalue="Spring Boot.LeboApplication" />
-      <item itemvalue="应用程序.StorageException" />
-      <item itemvalue="应用程序.WechatApiCryptoUtil" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AwardApiTest 和其他 14 个" />
+        <item itemvalue="JUnit.AwardRecordServiceImplTest" />
+        <item itemvalue="JUnit.AwardApiTest 和其他 14 个" />
+        <item itemvalue="JUnit.AwardApiTest" />
         <item itemvalue="Spring Boot.LeboApplication" />
-        <item itemvalue="Docker.Dockerfile build" />
-        <item itemvalue="JAR 应用程序.Lebo-1.0-SNAPSHOT.jar" />
-        <item itemvalue="应用程序.WechatApiCryptoUtil" />
-        <item itemvalue="应用程序.StorageException" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.19416.15" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.19416.15" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -221,7 +267,15 @@
       <workItem from="1775554676062" duration="25794000" />
       <workItem from="1775979699758" duration="33000" />
       <workItem from="1775980903896" duration="8742000" />
-      <workItem from="1776592263286" duration="49480000" />
+      <workItem from="1776592263286" duration="52543000" />
+      <workItem from="1777642715956" duration="3549000" />
+      <workItem from="1778205409992" duration="1068000" />
+      <workItem from="1778206490308" duration="557000" />
+      <workItem from="1778208338076" duration="10000" />
+      <workItem from="1778222489571" duration="933000" />
+      <workItem from="1778310117496" duration="1872000" />
+      <workItem from="1778489101307" duration="7179000" />
+      <workItem from="1779115230084" duration="1194000" />
     </task>
     <task id="LOCAL-00001" summary="暂存代码">
       <option name="closed" value="true" />
@@ -479,7 +533,31 @@
       <option name="project" value="LOCAL" />
       <updated>1777259597890</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="refactor(storage): 优化文件存储服务配置和异常处理&#10;&#10;- 将 storage.path 配置改为使用环境变量 ${STORAGE_PATH:./storage}&#10;- 统一各类异常状态码为 INTERNAL_SERVER_ERROR&#10;- 重构 FileStorageServiceImpl 中的文件加载逻辑，支持从文件系统和classpath加载资源&#10;- 移除代码中多余的注释和空行，简化构造方法实现&#10;- 更新 IDEA 工作空间配置中的提交历史记录">
+      <option name="closed" value="true" />
+      <created>1777303549128</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1777303549128</updated>
+    </task>
+    <task id="LOCAL-00034" summary="refactor(storage): 优化文件存储服务配置和异常处理&#10;&#10;- 将 storage.path 配置改为使用环境变量 ${STORAGE_PATH:./storage}&#10;- 统一各类异常状态码为 INTERNAL_SERVER_ERROR&#10;- 重构 FileStorageServiceImpl 中的文件加载逻辑，支持从文件系统和classpath加载资源&#10;- 移除代码中多余的注释和空行，简化构造方法实现&#10;- 更新 IDEA 工作空间配置中的提交历史记录">
+      <option name="closed" value="true" />
+      <created>1777700255613</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1777700255613</updated>
+    </task>
+    <task id="LOCAL-00035" summary="chore(build): 集成JaCoCo代码覆盖率工具并配置测试依赖&#10;&#10;- 添加Jacoco Maven插件及其版本配置&#10;- 配置代码覆盖率检查规则，设置指令和行覆盖率最低为95%&#10;- 指定需要覆盖的源码包路径包括API和服务实现类&#10;- 排除Mockito模拟类和辅助类的覆盖率统计&#10;- 配置Maven Surefire插件以支持Jacoco代理参数&#10;- 添加Spring Boot测试依赖用于单元测试框架">
+      <option name="closed" value="true" />
+      <created>1778310137882</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1778310137883</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -527,7 +605,9 @@
     <MESSAGE value="refactor(config): 优化微信云存储配置类&#10;&#10;- 移除StorageConfig中的多余空行&#10;- 在WxCloudStorageConfig中添加PostConstruct注解支持&#10;- 添加Log4j2日志记录功能&#10;- 实现配置初始化后的必填项验证逻辑&#10;- 当微信云托管环境ID未配置时抛出异常" />
     <MESSAGE value="refactor(config): 重构微信配置管理&#10;&#10;- 将WXSecretConfig改为使用@Data注解和@Value注入&#10;- 移除Environment依赖，改用配置类获取APP_ID和APP_SECRET&#10;- 更新WXServiceImpl构造函数以使用新的配置类&#10;- 为微信云存储环境ID设置默认值&#10;- 简化配置属性的访问方式" />
     <MESSAGE value="docs(api): 更新API接口文档并添加轮播图管理功能&#10;&#10;- 新增批量查询用户信息接口(/user/listByOpenIds)及其详细文档&#10;- 添加轮播图管理接口模块，包含上传、查询、删除三个子接口&#10;- 在订单详情中新增商品图片字段(productImage)及相应说明&#10;- 调整订单列表分页参数默认值，pageNum默认为1，pageSize默认为9&#10;- 更新统计接口返回字段，将出入库数量改为盈利金额和用户数&#10;- 在消息通知接口中新增用户查阅消息和删除消息功能&#10;- 完善WebSocket订阅说明，添加type参数用于区分商户和客户订阅类型&#10;- 修复错误码锚点链接问题并更新相关说明&#10;- 在操作日志查询中将操作人ID改为操作人昵称字段&#10;- 配置文件中禁用Redis健康检查并增加文件上传大小限制配置" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs(api): 更新API接口文档并添加轮播图管理功能&#10;&#10;- 新增批量查询用户信息接口(/user/listByOpenIds)及其详细文档&#10;- 添加轮播图管理接口模块，包含上传、查询、删除三个子接口&#10;- 在订单详情中新增商品图片字段(productImage)及相应说明&#10;- 调整订单列表分页参数默认值，pageNum默认为1，pageSize默认为9&#10;- 更新统计接口返回字段，将出入库数量改为盈利金额和用户数&#10;- 在消息通知接口中新增用户查阅消息和删除消息功能&#10;- 完善WebSocket订阅说明，添加type参数用于区分商户和客户订阅类型&#10;- 修复错误码锚点链接问题并更新相关说明&#10;- 在操作日志查询中将操作人ID改为操作人昵称字段&#10;- 配置文件中禁用Redis健康检查并增加文件上传大小限制配置" />
+    <MESSAGE value="refactor(storage): 优化文件存储服务配置和异常处理&#10;&#10;- 将 storage.path 配置改为使用环境变量 ${STORAGE_PATH:./storage}&#10;- 统一各类异常状态码为 INTERNAL_SERVER_ERROR&#10;- 重构 FileStorageServiceImpl 中的文件加载逻辑，支持从文件系统和classpath加载资源&#10;- 移除代码中多余的注释和空行，简化构造方法实现&#10;- 更新 IDEA 工作空间配置中的提交历史记录" />
+    <MESSAGE value="chore(build): 集成JaCoCo代码覆盖率工具并配置测试依赖&#10;&#10;- 添加Jacoco Maven插件及其版本配置&#10;- 配置代码覆盖率检查规则，设置指令和行覆盖率最低为95%&#10;- 指定需要覆盖的源码包路径包括API和服务实现类&#10;- 排除Mockito模拟类和辅助类的覆盖率统计&#10;- 配置Maven Surefire插件以支持Jacoco代理参数&#10;- 添加Spring Boot测试依赖用于单元测试框架" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore(build): 集成JaCoCo代码覆盖率工具并配置测试依赖&#10;&#10;- 添加Jacoco Maven插件及其版本配置&#10;- 配置代码覆盖率检查规则，设置指令和行覆盖率最低为95%&#10;- 指定需要覆盖的源码包路径包括API和服务实现类&#10;- 排除Mockito模拟类和辅助类的覆盖率统计&#10;- 配置Maven Surefire插件以支持Jacoco代理参数&#10;- 添加Spring Boot测试依赖用于单元测试框架" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -596,6 +676,24 @@
           <option name="totalLines" value="20669" />
           <option name="info" value="docs(api): 更新API接口文档并添加轮播图管理功能&#10;&#10;- 新增批量查询用户信息接口(/us" />
         </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1777303549238" />
+          <option name="linesCode" value="11190" />
+          <option name="totalLines" value="20633" />
+          <option name="info" value="refactor(storage): 优化文件存储服务配置和异常处理&#10;&#10;- 将 storage.pa" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1777700255731" />
+          <option name="linesCode" value="12366" />
+          <option name="totalLines" value="22554" />
+          <option name="info" value="refactor(storage): 优化文件存储服务配置和异常处理&#10;&#10;- 将 storage.pa" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1778310137999" />
+          <option name="linesCode" value="12366" />
+          <option name="totalLines" value="22554" />
+          <option name="info" value="chore(build): 集成JaCoCo代码覆盖率工具并配置测试依赖&#10;&#10;- 添加Jacoco M" />
+        </TimePoint>
       </list>
     </option>
     <option name="genericTimePoints">
@@ -648,7 +746,30 @@
           <option name="totalLines" value="20669" />
           <option name="info" value="2026年4月27日" />
         </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1777303549238" />
+          <option name="linesCode" value="11190" />
+          <option name="totalLines" value="20633" />
+          <option name="info" value="2026年4月27日" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1777700255731" />
+          <option name="linesCode" value="12366" />
+          <option name="totalLines" value="22554" />
+          <option name="info" value="2026年5月2日" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1778310137999" />
+          <option name="linesCode" value="12366" />
+          <option name="totalLines" value="22554" />
+          <option name="info" value="2026年5月9日" />
+        </TimePoint>
       </list>
     </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/lebo$AwardApiTest__14_.ic" NAME="AwardApiTest 和其他 14 个 覆盖结果" MODIFIED="1778662428570" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>cn.muzisheng.lebo.*</FILTER>
+    </SUITE>
   </component>
 </project>
