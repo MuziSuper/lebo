@@ -47,6 +47,17 @@ class JwtAuthInterceptorTest {
     }
 
     @Test
+    void preHandleAllowsOptionsPreflightWithoutToken() throws Exception {
+        JwtAuthInterceptor interceptor = new JwtAuthInterceptor(jwtUtil);
+        MockHttpServletRequest request = new MockHttpServletRequest("OPTIONS", "/user/info");
+
+        boolean allowed = interceptor.preHandle(request, new MockHttpServletResponse(), new Object());
+
+        assertThat(allowed).isTrue();
+        assertThat(UserThreadUtil.getCurrentOpenId()).isNull();
+    }
+
+    @Test
     void preHandleRejectsMissingMalformedAndEmptyParsedTokens() {
         JwtAuthInterceptor interceptor = new JwtAuthInterceptor(jwtUtil);
         MockHttpServletRequest missing = new MockHttpServletRequest("GET", "/user/info");

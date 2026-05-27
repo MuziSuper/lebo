@@ -6,6 +6,7 @@ import cn.muzisheng.lebo.utils.UserThreadUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -30,6 +31,11 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
         // 打印请求信息，方便排查
         log.info("拦截请求：{} {}, headers: {}", method, requestURI, request.getHeader("Authorization"));
+
+        // 浏览器跨域预检请求不携带业务 token，需要直接放行给 CORS 配置处理
+        if (HttpMethod.OPTIONS.matches(method)) {
+            return true;
+        }
 
         // 1. 获取Authorization请求头
         String authHeader = request.getHeader("Authorization");
