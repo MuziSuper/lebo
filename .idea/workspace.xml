@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="chore(build): 集成JaCoCo代码覆盖率工具并配置测试依赖&#10;&#10;- 添加Jacoco Maven插件及其版本配置&#10;- 配置代码覆盖率检查规则，设置指令和行覆盖率最低为95%&#10;- 指定需要覆盖的源码包路径包括API和服务实现类&#10;- 排除Mockito模拟类和辅助类的覆盖率统计&#10;- 配置Maven Surefire插件以支持Jacoco代理参数&#10;- 添加Spring Boot测试依赖用于单元测试框架">
+    <list default="true" id="5fa72709-594b-4b5a-98a4-527a64672b57" name="更改" comment="feat(cors): 添加CORS配置开关并修复WebSocket跨域设置&#10;&#10;- 在application.properties中添加app.cors.enabled配置项，默认为false&#10;- 为CORS配置添加@ConditionalOnProperty条件注解，支持通过环境变量控制&#10;- 修改WebSocket配置使用setAllowedOriginPatterns替代setAllowedOrigins方法&#10;- 在JWT拦截器中添加OPTIONS预检请求直接放行逻辑&#10;- 为OPTIONS预检请求添加单元测试验证功能">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -484,7 +484,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779842139735</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="feat(cors): 添加CORS配置开关并修复WebSocket跨域设置&#10;&#10;- 在application.properties中添加app.cors.enabled配置项，默认为false&#10;- 为CORS配置添加@ConditionalOnProperty条件注解，支持通过环境变量控制&#10;- 修改WebSocket配置使用setAllowedOriginPatterns替代setAllowedOrigins方法&#10;- 在JWT拦截器中添加OPTIONS预检请求直接放行逻辑&#10;- 为OPTIONS预检请求添加单元测试验证功能">
+      <option name="closed" value="true" />
+      <created>1779888137774</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1779888137774</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -533,7 +541,8 @@
     <MESSAGE value="refactor(config): 重构微信配置管理&#10;&#10;- 将WXSecretConfig改为使用@Data注解和@Value注入&#10;- 移除Environment依赖，改用配置类获取APP_ID和APP_SECRET&#10;- 更新WXServiceImpl构造函数以使用新的配置类&#10;- 为微信云存储环境ID设置默认值&#10;- 简化配置属性的访问方式" />
     <MESSAGE value="docs(api): 更新API接口文档并添加轮播图管理功能&#10;&#10;- 新增批量查询用户信息接口(/user/listByOpenIds)及其详细文档&#10;- 添加轮播图管理接口模块，包含上传、查询、删除三个子接口&#10;- 在订单详情中新增商品图片字段(productImage)及相应说明&#10;- 调整订单列表分页参数默认值，pageNum默认为1，pageSize默认为9&#10;- 更新统计接口返回字段，将出入库数量改为盈利金额和用户数&#10;- 在消息通知接口中新增用户查阅消息和删除消息功能&#10;- 完善WebSocket订阅说明，添加type参数用于区分商户和客户订阅类型&#10;- 修复错误码锚点链接问题并更新相关说明&#10;- 在操作日志查询中将操作人ID改为操作人昵称字段&#10;- 配置文件中禁用Redis健康检查并增加文件上传大小限制配置" />
     <MESSAGE value="chore(build): 集成JaCoCo代码覆盖率工具并配置测试依赖&#10;&#10;- 添加Jacoco Maven插件及其版本配置&#10;- 配置代码覆盖率检查规则，设置指令和行覆盖率最低为95%&#10;- 指定需要覆盖的源码包路径包括API和服务实现类&#10;- 排除Mockito模拟类和辅助类的覆盖率统计&#10;- 配置Maven Surefire插件以支持Jacoco代理参数&#10;- 添加Spring Boot测试依赖用于单元测试框架" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore(build): 集成JaCoCo代码覆盖率工具并配置测试依赖&#10;&#10;- 添加Jacoco Maven插件及其版本配置&#10;- 配置代码覆盖率检查规则，设置指令和行覆盖率最低为95%&#10;- 指定需要覆盖的源码包路径包括API和服务实现类&#10;- 排除Mockito模拟类和辅助类的覆盖率统计&#10;- 配置Maven Surefire插件以支持Jacoco代理参数&#10;- 添加Spring Boot测试依赖用于单元测试框架" />
+    <MESSAGE value="feat(cors): 添加CORS配置开关并修复WebSocket跨域设置&#10;&#10;- 在application.properties中添加app.cors.enabled配置项，默认为false&#10;- 为CORS配置添加@ConditionalOnProperty条件注解，支持通过环境变量控制&#10;- 修改WebSocket配置使用setAllowedOriginPatterns替代setAllowedOrigins方法&#10;- 在JWT拦截器中添加OPTIONS预检请求直接放行逻辑&#10;- 为OPTIONS预检请求添加单元测试验证功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(cors): 添加CORS配置开关并修复WebSocket跨域设置&#10;&#10;- 在application.properties中添加app.cors.enabled配置项，默认为false&#10;- 为CORS配置添加@ConditionalOnProperty条件注解，支持通过环境变量控制&#10;- 修改WebSocket配置使用setAllowedOriginPatterns替代setAllowedOrigins方法&#10;- 在JWT拦截器中添加OPTIONS预检请求直接放行逻辑&#10;- 为OPTIONS预检请求添加单元测试验证功能" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
@@ -608,6 +617,12 @@
           <option name="totalLines" value="36782" />
           <option name="info" value="chore(build): 集成JaCoCo代码覆盖率工具并配置测试依赖&#10;&#10;- 添加Jacoco M" />
         </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1779888138059" />
+          <option name="linesCode" value="12689" />
+          <option name="totalLines" value="36805" />
+          <option name="info" value="feat(cors): 添加CORS配置开关并修复WebSocket跨域设置&#10;&#10;- 在applica" />
+        </TimePoint>
       </list>
     </option>
     <option name="genericTimePoints">
@@ -658,6 +673,12 @@
           <option name="timestamp" value="1779842139932" />
           <option name="linesCode" value="12677" />
           <option name="totalLines" value="36782" />
+          <option name="info" value="2026年5月27日" />
+        </TimePoint>
+        <TimePoint>
+          <option name="timestamp" value="1779888138059" />
+          <option name="linesCode" value="12689" />
+          <option name="totalLines" value="36805" />
           <option name="info" value="2026年5月27日" />
         </TimePoint>
       </list>
