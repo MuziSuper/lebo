@@ -33,11 +33,14 @@ public class Response<T> implements Serializable {
     }
     public void putHeader(String key, String value) {
         this.headers.add(key, value);
+        if (HttpHeaders.AUTHORIZATION.equalsIgnoreCase(key)) {
+            this.headers.set(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.AUTHORIZATION);
+        }
     }
 
     public void putHeaders(Map<String, String> headers) {
         for (Map.Entry<String, String> entry : headers.entrySet()) {
-            this.headers.add(entry.getKey(), entry.getValue());
+            putHeader(entry.getKey(), entry.getValue());
         }
     }
 
